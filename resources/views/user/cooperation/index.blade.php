@@ -3,7 +3,17 @@
 <style>
     .links ul {
         list-style: unset !important;
-
+    }
+    .accordion-button::after {
+        margin: unset;
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        background-size: 2rem;
+        background-image: url({{asset('/assets/images/plus.png')}});
+    }
+    .accordion-button:not(.collapsed)::after {
+        background-image: url({{asset('/assets/images/minus.png')}});
     }
 </style>
     {{-- <div id="top_banner">
@@ -19,14 +29,29 @@
             <div class="body bg-white p-3 p-lg-4">
 
                 <div class="row">
-                    @foreach ($body->where('section',1) as $link)
-                        <div class="col-md-6 col-lg-4">
-                            <div class="links">
-                                <div class="header text-dark"> <span class="fs-5" style="color: #ffa06a">>></span> {{$link->title}}</div>
-                                <div class="body text-primary">{!! $link->text !!}</div>
-                            </div>
+                    @if ( $body->where('section',1)->count() )
+                        <div class="accordion" id="accordionExample">
+                            @foreach ($body->where('section',1) as $content)
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{$content->id}}">
+                                        {{-- <button class="accordion-button {{$body->where('section',102)->first()->id==$content->id?'':'collapsed'}}" type="button" data-bs-toggle="collapse" --}}
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            {{-- data-bs-target="#collapse{{$content->id}}" aria-expanded="{{$body->where('section',102)->first()->id==$content->id?'true':'false'}}" aria-controls="collapse{{$content->id}}"> --}}
+                                            data-bs-target="#collapse{{$content->id}}" aria-expanded="false" aria-controls="collapse{{$content->id}}">
+                                            <p class="m-0 px-5 fw-bold">{{ $content->title }}</p>
+                                        </button>
+                                    </h2>
+                                    {{-- <div id="collapse{{$content->id}}" class="accordion-collapse collapse {{$body->where('section',102)->first()->id==$content->id?'show':''}}"  --}}
+                                    <div id="collapse{{$content->id}}" class="accordion-collapse collapse" 
+                                        aria-labelledby="heading{{$content->id}}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body text-dark">
+                                            {!! $content->text !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
+                    @endif
                 </div>
                 <h2 class="py-4 d-flex">
                     <div class="line"></div>

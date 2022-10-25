@@ -5,6 +5,7 @@
         <meta name="viewport"
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="enamad" content="398505"/>
         <title>{{ $setting->title }}</title>
         <link rel="icon" type="image/png" href="/{{ $setting->icon_site }}">
         <!-- Bootstrap css-->
@@ -234,28 +235,30 @@
                             <img src="{{ url($setting->icon_site) }}" alt="{{ $setting->title }}">
                         </a>
                         <div class="footer_mobile_nav d-lg-none p-3">
-                            <a href="#">
+                            <a href="{{ route('user.post.index.type','اطلاعیه') }}">
                                 اطلاعیه ها
                                 <i class="fas fa-angle-left"></i>
                             </a>
                             
                             <a href="{{ route('user.cooperation.index') }}">
-                                دعوت به همکاری
+                                همکاری با ما
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+
+                            <a href="{{ route('user.home-guost-app-pwa') }}">
+                                اپلیکیشن{{auth()->user()?'':' نصب '}}
                                 <i class="fas fa-angle-left"></i>
                             </a>
                             
-                            <a href="{{ route('user.post.index.type','بلاگ') }}">
-                                مجله خبری
-                                <i class="fas fa-angle-left"></i>
-                            </a>
-                            
+                            <br>
+
                             <a href="#">
                                 راهنما استفاده از مشاوران
                                 <i class="fas fa-angle-left"></i>
                             </a>
                             
                             <a href="{{ route('user.about.index') }}">
-                                درباره ما / تماس با ما
+                                درباره ما
                                 <i class="fas fa-angle-left"></i>
                             </a>
                         </div>
@@ -293,7 +296,7 @@
                                 </div>
 
                             </div>
-                            <div class="d-none d-lg-block">
+                            <div class="d-none d-lg-block text-start">
                                 @if (auth()->user())
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#sendWebTicket">
                                         <img class="logo_site py-1 py-lg-0 mx-lg-2 scale-up-center" src="{{ asset('assets/images/support.png') }}" alt="پشتیبانی">
@@ -310,7 +313,7 @@
                     <div class="col-lg-8">
                         <div class="row">
                             <div class="col-lg links-footer">
-                                <div class="d-none d-lg-block">
+                                <div class="d-none d-lg-block text-start">
                                     @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',3)->get() as $item)
                                         <div class="my-2 my-lg-3 text-center text-lg-end"><a class="link-footer" href="{{url($item->link)}}">{{$item->title}}</a></div>
                                     @endforeach
