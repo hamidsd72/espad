@@ -21,6 +21,7 @@ class Post extends Model
         "descriptionseo",
         "other",
         "photo",
+        "video",
     ];
 
     public function user() {

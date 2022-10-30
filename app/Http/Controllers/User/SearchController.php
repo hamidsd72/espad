@@ -54,41 +54,86 @@ class SearchController extends Controller {
         return $e_today;
     }
  
+    // public function search(Request $request)  {
+    //     if ($request->search) {
+    //         $users      = User::where('last_name', 'like' , '%'. $request->search .'%')->role('مدرس')->pluck('id');
+    //         $ServiceCat = ServiceCat::where('title', 'like' ,'%'. $request->search .'%')->where('type','sub_service')->first();
+    //         if ($users->count()) {
+    //             $items1 = Service::where('status', 'active')->whereIn('user_id',$users)->get();
+    //             // online
+    //             $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
+    //             // offline
+    //             $items2 = $items1->whereNotIn('id', $items->pluck('id'));
+                
+    //             if ($items->count() || $items2->count()) {
+    //                 if ($request->route=='web') {
+    //                     $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
+    //                     return view('user.consultation.categories.search', compact('items','items2','data'));
+    //                 }
+    //                 return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+    //             }
+    //         } elseif ($ServiceCat) {
+    //             $items1 = Service::where('status', 'active')->where('category_id', $ServiceCat->id)->get();
+    //             // online
+    //             $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
+    //             // offline
+    //             $items2 = $items1->whereNotIn('id', $items->pluck('id'));
+                
+    //             if ($items->count() || $items2->count()) {
+    //                 if ($request->route=='web') {
+    //                     $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
+    //                     return view('user.consultation.categories.search', compact('items','items2','data'));
+    //                 }
+    //                 return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+    //             }
+    //         }
+    //         return redirect()->back()->with('err_message', 'موردی یافت نشد');
+    //     }
+    //     return abort(403);
+    // }
+
     public function search(Request $request)  {
-        if ($request->search) {
-            $users      = User::where('last_name', 'like' , '%'. $request->search .'%')->role('مدرس')->pluck('id');
-            $ServiceCat = ServiceCat::where('title', 'like' ,'%'. $request->search .'%')->where('type','sub_service')->first();
-            if ($users->count()) {
-                $items1 = Service::where('status', 'active')->whereIn('user_id',$users)->get();
-                // online
-                $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
-                // offline
-                $items2 = $items1->whereNotIn('id', $items->pluck('id'));
-                
-                if ($items->count() || $items2->count()) {
-                    if ($request->route=='web') {
-                        $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
-                        return view('user.consultation.categories.search', compact('items','items2','data'));
-                    }
-                    return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+        // dd($request->all());
+        if ($request->type=='user') {
+            $items = User::where('last_name', 'like' , '%'. $request->search .'%')->role('مدرس')->pluck('id');
+
+            $items1 = Service::where('status', 'active')->whereIn('user_id',$items)->take(30)->get();
+            // online
+            $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
+            // offline
+            $items2 = $items1->whereNotIn('id', $items->pluck('id'));
+            
+            if ($items->count() || $items2->count()) {
+                if ($request->route=='web') {
+                    $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
+                    return view('user.consultation.categories.search', compact('items','items2','data'));
                 }
-            } elseif ($ServiceCat) {
-                $items1 = Service::where('status', 'active')->where('category_id', $ServiceCat->id)->get();
-                // online
-                $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
-                // offline
-                $items2 = $items1->whereNotIn('id', $items->pluck('id'));
-                
-                if ($items->count() || $items2->count()) {
-                    if ($request->route=='web') {
-                        $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
-                        return view('user.consultation.categories.search', compact('items','items2','data'));
-                    }
-                    return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+                return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+            }        
+        } else if ($request->type=='category') {
+            $item = ServiceCat::where('title', 'like' ,'%'. $request->search .'%')->first();
+            if ($item) {
+                if ($request->route=='web') {
+                    return redirect()->route('user.consultation.category',$item->slug);
                 }
+                return redirect()->route('user.services',$item->id);
             }
-            return redirect()->back()->with('err_message', 'موردی یافت نشد');
+        } else if ($request->type=='consultation') {
+            $items = ServiceCat::where('title', 'like' ,'%'. $request->search .'%')->where('type','sub_service')->first();
+            $items1 = Service::where('status', 'active')->where('category_id', $items->id)->get();
+            // online
+            $items = $items1->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'));
+            // offline
+            $items2 = $items1->whereNotIn('id', $items->pluck('id'));
+            
+            if ($items->count() || $items2->count()) {
+                if ($request->route=='web') {
+                    $data = Data::where("page_name", "مشاوران-شو")->where('status','active')->orderBy('sort')->get();
+                    return view('user.consultation.categories.search', compact('items','items2','data'));
+                }
+                return view('user.services', compact('items','items2'))->with('flash_message', ' نمایش همه نتایج ');
+            }
         }
-        return abort(403);
+        return redirect()->back()->with('err_message', 'موردی یافت نشد');
     }
 }

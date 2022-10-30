@@ -74,6 +74,7 @@ class NotificationController extends Controller
     }
 
     public function store(Request $request)  {
+        $msg = 'با سلام, شما یک پیام جدید دارید سامانه '.Setting::first()->title;
         if ($request->type == 'single') {
             $notife = new Notification();
             try {
@@ -84,19 +85,18 @@ class NotificationController extends Controller
                     $notife->atach = file_store($request->attach, 'source/asset/uploads/notification/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
                 }
                 $notife->save();
-                Sms::SendSms( 'با سلام, شما یک پیام جدید دارید. سامانه اسپاد' , $request->user_id);
+                Sms::SendSms( $msg , $request->user_id);
                 return redirect()->back()->withInput()->with('flash_message','با موفقیت ارسال شد');
             } catch (\Throwable $th) {
                 return redirect()->back()->withInput()->with('err_message','کاربر پیدا نشد , احتمالا شماره اشتباه است یا وارد نشده');
             }
         } elseif($request->type == 'package') {
             $bascket = Basket::where('type' , 'package')->where('status' , 'active')->where('sale_id' , ServicePackage::findOrFail($request->package)->id)->pluck('user_id');
-            dd('در حال بررسی',$bascket,$request->all());
-            if ($bascket->count()) {
-                foreach ($bascket as $user_id) {
+            $users   = User::whereIn('id',$bascket)->get(['id','mobile']);
+            if ($users->count()) {
+                foreach ($users as $user) {
                     $notife = new Notification();
                     try {
-                        $user = User::find($user_id);
                         $notife->user_id = $user->id;
                         $notife->subject = $request->subject;
                         $notife->description = $request->description;
@@ -104,38 +104,14 @@ class NotificationController extends Controller
                             $notife->atach = file_store($request->attach, 'source/asset/uploads/notification/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
                         }
                         $notife->save();
-                        Sms::SendSms( 'با سلام, شما یک پیام جدید دارید. سامانه اسپاد' , $user->mobile);
+                        Sms::SendSms( $msg , $user->mobile);
                     } catch (\Throwable $th) {
-                        
+                        return redirect()->back()->withInput()->with('err_message','مشگل در ارسال اعلان , لطفا مجددا امتحان کنید');
                     }
                 }
                 return redirect()->back()->withInput()->with('flash_message','با موفقیت ارسال شد');
-            } else { return redirect()->back()->withInput()->with('err_message','کاربری پیدا نشد'); }
-        } elseif($request->type == 'service') {
-            dd('نیاز به اصلاح');
-            $forms = UserForm::where('pay_status', 'active')->where('form_type', $request->service)->get();
-            if ($forms->count()) {
-                foreach ($forms as $user_id) {
-                    $notife = new Notification();
-                    try {
-                        $user = User::find($user_id);
-                        $notife->user_id = $user->id;
-                        $notife->subject = $request->subject;
-                        $notife->description = $request->description;
-                        if ($request->hasFile('attach')) {
-                            $notife->atach = file_store($request->attach, 'source/asset/uploads/notification/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
-                        }
-                        $notife->save();
-                        Sms::SendSms( 'با سلام, شما یک اعلان جدید دارید. سامانه iMoshaver' , $user->mobile);
-                        $count = \App\Model\SmsCount::first();
-                        $count->number += 1;
-                        $count->save();
-                    } catch (\Throwable $th) {
-                        
-                    }
-                }
-                return redirect()->route('admin.notification.index');
-            } else { return redirect()->back()->withInput()->with('err_message','کاربری پیدا نشد'); }
+            }
+            return redirect()->back()->withInput()->with('err_message','کاربری پیدا نشد');
         }
         
     }

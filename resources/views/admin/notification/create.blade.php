@@ -2,11 +2,7 @@
 @section('css')
 @endsection
 @section('content')
-    <style>
-        #packages , #services {
-            display: none;
-        }
-    </style>
+    <style> #packages , #services { display: none; } </style>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -21,7 +17,6 @@
                                         <select id="type" name="type" onchange="changeInput()" class="form-control">
                                             <option value="single" selected>ارسال به یک کاربر</option>
                                             <option value="package">ارسال به کاربران یک کارگاه</option>
-                                            {{-- <option value="service">ارسال به کاربران یک گروه مشاوره</option> --}}
                                         </select>
                                     </div>
                                 </div>
@@ -43,16 +38,6 @@
                                         <select id="package" name="package" class="form-control">
                                             @foreach ($packages as $key => $item)
                                                 <option value="{{$item->id}}" @if($key==0) selected @endif>{{$item->title}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6" id="services">
-                                    <div class="form-group">
-                                        <label for="service" >گروه های مشاوره *</label>
-                                        <select id="service" name="service" class="form-control">
-                                            @foreach ($services as $key => $item)
-                                                <option value="{{$item->form_name}}" @if($key==0) selected @endif>{{$item->form_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -114,16 +99,13 @@
             console.log( document.getElementById("type").value );
             if (document.getElementById("type").value=='single') {
                 document.getElementById("packages").style.display = "none";
-                document.getElementById("services").style.display = "none";
                 document.getElementById("mobilePhone").style.display = "block";
             } else if (document.getElementById("type").value=='package') {
                 document.getElementById("mobilePhone").style.display = "none";
-                document.getElementById("services").style.display = "none";
                 document.getElementById("packages").style.display = "block";
             } else if (document.getElementById("type").value=='service') {
                 document.getElementById("mobilePhone").style.display = "none";
                 document.getElementById("packages").style.display = "none";
-                document.getElementById("services").style.display = "block";
             }
         }
     </script>

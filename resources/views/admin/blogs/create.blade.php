@@ -51,9 +51,17 @@
                         <label for="photo" class="form-label">* تصویر  :</label>
                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*" value="{{ old('photo') }}"/>
                     </div>
+                    <div class="col-12 form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+                        <label for="exampleInputFile">اگر ویدیو دارد و میخواهید تغییر دهید</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video">
+                                <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل</label>
+                            </div>
+                        </div>
+                    </div>
     
                 </div>
-    
     
                 <div class="form-group">
                     {{ csrf_field() }}

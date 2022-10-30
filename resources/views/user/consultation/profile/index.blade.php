@@ -161,7 +161,7 @@
                 <div class="box-tree my-3 my-lg-4 border-right-gray text-center">
                     <div class="d-none d-lg-block">
                         <div class="logo-box text-center">
-                            <img src="{{ asset('assets/images/msg-icon.png') }}" alt="banner">
+                            <img src="{{ asset('assets/images/msg-icon2.png') }}" alt="banner">
                             <h4 class="text-white text-center">اسپاد استاک</h4>
                         </div>
                     </div>

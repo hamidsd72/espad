@@ -22,6 +22,10 @@
         transition: 0.4s;
         opacity: 0.6;
     }
+    video {
+        width: 100%;
+        height: auto;
+    }
 </style>
 
 <section class="blogs"> 
@@ -34,12 +38,20 @@
                         <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
                             <h5 class="px-4">{{$item->title}}</h5>
 
-                            <img class="rounded" src="{{url($item->photo)}}" alt="{{$item->title}}">
+                            @if ($item->photo)
+                                <img class="rounded" src="{{url($item->photo)}}" alt="{{$item->title}}">
+                            @else
+                                <video controls><source src="{{$item->video?url($item->video):''}}" type="video/mp4"></video>
+                            @endif
                             
                             <h5 class="px-4 mb-3 fs-6">{{$item->short_text}}</h5>
                             
                             <p class="px-4">{!! $item->text !!}</p>
 
+                            @if ($item->photo && $item->video)
+                                <video controls><source src="{{url($item->video)}}" type="video/mp4"></video>
+                            @endif
+                            
                             @unless ($type=='اطلاعیه')
                                 <small class="px-4">
                                     {{' نویسنده : '.$item->user()->first_name.' '.$item->user()->last_name}}

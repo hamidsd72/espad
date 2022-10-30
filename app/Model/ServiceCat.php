@@ -14,7 +14,7 @@ class ServiceCat extends Model
     }
     public function child_cat()
     {
-        return $this->hasMany('App\Model\ServiceCat','service_id')->where('status','active');
+        return $this->hasMany('App\Model\ServiceCat','service_id')->where('status','active')->orderBy('sort');
     }
     public function packages()
     {

@@ -33,7 +33,7 @@
                                         {{-- {{ Form::select('category_id' , Illuminate\Support\Arr::pluck($items,'title','id') , null, array('class' => 'form-control select2')) }} --}}
                                         <select id="category_id" name="category_id" onchange="changeInput()" class="form-control select2">
                                             @foreach ($items as $obj)
-                                                <option value="{{$obj->id}}" @if($item->category_id==$obj->id) selected @endif >{{$obj->title}}</option>
+                                                <option value="{{$obj->id}}" @if($item->category_id==$obj->id) selected @endif >{{$obj->slug}}</option>
                                             @endforeach
                                         </select>
                                     </div>

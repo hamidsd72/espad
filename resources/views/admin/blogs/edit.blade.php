@@ -56,6 +56,18 @@
                             <img src="{{ url($item->photo) }}" alt="{{ $item->title }}" width="100px">
                         </div>
                     @endif
+                    <div class="col-lg form-group">
+                        <label for="exampleInputFile">اگر ویدیو دارد و میخواهید تغییر دهید</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video">
+                                <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل</label>
+                            </div>
+                        </div>
+                        @if($item->video)
+                            <a href="{{url($item->video)}}" target="_black">مشاهده فایل در صفحه ای دیگر</a>
+                        @endif
+                    </div>
                 </div>
     
                 <div class="form-group">

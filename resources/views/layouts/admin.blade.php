@@ -62,73 +62,75 @@
             font-weight: normal !important;
             font-family: "Vazirmatn" !important;
         }
-    </style>
-    @yield('css')
-    <style>
+
+
+
         .sidebar {
-            overflow-y: initial;
-            padding-top: 0.5rem;
+        overflow-y: initial;
+        padding-top: 0.5rem;
         }
         .sidebar-dark-primary , .navbar-expand , .navbar-expand .navbar-nav .dropdown-menu {
-            background-color: #2F2D51 !important;
+        background-color: #2F2D51 !important;
         }
         .sidebar-dark-primary .sidebar a , .sidebar-dark-primary .nav-treeview>.nav-item>.nav-link , .dropdown-item , .navbar-light .navbar-nav .nav-link {
-            color: white;
+        color: white;
         }
         .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
-            height: 45px;
+        height: 45px;
         }
-        
+
         #lorem a { 
-            color: rgba(0, 0, 0, 0.719);
+        color: rgba(0, 0, 0, 0.719);
         }
         a.nav-link:hover {
-            color: white !important;
+        color: white !important;
         }
         .card-primary.card-outline , .res_table{
-            border-radius: 20px;
+        border-radius: 20px;
         }
         .main-sidebar .brand-text, .sidebar .nav-link p, .sidebar .user-panel .info {
-            color: white !important;
+        color: white !important;
         }
         .footer-bar-1 .active-nav i, .footer-bar-1 .active-nav span, .footer-bar-3 .active-nav i{
-            color: #2F2D51 !important;
+        color: #2F2D51 !important;
         }
         .form-control {
-            height: auto !important;
+        height: auto !important;
         }
         .small-box .icon {
-            top: 10px;
-            font-size: 60px;
+        top: 10px;
+        font-size: 60px;
         }
         .btn-info {
-            background: #fe5722 !important;
+        background: #fe5722 !important;
         }
         .btn-danger {
-            background: #20364b !important;
+        background: #20364b !important;
         }
         .bg-dark {
-            background: #20364b !important;
+        background: #20364b !important;
         }
         .text-dark {
-            color: #20364b !important;
+        color: #20364b !important;
         }
         .bg-violet {
-            background: #2F2D51 !important
+        background: #2F2D51 !important
         }
+
+    </style>
+    @yield('css')
+    @role('مدیر')
+        <style>
+            .sidebar {overflow-y: auto !important;}
         </style>
-        @role('مدیر')
-            <style>
-                .sidebar {overflow-y: auto !important;}
-            </style>
-        @endrole
-        @unless(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
-            <style>
-                .content-wrapper  , .main-footer , .main-header {
-                    margin-right: unset !important;
-                }
-            </style>
-        @endunless
+    @endrole
+    @unless(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
+        <style>
+            .content-wrapper  , .main-footer , .main-header {
+                margin-right: unset !important;
+            }
+        </style>
+    @endunless
     @livewireStyles
 </head>
 <body class="hold-transition sidebar-mini">

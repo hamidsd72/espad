@@ -52,14 +52,8 @@
         .swiper {
             top: -22px;
         }
-        section.service_cats_items {
-            min-height: 1036px;
-        }
         .video_items img.big {
             height: 330px;
-        }
-        section.service_cats_items .items .items_header , .text-lg-light {
-            color: azure;
         }
     }
 </style>
@@ -194,15 +188,15 @@
                             {{$data->where('section',1)->first()->title}}
                         </a>
                     @endif
-                    <div class="bd-highlight col-12 col-md-6 col-lg-3">
+                    <div class="bd-highlight col-12 col-md-6 col-lg-3 mt-1">
                         {{-- <div class="items p-2 p-lg-3 my-2 my-lg-0" style="background: #1d2d442b !important"> --}}
-                        <div class="items" style="border: none !important">
+                        <div class="items">
                             <a href="{{ route('user.consultation.show',$item->id) }}" >
-                                <div class="items_header">
-                                    <span class="fs-1" style="color: deepskyblue;">.</span>
+                                <div class="items_header fs-4">
+                                    <span class="fs-5 me-2" style="color: #ffa06a">&gt;&gt;</span>
                                     {{$item->title}}
                                 </div>
-                                <div class="items_description">
+                                <div class="items_description p-1">
                                     {{$item->text}}
                                 </div>
                             </a>

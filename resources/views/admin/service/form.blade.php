@@ -9,7 +9,7 @@
                     <select id="category_id" name="category_id" onchange="changeInput()" class="form-control select2">
                         {{-- @if (auth()->user()->getRoleNames()->first()=="مدیر") --}}
                             @foreach ($items as $key => $item)
-                                <option value="{{$item->id}}" {{$key==0?'selected':''}} >{{$item->title}}</option>
+                                <option value="{{$item->id}}" {{$key==0?'selected':''}} >{{$item->slug}}</option>
                             @endforeach
                         {{-- @else
                             @foreach ($items->where('title', auth()->user()->getRoleNames()->first() ) as $item)
@@ -19,6 +19,7 @@
                     </select>
                     {{-- {{ Form::select('category_id' , Illuminate\Support\Arr::pluck($items,'title','id') , null, array('class' => 'form-control select2')) }} --}}
                 </div>
+                
                 @if (auth()->user()->getRoleNames()->first()=='مدیر')
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">

@@ -6,8 +6,16 @@
         <div class="form-group mb-0 pt-3">
             <form action="{{route('user.services-search')}}" method="get" class="mt-4">
                 @csrf
-                <div class="row mb-3">
-                    <div class="col">
+                <input type="hidden" name="route" value="app">
+                <div class="row bg-white mx-1 mb-3" style="border-radius: 50px;">
+                    <div class="col-auto p-0">
+                        <select class="form-control" name="type" style="border-radius: 50px;border: unset;">
+                            <option value="user" selected>نام مشاور</option>
+                            <option value="consultation">گروه های مشاوران</option>
+                            <option value="category">دسته بندی ها</option>
+                        </select>
+                    </div>
+                    <div class="col p-0">
                         <input type="text" class="form-control search" name="search" placeholder="جستجوی سریع">
                     </div>
                 </div>

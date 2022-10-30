@@ -96,14 +96,14 @@
 
 
 <section class="about">
-    <div class="consultation">
+    <div class="consultation mb-5">
         {{-- خدمات-بیمه" -> 66 , معرفی-کسب-و-کارهای-نوین -> 81 , کسب-و-کارهای-نوین -> 345 --}}
         @if ( in_array($item->id,[81,345,66]) )
             @include('user.consultation.categories.startup')
         @else
-            {{-- مالیات -> 76 --}}
-            <div class="{{$item->id==76?'':'container'}} page-hoghoghi">
-                <div class="body {{$item->id==76?'':'p-4'}}">
+            {{-- مالیات -> 76 , مالیات و حسابرسی -> 508 --}}
+            <div class="{{in_array( $item->id , [76,508])?'':'container'}} page-hoghoghi">
+                <div class="body {{in_array( $item->id , [76,508])?'':'p-4'}}">
                     {{-- 103 گروه-کالایی 55 , قراردادهای-آتی-و-آپشن-ها 54 , فرآیند-پذیرش-در-بورس-کالا 56 , املاک-مستغلات 102 , صندوق-مستغلات --}}
                     {{-- 509,77,78,79 خدمات بورسی ، خدمات ارزی و ریالی ، صندوق ها و بازار های بین المللی --}}
                     @if (in_array( $item->id , [55,54,56,103,102,509,77,78,79]) )
@@ -175,7 +175,7 @@
                             @endforeach
                         </div>
                         {{-- مالیات -> 76 --}}
-                    @elseif ($item->id==76)
+                    @elseif (in_array( $item->id , [76,508]))
                         <style>
                             .border-bottom-gold {
                                 border-bottom: 2px solid #c7a97b;

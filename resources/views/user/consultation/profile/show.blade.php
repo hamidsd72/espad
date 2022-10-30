@@ -479,7 +479,7 @@
                                     </div>
                                 </div>
                                 <div class="col text-start">
-                                    <img class="" style="height: 100px;opacity: 0.4;" src="{{ asset('assets/images/msg-icon.png') }}" alt="banner">
+                                    <img class="" style="height: 100px;opacity: 0.4;" src="{{ asset('assets/images/msg-icon2.png') }}" alt="banner">
                                 </div>
                             </div>
                             <div class="mx-4 mb-3 px-lg-5">
@@ -506,7 +506,7 @@
                                 </div>
                             </div>
                             <div class="col text-start">
-                                <img class="" style="height: 100px;opacity: 0.4;" src="{{ asset('assets/images/msg-icon.png') }}" alt="banner">
+                                <img class="" style="height: 100px;opacity: 0.4;" src="{{ asset('assets/images/msg-icon2.png') }}" alt="banner">
                             </div>
                         </div>
                         <div class="mx-4 mb-3 px-lg-5">

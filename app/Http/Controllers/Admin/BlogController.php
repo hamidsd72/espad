@@ -34,7 +34,6 @@ class BlogController extends Controller {
             'slug'      => 'required|max:250',
             'short_text'=> 'required',
             'text'      => 'required',
-            'photo'     => 'required',
         ]);
         if( Post::where('type',$request->type)->where('slug',$request->slug)->count() ) {
             return redirect()->back()->withInput()->with('flash_message', 'عنوان تکراری می باشد');
@@ -52,6 +51,9 @@ class BlogController extends Controller {
             $item->descriptionseo   = $request->descriptionseo;
             if ($request->hasFile('photo')) {
                 $item->photo = file_store($request->photo, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'post-');;
+            }
+            if ($request->hasFile('video')) {
+                $item->video = file_store($request->video, 'source/asset/uploads/item/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'video_card-');
             }
             $item->save();
             return redirect()->route('admin.post.index.type',$item->type)->with('flash_message', 'با موفقیت ثبت شد.');
@@ -96,6 +98,12 @@ class BlogController extends Controller {
                 }
                 $item->photo = file_store($request->photo, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'post-');;
             }
+            if ($request->hasFile('video')) {
+                if ($item->video != null) {
+                    File::delete($item->video);
+                }
+                $item->video = file_store($request->video, 'source/asset/uploads/item/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'video_card-');
+            }
             $item->save();
             return redirect()->route('admin.post.index.type',$item->type)->with('flash_message', 'با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
@@ -104,7 +112,16 @@ class BlogController extends Controller {
     }
 
     public function destroy($id) {
-        Post::findOrFail($id)->delete();
+        $item = Post::findOrFail($id);
+
+        if ($item->photo) {
+            File::delete($item->photo);
+        }
+        if ($item->video != null) {
+            File::delete($item->video);
+        }
+
+        $item->delete();
         return redirect()->back()->withInput()->with('flash_message',' با موفقیت حذف شد.');
     }
 

@@ -36,15 +36,18 @@
 
     <div class="bg-gradient-blue text-white p-4 p-lg-0 py-lg-5">
         <div class="col-lg-9 m-auto" style="text-align: justify;direction: rtl;">
-            @foreach ($data->where('section',1) as $item)
-                <h1 class="fw-bold text-center">{{$item->title}}</h1>
-                <h6 class="text-center text-light-blue">{{$item->link}}</h6>
-                <div class="text-center pb-lg-5 mb-lg-5">{!! $item->text !!}</div>
-            @endforeach
+            @if ( $data->where('section',1)->count())
+                @foreach ($data->where('section',1) as $item)
+                    <h1 class="fw-bold text-center">{{$item->title}}</h1>
+                    <h6 class="text-center text-light-blue">{{$item->link}}</h6>
+                    <div class="text-center pb-lg-5 mb-lg-5">{!! $item->text !!}</div>
+                @endforeach
+            @else
+                <div class="p-5"></div>
+            @endif
         </div>
     </div>
     <div class="container py-4">
-
         <div class="body bg-white">
                
             {{-- زیردسته های اوراق بهادار --}}

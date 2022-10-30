@@ -85,7 +85,10 @@ class ConsultationController extends Controller {
                 $items = $sub_service;
             }
 
+            $slug = $cats->first()->slug;
             $cats = $cats->first()->service_id;
+
+            $data = Data::where("page_name", $slug)->where('status','active')->orderBy('sort')->get();
             return view('user.consultation.index',compact('items','data','slug','cats'));
         } else {
             $items = ServiceCat::where('status', 'active')->where('slug','!=','کد-تخفیف')->where('type', 'service')->orderBy('sort')->get();

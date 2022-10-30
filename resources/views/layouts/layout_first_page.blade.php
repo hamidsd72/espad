@@ -113,6 +113,11 @@
                                 <button type="submit"><i class="fas fa-search"></i></button>
                                 <input type="text" name="search" placeholder="جستجوی سریع...">
                                 <input type="hidden" name="route" value="web">
+                                <select name="type">
+                                    <option value="user" selected>نام مشاور</option>
+                                    <option value="consultation">گروه های مشاوران</option>
+                                    <option value="category">دسته بندی ها</option>
+                                </select>
                             </form>
                         </div>
                     </div>
@@ -154,79 +159,79 @@
                                         @endif
                                     </a>
                                     @if(count($cat->child_cat))
-                                    <div class="dropdown-menu dropdown-menu-big dropdown-menu-{{$cat->id}}">
-                                        <div class="container-lg">
-                                            @if ($cat->slug=='اوراق-بهادار')
-                                                <div class="d-none d-lg-block">
-                                                    <div class="p-lg-4 py-1 overflow-auto" style="max-height: 746px;">
-                                                        <div class="row">
-                                                            @foreach($cat->child_cat->chunk(intval($cat->child_cat->count() / 5)) as $lists)
-                                                                <div class="col-2 p-0">
-                                                                    @foreach($lists as $child)
-                                                                        <a class="text-light" href="{{ route('user.consultation.show',$child->id) }}">
-                                                                            <div class="card_menu card_menu_2 mx-1 mb-2 p-2">
-                                                                                <div class="text-start">
-                                                                                    <img src="{{ asset('assets/images/msg-icon.png') }}" style="width: 32px;opacity: 0.6;" alt="SPADSTOCK">
-                                                                                </div>
-                                                                                <div class="mt-4 pt-1 small">{{$child->title}}</div>
-                                                                                <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
-                                                                            </div>
-                                                                        </a>
-                                                                    @endforeach
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-lg-none">
-                                                    <div class="py-1 wm-30">
-                                                        <ul class="category">
-                                                            @foreach($cat->child_cat as $child)
-                                                            <li class="mb-3 text-lg-end me-lg-4">
-                                                                <a href="{{ route('user.consultation.show',$child->id) }}">
-                                                                    <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
-                                                                    {{$child->title}}
-                                                                </a>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="row">
-                                                    <div class="col-lg-4 py-lg-5 py-1 wm-30">
-                                                        <h5 class="category_title d-lg-block d-none">دسترسی سریع</h5>
-                                                        <ul class="category">
-                                                            @foreach($cat->child_cat as $child)
-                                                            <li class="mb-3 text-lg-end me-lg-4">
-                                                                <a href="{{ route('user.consultation.show',$child->id) }}">
-                                                                    <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
-                                                                    {{$child->title}}
-                                                                </a>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-lg-8 py-5 border-right-1 d-lg-block d-none wm-70">
-                                                        <div class="container-fluid">
+                                        <div class="dropdown-menu dropdown-menu-big dropdown-menu-{{$cat->id}}">
+                                            <div class="container-lg">
+                                                {{-- @if ($cat->slug=='اوراق-بهادار') --}}
+                                                    <div class="d-none d-lg-block">
+                                                        <div class="p-lg-4 py-1 overflow-auto" style="max-height: 746px;">
                                                             <div class="row">
-                                                                @foreach($cat->child_cat as $key_child=>$child)
-                                                                <div class="col-3 mb-1 p-0 pe-1">
-                                                                    <a href="{{ route('user.consultation.show',$child->id) }}">
-                                                                        <div class="card_menu {{$key_child==0?'fff':''}}">
-                                                                            <h5> {{$child->title}}</h5>
-                                                                            <p> {{$child->text}}</p>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
+                                                                @foreach($cat->child_cat->chunk( $cat->slug=='اوراق-بهادار'?intval($cat->child_cat->count() / 5):1  ) as $lists)
+                                                                    <div class="col-2 p-0">
+                                                                        @foreach($lists as $child)
+                                                                            <a class="text-light" href="{{ route('user.consultation.show',$child->id) }}">
+                                                                                <div class="card_menu card_menu_2 mx-1 mb-2 p-2">
+                                                                                    <div class="text-start">
+                                                                                        <img src="{{ asset('assets/images/msg-icon.png') }}" style="width: 32px;opacity: 0.6;" alt="SPADSTOCK">
+                                                                                    </div>
+                                                                                    <div class="mt-4 pt-1 small">{{$child->title}}</div>
+                                                                                    <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
+                                                                                </div>
+                                                                            </a>
+                                                                        @endforeach
+                                                                    </div>
                                                                 @endforeach
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
+                                                    <div class="d-lg-none">
+                                                        <div class="py-1 wm-30">
+                                                            <ul class="category">
+                                                                @foreach($cat->child_cat as $child)
+                                                                <li class="mb-3 text-lg-end me-lg-4">
+                                                                    <a href="{{ route('user.consultation.show',$child->id) }}">
+                                                                        <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
+                                                                        {{$child->title}}
+                                                                    </a>
+                                                                </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                {{-- @else
+                                                    <div class="row">
+                                                        <div class="col-lg-4 py-lg-5 py-1 wm-30">
+                                                            <h5 class="category_title d-lg-block d-none">دسترسی سریع</h5>
+                                                            <ul class="category">
+                                                                @foreach($cat->child_cat as $child)
+                                                                <li class="mb-3 text-lg-end me-lg-4">
+                                                                    <a href="{{ route('user.consultation.show',$child->id) }}">
+                                                                        <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
+                                                                        {{$child->title}}
+                                                                    </a>
+                                                                </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-lg-8 py-5 border-right-1 d-lg-block d-none wm-70">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    @foreach($cat->child_cat as $key_child=>$child)
+                                                                    <div class="col-3 mb-1 p-0 pe-1">
+                                                                        <a href="{{ route('user.consultation.show',$child->id) }}">
+                                                                            <div class="card_menu {{$key_child==0?'fff':''}}">
+                                                                                <h5> {{$child->title}}</h5>
+                                                                                <p> {{$child->text}}</p>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif --}}
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
                                 </li>
                             @endforeach
@@ -276,8 +281,8 @@
                     <div class="col-lg pt-lg-4">
                         <div class="float-lg-left my-lg-2 mx-lg-0 text-center text-lg-start">
                             @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',7)->where('sort',1)->get() as $item)
-                                <a href="{{url($item->link)}}" class="bg-logo_site p-3 ms-lg-2 bg-white rounded">
-                                    <img class="logo_site py-1 py-lg-0" src="{{ url($item->pic) }}" style="width: 148px;" alt="{{$item->title}}">
+                                <a href="{{url($item->link)}}" class="d ">
+                                    <img class="logo_site mx-lg-2 pb-2 p-lg-0" src="{{ url($item->pic) }}" alt="{{$item->title}}">
                                 </a>
                             @endforeach
                             <div class="network px-lg-3 py-3 pt-lg-4">
@@ -294,20 +299,27 @@
                                         @endif
                                     @endforeach
                                 </div>
-
                             </div>
                             <div class="d-none d-lg-block text-start">
                                 @if (auth()->user())
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#sendWebTicket">
-                                        <img class="logo_site py-1 py-lg-0 mx-lg-2 scale-up-center" src="{{ asset('assets/images/support.png') }}" alt="پشتیبانی">
+                                        @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',7)->where('sort',3)->get() as $item)
+                                            <img class="logo_site py-1 py-lg-0 mx-lg-2 scale-up-center" src="{{ $item->pic?url($item->pic):'' }}" alt="{{$item->title}}">
+                                        @endforeach
                                     </a>
                                 @else
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="text_cd1e40">
-                                        <img class="logo_site py-1 py-lg-0 mx-lg-2 scale-up-center" src="{{ asset('assets/images/support.png') }}" alt="پشتیبانی">
+                                        @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',7)->where('sort',3)->get() as $item)
+                                            <img class="logo_site py-1 py-lg-0 mx-lg-2 scale-up-center" src="{{ $item->pic?url($item->pic):'' }}" alt="{{$item->title}}">
+                                        @endforeach
                                     </a>
                                 @endif
                             </div>
                         </div>
+
+                        <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl"><img referrerpolicy="origin" 
+                            src="https://Trustseal.eNamad.ir/logo.aspx?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl" alt="" style="cursor:pointer" id="AN91PCxVNLNXwP9vTIPl"></a>
+
                     </div>
 
                     <div class="col-lg-8">

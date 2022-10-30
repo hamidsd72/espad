@@ -90,10 +90,13 @@
         border-color: #323a56;
     }
     footer {
-        background: linear-gradient(325.1deg,#006d95,#003b5c) !important;
+        background: #1B252E !important
     }
     section.video_items {
-        background: #2B363F !important;
+        background: #1B252E !important;
+    }
+    #enamad {
+        padding: 0px;
     }
 </style>
 
