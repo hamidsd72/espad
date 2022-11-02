@@ -23,9 +23,6 @@
     .video_items img:hover {
         opacity: 0.6;
     }
-    video.home {
-        opacity: unset !important;
-    }
     .video_items a:hover h6 {
         color: wheat !important;
     }
@@ -184,16 +181,20 @@
             <div class="d-flex align-items-start flex-column bd-highlight height-lg-840" >
                 @foreach($serviceCats->whereIn('view',['body','both']) as $key => $item)
                     @if ($key==0)
-                        <a href="#" class="text-lg-light border-bottom fs-4 py-2">
+                        {{-- <a href="#" class="text-lg-light fs-4 py-2" style="color: #32C9DB !important"> --}}
+                        <a href="#" class="text-lg-light fs-4 py-2 text-light">
                             {{$data->where('section',1)->first()->title}}
+                            <span class="fs-5 ms-2" style="color: red">&gt;&gt;</span>
                         </a>
                     @endif
-                    <div class="bd-highlight col-12 col-md-6 col-lg-3 mt-1">
+                    <div class="bd-highlight col-12 col-md-6 col-lg-3 mt-2 mx-3">
                         {{-- <div class="items p-2 p-lg-3 my-2 my-lg-0" style="background: #1d2d442b !important"> --}}
                         <div class="items">
                             <a href="{{ route('user.consultation.show',$item->id) }}" >
-                                <div class="items_header fs-4">
-                                    <span class="fs-5 me-2" style="color: #ffa06a">&gt;&gt;</span>
+                                {{-- <div class="items_header fs-5" style="color: #32C9DB !important">
+                                    <span class="fs-1 me-2" style="color: #32C9DB">.</span> --}}
+                                <div class="items_header fs-5 text-light">
+                                    <span class="fs-1 me-2 text-light">.</span>
                                     {{$item->title}}
                                 </div>
                                 <div class="items_description p-1">
@@ -219,17 +220,17 @@
     
 
     {{-- دو ایتم سخن بزرگان --}}
-    <section class="nothing_items py-3">
+    <section class="nothing_items pt-5 pb-3">
         <div class="container">
             @foreach ($data->where('section',4) as $item)
-                <div class="section-content-text" style="min-height: 30px;"><h2 class="title-3"><span class="ms-2 fs-2" style="color: #ffa06a">&gt;&gt;</span>{{$item->title}}</h2></div>
+                <div class="section-content-text" style="min-height: 30px;"><h2 class="title-3"><span class="ms-2 fs-2" style="color: red">&gt;&gt;</span>{{$item->title}}</h2></div>
             @endforeach
             <div class="row">
                 @foreach ($data->where('section',5) as $item)
                     <div class="col-lg-6 items" @if($item->sort==1) data-aos="fade-left" @else data-aos="fade-right" @endif>
                         <div class="row px-lg-5">
                             <div class="col-4">
-                                <span class="counter">0{{$item->sort}}</span>
+                                <span class="counter" style="color: red !important;">0{{$item->sort}}</span>
                                 <img src="{{url($item->pic)}}" alt="banner">
                             </div>
                             <div class="col-8 my-auto">
@@ -312,8 +313,8 @@
         @endforeach --}}
         {{-- همکاران و مشتریان ما --}}
         <div class="container">
-            <h5 class="d-none d-lg-block title-3"><span class="ms-2 fs-3" style="color: #ffa06a">&gt;&gt;</span>همکاران و مشتریان ما</h5>
-            <p class="m-0 d-lg-none "><span class="ms-2 fs-6" style="color: #ffa06a">&gt;&gt;</span>همکاران و مشتریان ما</p>
+            <h5 class="d-none d-lg-block title-3"><span class="ms-2 fs-3" style="color: red">&gt;&gt;</span>همکاران و مشتریان ما</h5>
+            <p class="m-0 d-lg-none "><span class="ms-2 fs-6" style="color: red">&gt;&gt;</span>همکاران و مشتریان ما</p>
             <div class="swiper mySwiper swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
                 <div class="swiper-wrapper" id="swiper-wrapper-c164578535e54f7f" aria-live="polite">
                     @foreach (\App\Model\Custom::where('status','active')->get() as $custom)

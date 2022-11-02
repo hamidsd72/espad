@@ -4,6 +4,8 @@
 Route::resource('comment', 'CommentController');
 // امتیازات
 Route::resource('like', 'LikeController');
+// فروشگاه
+Route::resource('store', 'StoreController');
 // مشاوره
 Route::resource('consultation', 'ConsultationController');
 // پروفایل مشاور
@@ -73,6 +75,7 @@ Route::post('sign-up-using-website/resend/password', 'SiteRegisterController@res
 Route::post('sign-up-using-mobile/resend/password', 'NewRegisterController@resend_password')->name('sign-up-using-mobile.resend-password');
 Route::resource('my-user', 'UserController');
 Route::get('user/search/services', 'SearchController@search')->name('services-search'); 
+Route::get('ajax/search/services/{type}/{search}', 'SearchController@ajax_search')->name('ajax-services-search'); 
 
 // ticket 
 Route::get('user/show/tikects', 'HomeController@tickets')->name('tickets'); 

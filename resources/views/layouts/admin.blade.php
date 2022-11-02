@@ -710,9 +710,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{route('admin.data.show','مشاوران-شو')}}" class="nav-link">
+                                        <a href="{{route('admin.data.show','مشاورین-برتر')}}" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon"></i>
-                                            <p>نمایش کارت های مشاوران</p>
+                                            <p>نمایش مشاورین برتر</p>
                                         </a>
                                     </li>
                                 </ul>

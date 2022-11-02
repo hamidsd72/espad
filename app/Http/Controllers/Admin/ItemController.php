@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Model\Setting;
 use App\Model\Item;
+use App\Model\ServiceCat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -54,6 +55,10 @@ class ItemController extends Controller {
             ]);
         try {
             $item = new Item();
+            $page_name = ServiceCat::where('slug',$request->page_name)->first('id');
+            if ($page_name) {
+                $item->page_id          = $page_name->id;
+            }
             $item->page_name            = $request->page_name;
             $item->title                = $request->title;
             $item->text                 = $request->text;
@@ -95,7 +100,6 @@ class ItemController extends Controller {
             ]);
         $item = Item::findOrFail($sub_service);
         try {
-            // $item->page_name            = $request->page_name;
             $item->title                = $request->title;
             $item->text                 = $request->text;
             $item->section              = $request->section;

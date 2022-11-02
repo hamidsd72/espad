@@ -29,31 +29,42 @@
     .modal-dialog-scrollable .modal-content {
         margin-top: 14%;
     }
+    #searchListBox {
+        background: white;
+        z-index: 2;
+        width: 92%;
+        position: absolute;
+        top: 152px;
+        border-radius: 40px;
+        margin-right: 4%;
+    }
 </style>
 
     <div class="mx-auto" style="max-width: 1000px;">
 
         {{-- searchbar --}}
-        <div class="container mt-5 pt-4">
+        <div class="px-3 mt-5 pt-4">
             <div class="form-group mb-0">
                 <form action="{{route('user.services-search')}}" method="get" class="mt-4">
                     @csrf
                     <input type="hidden" name="route" value="app">
                     <div class="row bg-white mx-1 mb-3" style="border-radius: 50px;">
+                        <div class="col p-0">
+                            <input id="search_text" type="text" class="form-control search" onkeypress="ajax_search()" name="search" placeholder="جستجوی سریع">
+                        </div>
                         <div class="col-auto p-0">
-                            <select class="form-control" name="type" style="border-radius: 50px;border: unset;">
+                            <select id="search_type" class="form-control" name="type" style="border-radius: 50px;border: unset;">
                                 <option value="user" selected>نام مشاور</option>
                                 <option value="consultation">گروه های مشاوران</option>
                                 <option value="category">دسته بندی ها</option>
                             </select>
                         </div>
-                        <div class="col p-0">
-                            <input type="text" class="form-control search" name="search" placeholder="جستجوی سریع">
-                        </div>
                     </div>
                 </form>
             </div>
         </div>
+        <div class="d-none" id="searchListBox"></div>
+
         {{-- end searchbar --}}
         <div class="card card-style" style="background: none;box-shadow: none;">
             <div id="tab-group-1">

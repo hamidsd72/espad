@@ -16,6 +16,7 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th>نوع پکیج</th>
                                     <th>پکیج</th>
                                     {{-- <th>خدمات</th> --}}
                                     <th>هزینه</th>
@@ -73,6 +74,10 @@
 
                                         {{-- <tr class="{{$item->custom==1?'backgrond_tb':''}}"> --}}
                                         <tr >
+                                            <td>
+                                                {{$item->type=='sample'?'وبینار':''}}
+                                                {{$item->type=='meeting'?'میزگرد':''}}
+                                            </td>
                                             <td>@item($item->title)
                                                 <br>
                                                 {{-- {{$item->custom==1?'(پکیج ویژه)':''}} --}}

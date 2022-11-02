@@ -24,7 +24,7 @@
                                        {{ Form::select('service[]' , Illuminate\Support\Arr::pluck($items,'title','id') ,$service , array('class' => 'form-control select2','multiple')) }}
                                     </div>
                                 </div> --}}
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         {{ Form::label('reagent_id', '* سرویس مربوط به وبینار را انتخاب کنبد') }}
                                         <select class="form-control select2" name="reagent_id">
@@ -34,7 +34,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         {{ Form::label('user_id', '* نام استاد / مشاور') }}
                                         <select class="form-control select2" name="user_id[]" multiple>
@@ -44,13 +44,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        {{ Form::label('type', '* نوع') }}
+                                        <select class="form-control" name="type" id="type">
+                                            <option value="sample" {{$item->type=='sample'?'selected':''}}>وبینار</option>
+                                            <option value="meeting" {{$item->type=='meeting'?'selected':''}}>میزگرد</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         {{ Form::label('title', '* نام پکیج') }}
                                         {{ Form::text('title',null, array('class' => 'form-control')) }}
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         {{ Form::label('slug', '* نامک') }}
                                         {{ Form::text('slug',null, array('class' => 'form-control')) }}
@@ -95,9 +104,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ Form::label('started_at', ' زمان برگزاری *') }}
-                                        <input type="text" class="form-control date_p" name="started_at" value="{{my_jdate($item->started_at,'d F Y')}}" required>
+                                    <div class="form-group text-danger">
+                                        {{ Form::label('started_at', ' زمان برگزاری '.my_jdate($item->started_at,'d F Y')) }}
+                                        <input type="text" class="form-control date_p" name="started_at" value="">
                                         {{-- {{ Form::text('started_at',null, array('class' => 'form-control form-control date_p')) }} --}}
                                     </div>
                                 </div>

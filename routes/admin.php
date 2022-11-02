@@ -21,6 +21,8 @@ Route::get('job-opportunities/type/{id}', 'JobOpportunitiesController@index')->n
 Route::get('job-opportunities/reactivate/{id}', 'JobOpportunitiesController@active')->name('job-opportunities.reactivate');
 // لیست بانک ها
 Route::resource('banks', 'BanksController');
+// سبد خرید کاربر
+Route::resource('factor-buy', 'FactorBuyController');
 // website data
 Route::resource('data', 'DataController');
 Route::resource('item', 'ItemController');

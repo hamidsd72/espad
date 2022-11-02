@@ -33,10 +33,25 @@
 </style>
 
 <section class="about">
-
-    <div class="bg-gradient-blue text-white p-4 p-lg-0 py-lg-5">
-        <div class="col-lg-9 m-auto" style="text-align: justify;direction: rtl;">
-            @if ( $data->where('section',1)->count())
+ 
+    {{-- <div class="bg-gradient-blue text-white p-4 p-lg-0 py-lg-5"> --}}
+    <div class="text-white p-4 p-lg-0 py-lg-5">
+        <div class="container pb-5">
+            @if($item??'')
+                <div class="row " id="top-consultation">
+                    <div class="col-2 my-lg-auto text-lg-start">
+                        <img src="{{ asset('assets/images/msg-icon.png') }}" alt="banner">
+                    </div>
+                    <div class="col">
+                        <h1 class="fw-bold text-right text-dark-violet my-lg-2 d-none d-lg-block">{{ $item->title }}</h1>
+                        <h1 class="fw-bold text-right text-dark-violet d-lg-none fs-5">{{ $item->title }}</h1>
+                        <p class="text-right text-dark">آخرین بروزرسانی : {{my_jdate($item->updated_at,'d F Y')}}</p>
+                    </div>
+                </div>
+                <div class="my-2 mb-lg-4 p-ln-24 head-2">
+                    {!! $item->description !!}
+                </div>
+            @elseif($data??'')
                 @foreach ($data->where('section',1) as $item)
                     <h1 class="fw-bold text-center">{{$item->title}}</h1>
                     <h6 class="text-center text-light-blue">{{$item->link}}</h6>
@@ -48,7 +63,7 @@
         </div>
     </div>
     <div class="container py-4">
-        <div class="body bg-white">
+        <div class="body">
                
             {{-- زیردسته های اوراق بهادار --}}
             @if ($cats==83)

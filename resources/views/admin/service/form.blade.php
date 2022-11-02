@@ -42,7 +42,7 @@
                     </div>
                 @endif
                 <div id="exampleInputFileBox" class="col-lg-6">
-                    <label for="exampleInputFile">* تصویر(500×500)</label>
+                    <label for="exampleInputFile">* تصویر(500×500) مورد استفاده در دانش بنیان - بیمه - فروشگاه</label>
                     <div class="input-group">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="exampleInputFile" name="photo" accept=".jpeg,.jpg,.png" >

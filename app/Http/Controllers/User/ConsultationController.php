@@ -76,20 +76,25 @@ class ConsultationController extends Controller {
         $data = Data::where("page_name", "مشاوران")->where('status','active')->orderBy('sort')->get();
         $cats  = 0;
         if (! is_null($slug)) {
+            
             $items = ServiceCat::where('slug', $slug)->orderBy('sort')->get();
             $cats  = $items;
+            
 
             $sub_service = ServiceCat::where('status', 'active')->where('type', 'sub_service')->whereIn('service_id', $items->pluck('id') )->get();
             // اگر زیردسته داشت
             if ( $sub_service->count() ) {
                 $items = $sub_service;
             }
-
+            // آکادمی به آکادمیک
+            if($cats->first()->id==27) {
+                return redirect()->route('user.consultation.show', $sub_service->first()->id);
+            }
+            $item = $cats->first();
             $slug = $cats->first()->slug;
             $cats = $cats->first()->service_id;
-
-            $data = Data::where("page_name", $slug)->where('status','active')->orderBy('sort')->get();
-            return view('user.consultation.index',compact('items','data','slug','cats'));
+            $data = Data::where("page_id", $item->id)->where('status','active')->orderBy('sort')->get();
+            return view('user.consultation.index',compact('item','items','data','slug','cats'));
         } else {
             $items = ServiceCat::where('status', 'active')->where('slug','!=','کد-تخفیف')->where('type', 'service')->orderBy('sort')->get();
             return view('user.consultation.index',compact('items','data','slug','cats'));
@@ -101,9 +106,14 @@ class ConsultationController extends Controller {
         if ($id==81) {
             $id=345;
         }
+
         $item   = ServiceCat::findOrFail($id);
-        $body   = Item::where("page_name", $item->slug)->get();
-        $header = Data::where("page_name", $item->slug)->where('status','active')->get();
+        $body   = Item::where("page_id", $item->id)->get();
+        $header = Data::where("page_id", $item->id)->where('status','active')->get();
+        if ($id==530) {
+            $body   = Item::whereIn("page_id", [78,530])->get();
+            $header = Data::whereIn("page_id", [78,530])->where('status','active')->get();
+        }
         if ( $item->slug!="دعاوی-حقوقی" && ServiceCat::where('status', 'active')->where('type', 'sub_service')->where('service_id', $item->id )->count()>0 ) {
             return redirect()->route('user.consultation.category',$item->slug);
         }
@@ -188,7 +198,7 @@ class ConsultationController extends Controller {
 
     public function startup($id) { 
         $item   = ServiceCat::findOrFail(81);
-        $body   = Item::where("page_name", $item->slug)->findOrFail($id);
+        $body   = Item::where("page_id", $item->id)->findOrFail($id);
         return view('user.consultation.categories.startup-show', compact('item','body'));
     }
 

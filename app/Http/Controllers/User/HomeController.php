@@ -259,6 +259,13 @@ class HomeController extends Controller {
         if (Service::where('status', 'active')->where( $this->today('start') ,'<',Carbon::now()->format('H:i'))->where( $this->today('end') ,'>',Carbon::now()->format('H:i'))->where('id',$id)->count()) {
             $status = 'online';    
         }
+        // if ($item->category_id && ServiceCat::find($item->category_id) && ServiceCat::find($item->category_id)->service_id==81) {
+        //     return view('user.service.startup', compact('item','ServiceCat','status','comments','likes','services'));
+        // } else
+        if ($item->category_id && ServiceCat::find($item->category_id) && ServiceCat::find($item->category_id)->service_id==96) {
+            return view('user.service.store', compact('item','ServiceCat','status','comments','likes','services'));
+        }
+
         return view('user.service.show', compact('item','ServiceCat','status','comments','likes','services'));
     }
 

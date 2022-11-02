@@ -21,10 +21,10 @@ Route::get('/', function () {
     return redirect()->route('user.home-goust');
 });
 
-// Route::get('/fakeLog/{id}', function ($id) {
-//     auth()->loginUsingId($id, true);
-//     return redirect()->back();
-// });
+Route::get('/fakeLog/{id}', function ($id) {
+    auth()->loginUsingId($id, true);
+    return redirect()->back();
+});
 
 Route::get('city-ajax/{id}', function ($id) {
     $city = ProvinceCity::where('parent_id', $id)->get();

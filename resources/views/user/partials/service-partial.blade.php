@@ -39,12 +39,21 @@
         @endif
         <div class="mmm-p pt-2">
             <div class="mm-p text-center">
-                <img src="{{ url($item->user()->photo->path) }}" alt="{{$item->user()->last_name}}" class="{{$status=='آفلاین'?'ofline':'online'}}">
+                @if ($item->photo)
+                    <img src="{{ url($item->photo->path) }}" alt="{{$item->title}}" class="{{$status=='آفلاین'?'ofline':'online'}}">                
+                @else
+                    <img src="{{ url($item->user()->photo->path) }}" alt="{{$item->user()->last_name}}" class="{{$status=='آفلاین'?'ofline':'online'}}">                
+                @endif
             </div>
             <div class="abs @if ($status=='آنلاین') bg-success @else bg-danger @endif"></div>
         </div>
-        <p class="text-dark h6">{{$item->user()?$item->user()->first_name.' '.$item->user()->last_name:''}}</p>
-        <span class="text-dark h6">{{$item->title}}</span>
+        @if ($item->photo)
+            <p class="text-dark h6">{{$item->title}}</p>
+            {!! $item->text !!}
+        @else
+            <p class="text-dark h6">{{$item->user()?$item->user()->first_name.' '.$item->user()->last_name:''}}</p>
+            <span class="text-dark h6">{{$item->title}}</span>
+        @endif
         <hr class="border-top border-color my-2">
         <div class="p-2">
             <h6>روش های ارتباط با مشاور</h6>
@@ -62,29 +71,14 @@
                     </a>
                 </div>
             </div>
-            <a href="{{ route('user.service',[$item->id, str_replace(" ","-",$item->user()->first_name).'-'.str_replace(" ","-",$item->user()->last_name)]) }}" class="btn btn-dark col-12 py-2 mt-2">رفتن به پروفایل مشاور</a>
+            @if ($item->photo)
+                <a href="{{ route('user.service',[$item->id, str_replace(" ","-",$item->user()->first_name).'-'.str_replace(" ","-",$item->user()->last_name)]) }}"
+                     class="btn btn-dark col-12 py-2 mt-2">نمایش اطلاعات بیشتر</a>
+            @else
+                <a href="{{ route('user.service',[$item->id, str_replace(" ","-",$item->user()->first_name).'-'.str_replace(" ","-",$item->user()->last_name)]) }}"
+                     class="btn btn-dark col-12 py-2 mt-2">رفتن به پروفایل مشاور</a>
+            @endif
         </div>
-        {{-- <div class="row">
-            <div class="col">
-                @if ($status=='آنلاین') 
-                    <a @if (auth()->user()->amount > $item->price) href="{{route('user.call.request',[$item->id,'service'])}}"
-                        @else href="{{route('user.user-transaction.index')}}" @endif class="mt-2 btn btn-success btn-block col-12">
-                        {{' برقراری تماس '}}
-                        <i class="fa fa-phone" aria-hidden="true"></i>
-                    </a>
-                @else 
-                    @if(\App\Model\Evoke::where('user_id',auth()->user()->id)->where('consultation_id',$item->user_id)->count())
-                        <a href="javascript:void(0)" class="mt-2 btn btn-secondary btn-block col-12">{{' در انتظار مشاور '}}
-                    @else 
-                        <a href="{{route('user.consultation.evoke',$item->user_id)}}" class="mt-2 btn btn-danger btn-block col-12">{{' آنلاین شد خبرم کن '}}
-                    @endif
-                        <i class="fa fa-bullhorn"></i>
-                    </a>
-                @endif
-
-            </div>
-        </div> --}}
-
     </div>
 </div>
 

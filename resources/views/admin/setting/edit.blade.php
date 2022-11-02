@@ -44,12 +44,12 @@
                                         {{ Form::text('slogan',null, array('class' => 'form-control')) }}
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                {{-- <div class="col-sm-12">
                                     <div class="form-group">
                                         {{ Form::label('map', 'گوگل مپ ای پی آی') }}
                                         {{ Form::text('map',null, array('class' => 'form-control')) }}
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-sm-6">
                                     <label for="exampleInputFile">تصویر لوگو سایت(png)</label>
                                     <div class="input-group">

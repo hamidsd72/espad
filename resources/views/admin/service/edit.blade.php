@@ -1,12 +1,5 @@
 @extends('layouts.admin')
 @section('css')
-@unless ( in_array($item->category_id , ['345','66']) )
-    <style>
-        #exampleInputFileBox {
-            display: none;
-        }
-    </style>
-@endunless
 @unless ( in_array($item->category_id , ['52','53','163','345']) )
     <style>
         #description-text {
@@ -60,7 +53,7 @@
                                     </div> 
                                 @endif
                                 <div id="exampleInputFileBox" class="col-lg-6">
-                                    <label for="exampleInputFile">تصویر(500×500)</label>
+                                    <label for="exampleInputFile">* تصویر(500×500) مورد استفاده در دانش بنیان - بیمه - فروشگاه</label>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="exampleInputFile" name="photo" accept=".jpeg,.jpg,.png">
@@ -274,8 +267,6 @@
             let category = document.getElementById("category_id").value;
             if (category=='52' || category=='53' || category=='163') {
                 document.getElementById("description-text").style.display = "block";
-            } else if (category=='345' || category=='66') {
-                document.getElementById("exampleInputFileBox").style.display = "block";
             } else {
                 document.getElementById("description-text").style.display = "none";
             }

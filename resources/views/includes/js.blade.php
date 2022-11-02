@@ -9,6 +9,40 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{{asset('admin/plugins/select2/select2.full.min.js')}}"></script>
 <script>
+    function ajax_search() {
+        let text = document.getElementById('search_text').value;
+        let type = document.getElementById('search_type').value;
+
+        if (text.length > 2) {
+            $.ajax({
+                url: `/ajax/search/services/${type}/${text}`,
+                type: 'get',
+                success: function(response){
+                    console.log(response);
+                    if (response.error) {
+                        console.log(response.error)
+                        return false;
+                    }
+                    document.getElementById("searchListBox").classList.remove("d-none");
+                    document.getElementById("searchListBox").innerHTML = `<button class="bg-danger text-light float-left m-3 redu20" style="width: 26px !important;height: 26px !important;" onclick="document.getElementById('searchListBox').classList.add('d-none');"><i class="fa fa-close"></i></button>`;
+
+                    for (let index = 0; index < response.length; index++) {
+                        if (type=='category') {
+                            document.getElementById("searchListBox").innerHTML += `<div class='col-12 m-3'><a href='/services/${response[index].id}'>${response[index].title}</a></div>`;
+                        } else {
+                            let route = 'service';
+                            let slug  = response[index].user_id;
+                            document.getElementById("searchListBox").innerHTML += `<div class='col-12 m-3'><a href='/${route}/${response[index].id}/${slug.replaceAll(' ', "-")}'>${response[index].user_id} - ${response[index].title}</a></div>`;
+                        }
+                    }
+                }
+            });
+        } else {
+            document.getElementById("searchListBox").classList.add("d-none");
+        }
+    }
+</script>
+<script>
     "use strict"
     $(window).on('load', function() {
 

@@ -1,6 +1,16 @@
 @extends('user.master')
+<style>
+    #searchListBox {
+        background: white;
+        z-index: 2;
+        width: 92%;
+        position: absolute;
+        top: 120px;
+        border-radius: 40px;
+        margin-right: 4%;
+    }
+</style>
 @section('content')
-
     <!-- page content start -->
     <div class="mt-4 px-3">
         <div class="form-group mb-0 pt-3">
@@ -8,20 +18,21 @@
                 @csrf
                 <input type="hidden" name="route" value="app">
                 <div class="row bg-white mx-1 mb-3" style="border-radius: 50px;">
+                    <div class="col p-0">
+                        <input id="search_text" type="text" class="form-control search" onkeypress="ajax_search()" name="search" placeholder="جستجوی سریع">
+                    </div>
                     <div class="col-auto p-0">
-                        <select class="form-control" name="type" style="border-radius: 50px;border: unset;">
+                        <select id="search_type" class="form-control" name="type" style="border-radius: 50px;border: unset;">
                             <option value="user" selected>نام مشاور</option>
                             <option value="consultation">گروه های مشاوران</option>
                             <option value="category">دسته بندی ها</option>
                         </select>
                     </div>
-                    <div class="col p-0">
-                        <input type="text" class="form-control search" name="search" placeholder="جستجوی سریع">
-                    </div>
                 </div>
             </form>
         </div>
     </div>
+    <div class="d-none" id="searchListBox"></div>
 
     <!-- demo slider top -->
     <div class="mb-4 px-3">

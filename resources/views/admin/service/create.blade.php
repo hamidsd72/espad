@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('css')
 <style>
-    #description-text , #exampleInputFileBox {
+    #description-text {
         display: none;
     }
 </style>
@@ -33,8 +33,6 @@
             let category = document.getElementById("category_id").value;
             if (category=='52' || category=='53' || category=='163') {
                 document.getElementById("description-text").style.display = "block";
-            } else if (category=='345' || category=='66') {
-                document.getElementById("exampleInputFileBox").style.display = "block";
             } else  {
                 document.getElementById("description-text").style.display = "none";
             }

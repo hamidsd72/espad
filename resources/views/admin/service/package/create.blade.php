@@ -22,7 +22,7 @@
                                        {{ Form::select('service[]' , Illuminate\Support\Arr::pluck($items,'title','id') , null, array('class' => 'form-control select2','multiple')) }}
                                     </div>
                                 </div> --}}
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         {{ Form::label('reagent_id', '* سرویس مربوط به وبینار را انتخاب کنبد') }}
                                         <select class="form-control select2" name="reagent_id">
@@ -34,13 +34,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         {{ Form::label('user_id', '* نام استاد / مشاور') }}
                                         <select class="form-control select2" name="user_id">
                                             @foreach(\App\User::role('مدرس')->get(['id','first_name','last_name']) as $key => $user)
                                                 <option value="{{$user->id}}" {{ $key==0?'selected':'' }}>{{$user->first_name.' '.$user->last_name}}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        {{ Form::label('type', '* نوع') }}
+                                        <select class="form-control" name="type" id="type">
+                                            <option value="sample" selected>وبینار</option>
+                                            <option value="meeting">میزگرد</option>
                                         </select>
                                     </div>
                                 </div>

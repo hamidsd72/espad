@@ -223,4 +223,3 @@ class AboutController extends Controller {
 
 }
 
-

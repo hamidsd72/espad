@@ -354,14 +354,12 @@
                         </div>
                         {{-- معرفی-اساتید 52 --}}
                     {{-- @elseif ($item->id==52)
-
                         <div class="row">
                             @if ($items->count())
                                 @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items->pluck('user_id'))->where('reagent_id',$items->pluck('id'))->get() as $item)
                                     @include('user.consultation.categories.moarefi-asatid')
                                 @endforeach
                             @endif
-
                             @if ($items2->count())
                                 @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items2->pluck('user_id'))->where('reagent_id',$items2->pluck('id'))->get() as $item)
                                     @include('user.consultation.categories.moarefi-asatid')

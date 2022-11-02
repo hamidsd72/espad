@@ -85,33 +85,24 @@
                 <div class="mx-auto pb-3">
                     {!! $item->text !!}
                 </div>
-                @if (auth()->user()->amount > $item->price)
-                    <h6>تماس با مشاوره</h6>
-                    <div class="col-12 my-3">
-                        <a href="{{route('user.call.request',[$item->id,'service'])}}" class="btn btn-success col-12 text-dark">
-                            تماس
-                            <i class="fas fa-phone mx-1"></i>
-                        </a>
-                    </div>
-                @endif
 
                 @if ($status=='online')
                     <h6>انتخاب پکیج مشاوره</h6>
                     <div class="col-12 my-3">
                         <a  @if (auth()->user()->amount > $item->price*10) href="{{route('user.call.request',[$item->id,'service'])}}"
-                            @else href="{{route('user.user-web-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
+                            @else href="{{route('user.user-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
                             ۱۰ دقیقه {{number_format($item->price*10).' تومان '}}
                         </a>
                     </div>
                     <div class="col-12">
                         <a  @if (auth()->user()->amount > $item->price*30) href="{{route('user.call.request',[$item->id,'service'])}}"
-                            @else href="{{route('user.user-web-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
+                            @else href="{{route('user.user-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
                             ۳۰ دقیقه {{number_format($item->price*30).' تومان '}}
                         </a>
                     </div>
                     <div class="col-12 my-3">
                         <a  @if (auth()->user()->amount > $item->price*60) href="{{route('user.call.request',[$item->id,'service'])}}"
-                            @else href="{{route('user.user-web-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
+                            @else href="{{route('user.user-transaction.index')}}" @endif class="btn btn-success col-12 text-dark">
                             ۶۰ دقیقه {{number_format($item->price*60).' تومان '}}
                         </a>
                     </div>

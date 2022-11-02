@@ -1162,7 +1162,24 @@ section.about .card .kala img {
     bottom: 26px;
     right: 80px;
 }
+#searchListBox {
+    background: white;
+    z-index: 2;
+    width: 100%;
+    position: absolute;
+    top: 56px;
+    border: 1px solid #ebeeef;
+}
 @media only screen and (min-width: 920px) {
+    #searchListBox {
+        background: white;
+        z-index: 2;
+        width: 44.5%;
+        position: absolute;
+        top: 114px;
+        right: 14%;
+        margin-right: 15px;
+    }
     video.home {
         position: absolute;
         z-index: -1;
@@ -1174,6 +1191,9 @@ section.about .card .kala img {
         min-height: 1036px;
     }
     section.service_cats_items .items .items_header , .text-lg-light {
+        color: azure;
+    }
+    .text-lg-light:hover {
         color: azure;
     }
     section.service_cats_items .items {
@@ -1236,6 +1256,9 @@ section.about .card .kala img {
 
 }
 @media only screen and (max-width: 640px) {
+    header .header_top_2 .search-form select {
+        width: 40%;
+    }
     .video_items img.small {
         height: 100px;
     }
@@ -1315,4 +1338,10 @@ section.about .card .kala img {
 video {
     width: 100%;
     height: auto;
+}
+ul.navbar-nav {
+    max-height: 62px;
+}
+.w-100 {
+    width: 100%;
 }

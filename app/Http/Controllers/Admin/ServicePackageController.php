@@ -51,7 +51,7 @@ class ServicePackageController extends Controller
 
     public function index()
     {
-        $items = ServicePackage::where('type','sample')->orderBy('sort_by', 'ASC')->paginate($this->controller_paginate());
+        $items = ServicePackage::orderBy('sort_by')->paginate($this->controller_paginate());
         return view('admin.service.package.index', compact('items'), ['title1' => 'خدمات', 'title2' => $this->controller_title('sum')]);
     }
 
@@ -72,31 +72,31 @@ class ServicePackageController extends Controller
             'price' => 'required',
             'photo' => 'required|image|mimes:jpeg,jpg,png|max:5120',
             'pic_card' => 'required|image|mimes:jpeg,jpg,png|max:5120',
-//            'file' => 'nullable|mimes:pdf|max:30720',
-//            'video' => 'nullable|mimes:mp4|max:51200',
-        ],
-            [
-                'service.required' => 'لطفا خدمت را انتخاب کنید',
-                'title.required' => 'لطفا نام پکیج را وارد کنید',
-                'title.max' => 'نام پکیج نباید بیشتر از 240 کاراکتر باشد',
-                'slug.required' => 'لطفا نامک را وارد کنید',
-                'slug.max' => 'نامک نباید بیشتر از 250 کاراکتر باشد',
-                'slug.unique' => ' نامک وارد شده یکبار ثبت شده',
-                'text.required' => 'لطفا توضیحات را وارد کنید',
-                'limited.required' => 'لطفا محدودیت را مشخص کنید(هر بار برای چند روز)',
-                'price.required' => 'لطفا هزینه را وارد کنید',
-                'photo.required' => 'لطفا یک تصویر انتخاب کنید',
-                'photo.image' => 'لطفا یک تصویر انتخاب کنید',
-                'photo.mimes' => 'لطفا یک تصویر با پسوندهای (png,jpg,jpeg) انتخاب کنید',
-                'photo.max' => 'لطفا حجم تصویر حداکثر 5 مگابایت باشد',
-                'pic_card.required' => 'لطفا یک تصویر کارت انتخاب کنید',
-                'pic_card.image' => 'لطفا یک تصویر کارت انتخاب کنید',
-                'pic_card.mimes' => 'لطفا یک تصویر کارت با پسوندهای (png,jpg,jpeg) انتخاب کنید',
-                'pic_card.max' => 'لطفا حجم تصویر کارت حداکثر 5 مگابایت باشد',
-//                'file.mimes' => 'لطفا یک فایل با پسوند (pdf) انتخاب کنید',
-//                'file.max' => 'لطفا حجم فایل حداکثر 30 مگابایت باشد',
-//                'video.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید',
-//                'video.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد',
+            //            'file' => 'nullable|mimes:pdf|max:30720',
+            //            'video' => 'nullable|mimes:mp4|max:51200',
+                    ],
+                        [
+                            'service.required' => 'لطفا خدمت را انتخاب کنید',
+                            'title.required' => 'لطفا نام پکیج را وارد کنید',
+                            'title.max' => 'نام پکیج نباید بیشتر از 240 کاراکتر باشد',
+                            'slug.required' => 'لطفا نامک را وارد کنید',
+                            'slug.max' => 'نامک نباید بیشتر از 250 کاراکتر باشد',
+                            'slug.unique' => ' نامک وارد شده یکبار ثبت شده',
+                            'text.required' => 'لطفا توضیحات را وارد کنید',
+                            'limited.required' => 'لطفا محدودیت را مشخص کنید(هر بار برای چند روز)',
+                            'price.required' => 'لطفا هزینه را وارد کنید',
+                            'photo.required' => 'لطفا یک تصویر انتخاب کنید',
+                            'photo.image' => 'لطفا یک تصویر انتخاب کنید',
+                            'photo.mimes' => 'لطفا یک تصویر با پسوندهای (png,jpg,jpeg) انتخاب کنید',
+                            'photo.max' => 'لطفا حجم تصویر حداکثر 5 مگابایت باشد',
+                            'pic_card.required' => 'لطفا یک تصویر کارت انتخاب کنید',
+                            'pic_card.image' => 'لطفا یک تصویر کارت انتخاب کنید',
+                            'pic_card.mimes' => 'لطفا یک تصویر کارت با پسوندهای (png,jpg,jpeg) انتخاب کنید',
+                            'pic_card.max' => 'لطفا حجم تصویر کارت حداکثر 5 مگابایت باشد',
+            //                'file.mimes' => 'لطفا یک فایل با پسوند (pdf) انتخاب کنید',
+            //                'file.max' => 'لطفا حجم فایل حداکثر 30 مگابایت باشد',
+            //                'video.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید',
+            //                'video.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد',
             ]);
         $home_view = 0;
         $custom = 0;
@@ -121,10 +121,11 @@ class ServicePackageController extends Controller
             $item->title = $request->title;
             $item->slug = $request->slug;
             $item->text = $request->text;
+            $item->type = $request->type;
             $item->started_at = j2g($this->toEnNumber($request->started_at));
             $item->deleted_at = $request->deleted_at;
             $item->sort_by = $request->sort_by;
-//            $item->home_text = $request->home_text;
+            //            $item->home_text = $request->home_text;
             $item->custom_service_count = $custom_count;
             $item->custom = $custom;
             $item->home_view = $home_view;
@@ -164,16 +165,16 @@ class ServicePackageController extends Controller
                 // end optimaiz
                 );*/
             }
-//            if ($request->hasFile('file')) {
-//                $file = new Filep();
-//                $file->path = file_store($request->file, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'file-');;
-//                $item->file()->save($file);
-//            }
-//            if ($request->hasFile('video')) {
-//                $video = new Video();
-//                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
-//                $item->video()->save($video);
-//            }
+            //            if ($request->hasFile('file')) {
+            //                $file = new Filep();
+            //                $file->path = file_store($request->file, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'file-');;
+            //                $item->file()->save($file);
+            //            }
+            //            if ($request->hasFile('video')) {
+            //                $video = new Video();
+            //                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
+            //                $item->video()->save($video);
+            //            }
             return redirect()->route('admin.service.package.list')->with('flash_message', 'پکیج خدمت با موفقیت ایجاد شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در ایجاد پکیج خدمت بوجود آمده،مجددا تلاش کنید');
@@ -202,8 +203,8 @@ class ServicePackageController extends Controller
             'price' => 'required',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
             'pic_card' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
-//            'file' => 'nullable|mimes:pdf|max:30720',
-//            'video' => 'nullable|mimes:mp4|max:51200',
+            //            'file' => 'nullable|mimes:pdf|max:30720',
+            //            'video' => 'nullable|mimes:mp4|max:51200',
         ],
             [
                 'service.required' => 'لطفا خدمت را انتخاب کنید',
@@ -221,10 +222,10 @@ class ServicePackageController extends Controller
                 'pic_card.image' => 'لطفا یک تصویر کارت انتخاب کنید',
                 'pic_card.mimes' => 'لطفا یک تصویر کارت با پسوندهای (png,jpg,jpeg) انتخاب کنید',
                 'pic_card.max' => 'لطفا حجم تصویر کارت حداکثر 5 مگابایت باشد',
-//                'file.mimes' => 'لطفا یک فایل با پسوند (pdf) انتخاب کنید',
-//                'file.max' => 'لطفا حجم فایل حداکثر 30 مگابایت باشد',
-//                'video.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید',
-//                'video.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد',
+            //                'file.mimes' => 'لطفا یک فایل با پسوند (pdf) انتخاب کنید',
+            //                'file.max' => 'لطفا حجم فایل حداکثر 30 مگابایت باشد',
+            //                'video.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید',
+            //                'video.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد',
             ]);
         $home_view = 0;
         $custom = 0;
@@ -250,10 +251,13 @@ class ServicePackageController extends Controller
             $item->title = $request->title;
             $item->slug = $request->slug;
             $item->text = $request->text;
-            $item->started_at = Carbon::parse(j2g($this->toEnNumber($request->started_at)));
+            $item->type = $request->type;
+            if ($request->started_at) {
+                $item->started_at = Carbon::parse(j2g($this->toEnNumber($request->started_at)));
+            }
             $item->deleted_at = $request->deleted_at;
             $item->sort_by = $request->sort_by;
-//            $item->home_text = $request->home_text;
+            //            $item->home_text = $request->home_text;
             $item->custom_service_count = $custom_count;
             $item->custom = $custom;
             $item->home_view = $home_view;
@@ -316,26 +320,26 @@ class ServicePackageController extends Controller
                 // end optimaiz
                 );*/
             }
-//            if ($request->hasFile('file')) {
-//                if ($item->file) {
-//                    $old_path = $item->file->path;
-//                    File::delete($old_path);
-//                    $item->file->delete();
-//                }
-//                $file = new Filep();
-//                $file->path = file_store($request->file, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'file-');;
-//                $item->file()->save($file);
-//            }
-//            if ($request->hasFile('video')) {
-//                if ($item->video) {
-//                    $old_path = $item->video->path;
-//                    File::delete($old_path);
-//                    $item->video->delete();
-//                }
-//                $video = new Video();
-//                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
-//                $item->video()->save($video);
-//            }
+            //            if ($request->hasFile('file')) {
+            //                if ($item->file) {
+            //                    $old_path = $item->file->path;
+            //                    File::delete($old_path);
+            //                    $item->file->delete();
+            //                }
+            //                $file = new Filep();
+            //                $file->path = file_store($request->file, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'file-');;
+            //                $item->file()->save($file);
+            //            }
+            //            if ($request->hasFile('video')) {
+            //                if ($item->video) {
+            //                    $old_path = $item->video->path;
+            //                    File::delete($old_path);
+            //                    $item->video->delete();
+            //                }
+            //                $video = new Video();
+            //                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
+            //                $item->video()->save($video);
+            //            }
             return redirect()->route('admin.service.package.list')->with('flash_message', 'پکیج خدمت با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در ویرایش پکیج خدمت بوجود آمده،مجددا تلاش کنید');
@@ -419,13 +423,13 @@ class ServicePackageController extends Controller
             'title' => 'required|max:240',
             'slug' => 'required|max:250|unique:service_packages',
             'text' => 'required',
-//            'limited' => 'required',
-//            'price' => 'required',
+            //            'limited' => 'required',
+            //            'price' => 'required',
             'photo' => 'required|image|mimes:jpeg,jpg,png|max:5120',
             'pic_card' => 'required|image|mimes:jpeg,jpg,png|max:5120',
             'file' => 'nullable|mimes:pdf|max:30720',
-//            'video.*' => 'nullable|mimes:mp4|max:51200',
-//            'video_sale.*' => 'nullable|mimes:mp4|max:51200',
+            //            'video.*' => 'nullable|mimes:mp4|max:51200',
+            //            'video_sale.*' => 'nullable|mimes:mp4|max:51200',
         ],
             [
                 'service.required' => 'لطفا خدمت را انتخاب کنید',
@@ -447,10 +451,10 @@ class ServicePackageController extends Controller
                 'pic_card.max' => 'لطفا حجم تصویر کارت حداکثر 5 مگابایت باشد',
                 'file.mimes' => 'لطفا یک فایل با پسوند (pdf) انتخاب کنید',
                 'file.max' => 'لطفا حجم فایل حداکثر 30 مگابایت باشد',
-//                'video.*.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید(رایگان)',
-//                'video.*.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد(رایگان)',
-//                'video_sale.*.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید(بعد خرید پکیج)',
-//                'video_sale.*.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد(بعد خرید پکیج)',
+            //                'video.*.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید(رایگان)',
+            //                'video.*.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد(رایگان)',
+            //                'video_sale.*.mimes' => 'لطفا یک ویدئو با پسوند (mp4) انتخاب کنید(بعد خرید پکیج)',
+            //                'video_sale.*.max' => 'لطفا حجم ویدئو حداکثر 50 مگابایت باشد(بعد خرید پکیج)',
             ]);
         $home_view = 0;
         $custom = 0;
@@ -478,12 +482,12 @@ class ServicePackageController extends Controller
             if ($request->sort_by!=null){
                 $item->sort_by = $request->sort_by;
             }
-//            $item->home_text = $request->home_text;
+            //            $item->home_text = $request->home_text;
             $item->custom_service_count = $custom_count;
             $item->custom = $custom;
             $item->home_view = $home_view;
-//            $item->limited = $request->limited;
-//            $item->price = $request->price;
+            //            $item->limited = $request->limited;
+            //            $item->price = $request->price;
             if ($request->hasFile('pic_card')) {
                 $item->pic_card = file_store($request->pic_card, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'pic_card-');;
             }
@@ -536,17 +540,17 @@ class ServicePackageController extends Controller
                 $file->path = file_store($request->file, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'file-');;
                 $item->file()->save($file);
             }
-//            if ($request->hasFile('video')) {
-//                $video = new Video();
-//                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
-//                $item->video()->save($video);
-//            }
-//            if ($request->hasFile('video_sale')) {
-//                $video_sale = new Video();
-//                $video_sale->path = file_store($request->video_sale, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-sale-');;
-//                $video_sale->type='sale';
-//                $item->video()->save($video_sale);
-//            }
+            //            if ($request->hasFile('video')) {
+            //                $video = new Video();
+            //                $video->path = file_store($request->video, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-');;
+            //                $item->video()->save($video);
+            //            }
+            //            if ($request->hasFile('video_sale')) {
+            //                $video_sale = new Video();
+            //                $video_sale->path = file_store($request->video_sale, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video-sale-');;
+            //                $video_sale->type='sale';
+            //                $item->video()->save($video_sale);
+            //            }
             return redirect()->route('admin.service.learn.package.list')->with('flash_message', 'پکیج آموزشی با موفقیت ایجاد شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در ایجاد پکیج آموزشی بوجود آمده،مجددا تلاش کنید');

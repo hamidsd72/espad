@@ -1,4 +1,4 @@
-<style>    
+<style>
     @media all and (min-width: 992px) {
         .navbar-dark .navbar-nav .nav-link {
             padding: 20px 10px !important;
@@ -43,7 +43,7 @@
                     border-width: 21px 20px 50px 0px;
                     border-color: {{$cat_css->bg_color}};
                     top: 0;
-                    right: -45px;
+                    /* right: -45px; */
                     transition: all 0.6s;
                     -webkit-transition: all 0.6s;
                     clip-path: polygon(0% 0%, 100% 0%, -45% 100%, 0% 100%);
@@ -61,7 +61,7 @@
                     border-width: 21px 20px 50px 0px;
                     border-color: {{$cat_css->bg_color}};
                     top: 0;
-                    right: -29px;
+                    /* right: -29px; */
                     transition: all 0.6s;
                     -webkit-transition: all 0.6s;
                     clip-path: polygon(0% 0%, 100% 0%, -45% 100%, 0% 100%);
@@ -71,6 +71,9 @@
                 }
             @endif
         @endforeach
+        .navbar-expand-lg .navbar-nav {
+            width: 100%;
+        }
     }
     .navbar-dark .navbar-nav > li:nth-child(9) > a:before {
         right: -35px;
@@ -95,8 +98,10 @@
     section.video_items {
         background: #1B252E !important;
     }
-    #enamad {
+    #spad_e_namad {
         padding: 0px;
+        position: absolute;
     }
 </style>
+
 

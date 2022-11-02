@@ -31,11 +31,15 @@
                     <img src="{{ asset('admin/img/user.png') }}" alt="">
                 </figure>
             </a> --}}
+            <a href="{{route('admin.factor-buy.index')}}" class="text-dark mx-1">
+                <i class="fa fa-shopping-cart"></i>
+                <div class="d-none">{{$factor = App\Model\ServiceFactor::where('user_id',auth()->user()->id)->where('status',"pending")->count()}}</div>
+                {{$factor?$factor:''}}                
+            </a>
             <a href="{{route('user.notification.index')}}" class="text-dark mx-1">
-                <i class="fa fa-envelope mx-1"></i>
-                @if (App\Model\Notification::where('user_id', auth()->user()->id)->where('status', 'pending')->count())
-                    {{App\Model\Notification::where('user_id', auth()->user()->id)->where('status', 'pending')->count()}}
-                @endif
+                <i class="fa fa-envelope mx-2"></i>
+                <div class="d-none">{{$notification = App\Model\Notification::where('user_id', auth()->user()->id)->where('status', 'pending')->count()}}</div>
+                {{$notification?$notification:''}}                
             </a>
             <button class="menu-btn btn btn-link-default" type="button">
                 <i class="fas fa-bars" style="font-size: 20px;"></i>

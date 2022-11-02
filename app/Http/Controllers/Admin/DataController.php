@@ -99,6 +99,10 @@ class DataController extends Controller
     {
         $item = Data::findOrFail($sub_service);
         try {
+            $page_name = ServiceCat::where('slug',$request->page_name)->first('id');
+            if ($page_name) {
+                $item->page_id          = $page_name->id;
+            }
             $item->title                = $request->title;
             $item->text                 = $request->text;
             $item->section              = $request->section;

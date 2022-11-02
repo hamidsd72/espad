@@ -104,19 +104,17 @@
                     <div class="col-lg-10 mx-auto">
                         <div class="btn btn-success p-1 col-12">
                             @if ($status=='online')
-                                @if (auth()->user() && auth()->user()->amount > $item->price)
-                                    <a href="{{route('user.call.request',[$item->id,'service'])}}" class="d-flex text-light me-5">
-                                        <i class="fas fa-phone p-2 fs-5 me-5 "></i><p class="m-0 p-1 fs-5 fw-bold">تماس</p>
-                                    </a>
-                                @endif
+                                <a @if (auth()->user())
+                                    href="{{auth()->user()->amount > $item->price?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
+                                   @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="d-flex text-light me-5">
+                                   <i class="fas fa-phone p-2 fs-5 me-5 "></i><p class="m-0 p-1 fs-5 fw-bold">تماس</p>
+                               </a>
                             @elseif($status=='offline')
                                 <a  @if (auth()->user())
                                         @unless(\App\Model\Evoke::where('user_id',auth()->user()->id)->where('consultation_id',$item->user_id)->count())
                                             href="{{ route('user.consultation.evoke',$item->user_id) }}"
                                         @endunless
-                                    @else
-                                        href="#" data-bs-toggle="modal" data-bs-target="#login"
-                                    @endif class="d-flex text-light me-4 me-lg-5">
+                                    @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="d-flex text-light me-4 me-lg-5">
                                         <img src="https://img.icons8.com/external-flat-icons-inmotus-design/40/000000/external-Call-round-mobile-ui-set-flat-icons-inmotus-design-3.png"/>
                                         <p class="m-0 fs-5 p-1 fw-bold">آنلاین شد خبرم کن</p>
                                 </a>

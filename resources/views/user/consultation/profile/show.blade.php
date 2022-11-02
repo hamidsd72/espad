@@ -56,22 +56,21 @@
                                     <div class="col">
                                         <div class="d-none d-lg-block">
                                             <div class="col-xl-6 col-lg-8 float-start p-0">
-                                                @if ($status=='online')
+                                                {{-- @if ($status=='online') --}}
                                                     <div class="row">
-                                                        @if (auth()->user() && auth()->user()->amount > $item->price)
-                                                            <div class="col p-0 text-center">
-                                                                <a href="{{route('user.call.request',[$item->id,'service'])}}" class="btn btn-success p-0 col-11 mx-auto py-3">
-                                                                    <h6 class="p-0 pt-1 text-center fw-bold">
-                                                                        تماس
-                                                                        <i class="fas fa-phone text-white"></i>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                        <div class="col p-0 text-center">
+                                                            <a @if (auth()->user())
+                                                                 href="{{auth()->user()->amount > $item->price?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
+                                                                @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="btn btn-success p-0 col-11 mx-auto py-3">
+                                                                <h6 class="p-0 pt-1 text-center fw-bold">
+                                                                    تماس
+                                                                    <i class="fas fa-phone text-white"></i>
+                                                                </h6>
+                                                            </a>
+                                                        </div>
                                                         <div class="col p-0 hover-white">
                                                             <a  @if (auth()->user())
-                                                                    @if (auth()->user()->amount > $item->price*10) href=""
-                                                                        @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                                 href="{{auth()->user()->amount > ($item->price*10)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                                 @else
                                                                     href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                                 @endif class="border float-start text-white h6 text-center rounded shadow col-11 mx-auto py-1">
@@ -85,8 +84,7 @@
                                                         </div>
                                                         <div class="col p-0 hover-white">
                                                             <a  @if (auth()->user())
-                                                                    @if (auth()->user()->amount > $item->price*30) href=""
-                                                                        @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                                 href="{{auth()->user()->amount > ($item->price*30)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                                 @else
                                                                     href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                                 @endif class="border float-start text-white h6 text-center rounded shadow col-11 mx-auto py-1">
@@ -100,8 +98,7 @@
                                                         </div>
                                                         <div class="col p-0 hover-white">
                                                             <a  @if (auth()->user())
-                                                                    @if (auth()->user()->amount > $item->price*60) href=""
-                                                                        @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                                 href="{{auth()->user()->amount > ($item->price*60)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                                 @else
                                                                     href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                                 @endif class="border float-start text-white h6 text-center rounded shadow col-11 mx-auto py-1">
@@ -114,7 +111,7 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                @elseif($status=='offline')
+                                                {{-- @elseif($status=='offline')
                                                     <a  @if (auth()->user())
                                                             @unless(\App\Model\Evoke::where('user_id',auth()->user()->id)->where('consultation_id',$item->user_id)->count())
                                                                 href="{{ route('user.consultation.evoke',$item->user_id) }}"
@@ -128,7 +125,7 @@
                                                             خبرم کن
                                                         </h5>
                                                     </a>
-                                                @endif
+                                                @endif --}}
                                             </div>
                                         </div>
 
@@ -140,8 +137,7 @@
                                         <div class="col-12 mt-2 mb-4">
                                             @if ($status=='online')
                                                 <a  @if (auth()->user())
-                                                        @if (auth()->user()->amount > $item->price*10) href="{{route('user.call.request',[$item->id,'service'])}}"
-                                                            @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                     href="{{auth()->user()->amount > ($item->price*10)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                     @else
                                                         href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                     @endif class="btn btn-light col-12">
@@ -151,8 +147,7 @@
                                                     </small>
                                                 </a>
                                                 <a  @if (auth()->user())
-                                                        @if (auth()->user()->amount > $item->price*30) href="{{route('user.call.request',[$item->id,'service'])}}"
-                                                            @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                     href="{{auth()->user()->amount > ($item->price*30)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                     @else
                                                         href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                     @endif class="btn btn-light col-12 my-3">
@@ -162,8 +157,7 @@
                                                     </small>
                                                 </a>
                                                 <a  @if (auth()->user())
-                                                        @if (auth()->user()->amount > $item->price*60) href="{{route('user.call.request',[$item->id,'service'])}}"
-                                                            @else href="{{route('user.user-web-transaction.index')}}" @endif
+                                                     href="{{auth()->user()->amount > ($item->price*60)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                     @else
                                                         href="#" data-bs-toggle="modal" data-bs-target="#login"
                                                     @endif class="btn btn-light col-12">
