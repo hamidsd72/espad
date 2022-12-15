@@ -10,9 +10,17 @@
         margin-bottom: 4px;
     }
     .blue-orange:hover {
-        /* color: #ffa06a !important; */
         color: #0a58ca !important;
-    } 
+    }
+    .about .list-item2 img {
+        width: 100%;
+        height: 90px;
+    }
+    .about .list-item2 img.avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50px;
+    }
     .about .top-consultation , .about .top-consultation .box {
         max-height: 276px;
     }
@@ -20,26 +28,32 @@
         width: 100%;
         height: 276px;
     }
+    .app_name {
+        color: #7c93ff
+    }
     .about .top-consultation .background-layer {
         position: relative;
         height: 276px;
         top: -276px;
-        background: linear-gradient(rgba(0, 121, 141, 0.75), rgba(0, 121, 141, 0.75));
+        background: #303642cc;
     }
     .about .top-consultation .background-layer-after {
         position: relative;
         height: 276px;
         width: 0px;
         top: -552px;
-        background: #00788D;
+        background: #303642;
     }
     .about .top-consultation:hover .background-layer-after {
         width: 100%;
         transition: 1s;
     }
+    .about .top-consultation:hover .app_name {
+        color: transparent;
+    }
     .about .top-consultation .data {
         position: relative;
-        top: -700px;
+        top: -820px;
     }
     .about .top-consultation .data .description {
         display: none;
@@ -70,16 +84,14 @@
         display: unset;
         transition: 1s;
     }
-    .about .list-item2 img {
-        width: 100%;
-        height: 90px;
+    .about .top-consultation:hover .description p {
+        text-align: center;
     }
-    .about .list-item2 img.avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 50px;
+    img.h-unset {
+        height: unset !important;
     }
 </style>
+
 @if ($body??'')
     
     <div class="about">

@@ -38,6 +38,66 @@
             top: 0px;
         }
     }
+    .about .top-consultation , .about .top-consultation .box {
+        max-height: 276px;
+    }
+    .about .top-consultation img {
+        width: 100%;
+        height: 276px;
+    }
+    .about .top-consultation .background-layer {
+        position: relative;
+        height: 276px;
+        top: -276px;
+        background: linear-gradient(rgba(0, 121, 141, 0.75), rgba(0, 121, 141, 0.75));
+    }
+    .about .top-consultation .background-layer-after {
+        position: relative;
+        height: 276px;
+        width: 0px;
+        top: -552px;
+        background: #00788D;
+    }
+    .about .top-consultation:hover .background-layer-after {
+        width: 100%;
+        transition: 1s;
+    }
+    .about .top-consultation .data {
+        position: relative;
+        top: -700px;
+    }
+    .about .top-consultation .data .description {
+        display: none;
+    }
+    .about .top-consultation:hover .data {
+        top: -774px;
+        transition: 1s;
+    }
+    .about .top-consultation:hover .description {
+        display: unset;
+        transition: 1s;
+    }
+    .about .top-consultation button {
+        position: relative;
+        top: -60px;
+        width: 60px;
+        height: 60px;
+        border: none;
+    }
+    .about .top-consultation button .after {
+        display: none;
+    }
+    .about .top-consultation:hover .before {
+        display: none;
+        transition: 1s;
+    }
+    .about .top-consultation:hover .after {
+        display: unset;
+        transition: 1s;
+    }
+    .about .top-consultation:hover .description p {
+        text-align: center;
+    }
 </style>
 
 <div class="bg-light-yasi text-white p-3">
@@ -96,6 +156,33 @@
 
 
 <section class="about">
+
+    @if ( $body->where('section',99)->count() )
+        <div class="container">
+            <div class="row">
+                @foreach ($body->where('section',99) as $item)
+                    <a href="{{$item->link}}" class="col-lg-4">
+                        <div class="top-consultation mb-4">
+                            <div class="box">
+                                <img class="rounded" alt="avatar" src="{{ $item->pic?url($item->pic):'' }}" />
+                                <div class="background-layer rounded"></div>
+                                <div class="background-layer-after rounded"></div>
+                                <div class="data">
+                                    <h4 class="text-center text-white pb-4">{{$item->title}}</h4>
+                                    <div class="description text-center text-white my-3 ln-1">{!! $item->text !!}</div>
+                                </div>
+                            </div>
+                            <button class="bg-light-orange">
+                                <div class="before text-center text-white h4 my-auto"><i class="fa fa-plus"></i></div>
+                                <div class="after text-center text-white h4 my-auto"><i class="fas fa-arrow-right mx-3"></i></div>
+                            </button>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+    
     <div class="consultation mb-5">
         {{-- خدمات-بیمه" -> 66 , معرفی-کسب-و-کارهای-نوین -> 81 , کسب-و-کارهای-نوین -> 345 --}}
         @if ( in_array($item->id,[81,345,66]) )
@@ -104,6 +191,7 @@
             {{-- مالیات -> 76 , مالیات و حسابرسی -> 508 --}}
             <div class="{{in_array( $item->id , [76,508])?'':'container'}} page-hoghoghi">
                 <div class="body {{in_array( $item->id , [76,508])?'':'p-4'}}">
+                    
                     {{-- 103 گروه-کالایی 55 , قراردادهای-آتی-و-آپشن-ها 54 , فرآیند-پذیرش-در-بورس-کالا 56 , املاک-مستغلات 102 , صندوق-مستغلات --}}
                     {{-- 509,77,78,79 خدمات بورسی ، خدمات ارزی و ریالی ، صندوق ها و بازار های بین المللی --}}
                     @if (in_array( $item->id , [55,54,56,103,102,509,77,78,79]) )
@@ -307,6 +395,7 @@
                                             <div class="background-layer rounded"></div>
                                             <div class="background-layer-after rounded"></div>
                                             <div class="data">
+                                                <p class="m-1 ps-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
                                                 <h4 class="text-center text-white pb-4">
                                                     {{$item->user()->first_name.' '.$item->user()->last_name}}
                                                 </h4>
@@ -319,7 +408,8 @@
                                         </div>
                                         <button class="bg-light-orange">
                                             <div class="before text-center text-white h4 my-auto">
-                                                <i class="fa fa-plus"></i>
+                                                <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
+                                                {{-- <i class="fa fa-plus"></i> --}}
                                             </div>
                                             <div class="after text-center text-white h4 my-auto">
                                                 <i class="fas fa-arrow-right mx-3"></i>
@@ -367,7 +457,7 @@
                             @endif
                         </div> --}}
                         {{-- $item->service_id == '80' -> زیرمجموعه های دعاوی حقوقی --}}{{-- دعاوی-حقوقی 80 --}}
-                    @elseif ($item->id==80 || $item->service_id == '80')
+                    @elseif ($item->id==80 || $item->service_id==80 || $item->id==23 || $item->service_id==23 )
                         @include('user.consultation.categories.hoghoghi')
                     @else
                         @foreach ($items as $item)

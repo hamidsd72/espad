@@ -16,10 +16,9 @@ class GuestController extends Controller {
         $setting        = Setting::first();
         $serviceCats    = ServiceCat::where('status', 'active')->where('type', 'service')->orderBy('sort')->get();
         $SubServices    = ServiceCat::where('status', 'active')->whereIn('service_id', $serviceCats->pluck('id') )->where('type','sub_service')->get();
-        $sliders        = Slider::whereIn('status', ['in_home','in_all'])->get();
+        $sliders        = Slider::whereIn('status', ['in_home','in_all'])->orderBy('sort')->get();
         $network        = Network::where('status', 'active')->orderBy('sort')->get();
         $data           = Data::where('page_name','اصلی')->where('status','active')->orderBy('sort')->get();
-
         return view('user.website.home', compact('setting','serviceCats','SubServices','sliders','network','data'));
         // return view('auth.register');
     }

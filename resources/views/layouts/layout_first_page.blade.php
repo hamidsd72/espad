@@ -56,23 +56,28 @@
                         </div>
                     </div>
                     <ul class="d-flex ul_menu_top">
-                        <li>
-                            @if (auth()->user())
-                                <a href="/admin" class="text_cd1e40">
-                                    {{auth()->user()->last_name}}
-                                </a>
-                            @else
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="text_cd1e40">
-                                    <i class="fas fa-power-off"></i>
-                                    ورود/ثبت نام
-                                </a>
-                            @endif
-                        </li>
                         @unless (\Request::route()->getName()=='user.home-goust')
                             <li>
                                 <a href="{{ route('user.home-goust') }}">خانه</a>
                             </li>
                         @endunless
+                        @if (auth()->user())
+                            <li>
+                                <a href="{{route('admin.index')}}" class="text_cd1e40">
+                                    پنل کاربری
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('user.logout.web')}}" class="text_cd1e40">خروج</a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="text_cd1e40">
+                                    <i class="fas fa-power-off"></i>
+                                    ورود/ثبت نام
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('user.post.index.type','اطلاعیه') }}">اطلاعیه ها و بلاگ ها</a>
                         </li>
@@ -85,21 +90,23 @@
                         <li>
                             <a href="{{ route('user.about.index') }}">درباره ما</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('user.home-guost-app-pwa') }}">اپلیکیشن{{auth()->user()?'':' نصب '}}</a>
-                        </li>
-                        <li>
-                            <a href="{{auth()->user() ? route('user.notification.create') : '#'}}">
-                                <i class="fa fa-envelope mx-1"></i>
-                                {{auth()->user() ? App\Model\Notification::where('user_id',auth()->user()->id)->where('status',"pending")->count() : ''}}
-                            </a>    
-                        </li>
-                        <li>
-                            <a href="{{auth()->user() ? route('admin.factor-buy.index') : '#'}}">
-                                <i class="fa fa-shopping-cart mx-1"></i>
-                                {{auth()->user() ? App\Model\ServiceFactor::where('user_id',auth()->user()->id)->where('status',"pending")->count() : ''}}
-                            </a>    
-                        </li>
+                        </li> --}}
+                        @if (auth()->user())
+                            <li>
+                                <a href="{{auth()->user() ? route('user.notification.create') : '#'}}">
+                                    <i class="fa fa-envelope mx-1"></i>
+                                    {{auth()->user() ? App\Model\Notification::where('user_id',auth()->user()->id)->where('status',"pending")->count() : ''}}
+                                </a>    
+                            </li>
+                            <li>
+                                <a href="{{auth()->user() ? route('admin.factor-buy.index') : '#'}}">
+                                    <i class="fa fa-shopping-cart mx-1"></i>
+                                    {{auth()->user() ? App\Model\ServiceFactor::where('user_id',auth()->user()->id)->where('status',"pending")->count() : ''}}
+                                </a>    
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="header_top_2 row">
@@ -118,6 +125,20 @@
                         </div>
                     </div>
                     <div class="col-lg-4 text-start">
+                        <div class="d-lg-none">
+                            <div class="float-end mt-4">
+                                @if (auth()->user())
+                                    <a href="/admin" class="bg-danger text-white rounded p-2 fs-6 fw-bold">
+                                        پنل کاربری
+                                    </a>
+                                @else
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="text-dark pe-2 fs-6 fw-bold">
+                                        <i class="fas fa-power-off"></i>
+                                        ورود/ثبت نام
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
                         <a href="/">
                             <img class="logo" src="/{{ $setting->logo_site }}" alt="{{ $setting->title }}">
                         </a>
@@ -129,13 +150,18 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-default-lg py-0">
                 <div class="container-fluid over-hidden" style="max-width: 100%;">
                     <div class="navbar-brand d-inline-block d-lg-none" href="/">
-                        <a href="" class="text_cd1e40">
+                        @if (auth()->user())
+                            <a href="{{route('user.logout.web')}}" class="btn text_cd1e402">
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text_cd1e402">
+                        @endif
                             <i class="fas fa-power-off"></i>
                         </a>
                         <a href="javascript:void(0)" class="search_992">
                             <i class="fas fa-search"></i>
                         </a>
                     </div>
+                    
                     <button class="navbar-toggler" type="button">
                         منو
                         <i class="fas fa-bars menu_svg"></i>
@@ -144,7 +170,7 @@
                         <a href="javascript:void(0)" class="search_top"><i class="fas fa-search"></i> </a>
                         <ul class="navbar-nav mx-auto">
                             @foreach($ServiceCats as $cat)
-                                <li class="nav-item">
+                                <li class="nav-item {{ $cat->id==$ServiceCats->last()->id?'me-lg-auto':'' }}" >
                                     {{-- فروشگاه 96 --}}
                                     @if ($cat->id==96)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.store.index') }}" target="_blank">
@@ -152,7 +178,7 @@
                                     @elseif ($cat->id==97)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ env('SIGNUP') }}" target="_blank">
                                     @else
-                                        <a class="nav-link menu_in_a f-18" data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
+                                        <a class="nav-link menu_in_a f-18 fw-bold" data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
                                     @endif
                                         {{$cat->title}}
                                         @if(count($cat->child_cat))
@@ -171,17 +197,19 @@
                                                                         <div class="col-2 p-0">
                                                                             @foreach($lists as $child)
                                                                                 <a class="text-light" href="{{ route('user.consultation.show',$child->id) }}">
-                                                                                    <div class="card_menu card_menu_2 mx-1 mb-2 p-2">
+
+                                                                                    <div class="card_menu card_menu_2 mx-1 mb-2 p-2"
+                                                                                     @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
+                                                                                     style="background: #ffffff8c !important" @endif >
                                                                                         <div class="text-start">
                                                                                             <img src="{{ asset('assets/images/msg-icon.png') }}" style="width: 32px;opacity: 0.6;" alt="SPADSTOCK">
                                                                                         </div>
-                                                                                        @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
-                                                                                            <div class="mt-4 pt-1 small text-danger">{{$child->title}}</div>
-                                                                                        @else
-                                                                                            <div class="mt-4 pt-1 small">{{$child->title}}</div>
-                                                                                        @endif
+                                                                                        <div class="mt-4 pt-1 small"
+                                                                                         @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
+                                                                                         style="color: #003b5c" @endif >{{$child->title}}</div>
                                                                                         <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
                                                                                     </div>
+                                                                                    
                                                                                 </a>
                                                                             @endforeach
                                                                         </div>
@@ -189,16 +217,17 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        
                                                         <div class="d-lg-none">
                                                             <div class="py-1 wm-30">
                                                                 <ul class="category">
                                                                     @foreach($cat->child_cat as $child)
-                                                                    <li class="mb-3 text-lg-end me-lg-4">
-                                                                        <a href="{{ route('user.consultation.show',$child->id) }}">
-                                                                            <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
-                                                                            {{$child->title}}
-                                                                        </a>
-                                                                    </li>
+                                                                        <li class="mb-3 text-lg-end me-lg-4">
+                                                                            <a href="{{ route('user.consultation.show',$child->id) }}">
+                                                                                <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
+                                                                                {{$child->title}}
+                                                                            </a>
+                                                                        </li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
@@ -248,7 +277,7 @@
                         </a>
                         <div class="footer_mobile_nav d-lg-none p-3">
                             <a href="{{ route('user.post.index.type','اطلاعیه') }}">
-                                اطلاعیه ها
+                                اطلاعیه | بلاگ
                                 <i class="fas fa-angle-left"></i>
                             </a>
                             
@@ -257,10 +286,10 @@
                                 <i class="fas fa-angle-left"></i>
                             </a>
 
-                            <a href="{{ route('user.home-guost-app-pwa') }}">
+                            {{-- <a href="{{ route('user.home-guost-app-pwa') }}">
                                 اپلیکیشن{{auth()->user()?'':' نصب '}}
                                 <i class="fas fa-angle-left"></i>
-                            </a>
+                            </a> --}}
                             
                             <br>
 
@@ -280,9 +309,6 @@
         </header>
 
         @yield('content')
-        {{-- ولنجک - دانشگاه شهید بهشتی- پارک علم و فناوری
-        02166435669
-        این دومی درست --}}
         <footer>
             <div class="container pb-lg-2 py-4">
                 <h4 class="d-none d-lg-block text-light border-bottom mb-3 pb-4">دسترسی سریع</h4>
@@ -299,7 +325,9 @@
                                 </div>
                                 <div class="col-lg">
                                     <div id="spad_e_namad" class="ms-lg-5 ps-lg-5 ms-5 ps-5 d-none d-lg-block">
-                                        <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl"><img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl" alt="" style="cursor:pointer" id="AN91PCxVNLNXwP9vTIPl"></a>
+                                        <div class="bg-white rounded">
+                                            <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl"><img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=304209&amp;Code=AN91PCxVNLNXwP9vTIPl" alt="" style="cursor:pointer" id="AN91PCxVNLNXwP9vTIPl"></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -366,8 +394,27 @@
                         </div>
                     </div>
                     
+
                 </div>
                 
+                <div class="d-lg-none">
+                    <div class="text-center col-6 mx-auto">
+                        @if (auth()->user())
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#sendWebTicket">
+                                @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',7)->where('sort',3)->get() as $item)
+                                    <img class="w-100 scale-up-center" src="{{ $item->pic?url($item->pic):'' }}" alt="{{$item->title}}">
+                                @endforeach
+                            </a>
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#login">
+                                @foreach (\App\Model\Data::where('page_name','فوتر')->where('section',7)->where('sort',3)->get() as $item)
+                                    <img class="w-100 scale-up-center" src="{{ $item->pic?url($item->pic):'' }}" alt="{{$item->title}}">
+                                @endforeach
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="char">
                     <ul>
                         <li>الف</li> 

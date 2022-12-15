@@ -67,6 +67,7 @@ class SliderController extends Controller
             $item->title        = $request->title;
             $item->link         = $request->link;
             $item->description  = $request->description;
+            $item->status       = $request->status;
             $item->link_title   = $request->link_title;
             $item->save();
             if ($request->hasFile('photo')) {
@@ -127,6 +128,7 @@ class SliderController extends Controller
         try {
             $item->title        = $request->title;
             $item->link         = $request->link;
+            $item->status       = $request->status;
             $item->description  = $request->description;
             $item->link_title   = $request->link_title;
             $item->update();

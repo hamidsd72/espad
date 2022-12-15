@@ -124,6 +124,7 @@ class ServiceController extends Controller
             // $item->status = $request->status;
             $item->service_type = $request->service_type;
             // $item->sale_count = $request->sale_count;
+            $item->star = $request->star;
             $item->title = $request->title;
             $item->slug = $request->slug;
             $item->text = $request->text;
@@ -135,6 +136,7 @@ class ServiceController extends Controller
             $item->limited = $request->limited;
             $item->order = $maxValue;
             $item->price = $request->price;
+            $item->amount = $request->amount;
             $item->save();
             if ($request->hasFile('photo')) {
                 $photo = new Photo();
@@ -208,6 +210,7 @@ class ServiceController extends Controller
             $item->e_jome           = $request->e_jome;
             // $item->status = $request->status;
             // $item->sale_count = $request->sale_count;
+            $item->star = $request->star;
             $item->category_id = $request->category_id;
             $item->service_type = $request->service_type;
             $item->title = $request->title;
@@ -224,6 +227,7 @@ class ServiceController extends Controller
             $item->video_link = $request->video_link;
             $item->limited = $request->limited;
             $item->price = $request->price;
+            $item->amount = $request->amount;
             $item->update();
             if ($request->hasFile('photo')) {
                 if ($item->photo)

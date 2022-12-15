@@ -58,11 +58,27 @@
                 return lir1;
             })
         }
+        function number_price2(a){
+            $('#amount_price').text(a);
+            $('#amount_price_1').text(a);
+            $('#amount_price').text(function (e, n) {
+                var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+        }
         $(document).ready(function () {
             var a=$('#price').val();
             $('#pp_price').text(a);
             $('#pp_price_1').text(a);
             $('#pp_price').text(function (e, n) {
+                var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+
+            var b=$('#price').val();
+            $('#amount_price').text(b);
+            $('#amount_price_1').text(b);
+            $('#amount_price').text(function (e, n) {
                 var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 return lir1;
             })

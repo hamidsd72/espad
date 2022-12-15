@@ -86,14 +86,16 @@ class StoreController extends Controller {
         $item       = ServiceCat::findOrFail(96);
         $data       = Data::where("page_id", 96)->where('status','active')->orderBy('sort')->get();
         $items      = Service::where('status', 'active')->whereIn('category_id', ServiceCat::where('status', 'active')->where('type', 'sub_service')->where('service_id', 96 )->pluck('id'))->get();
-        return view('user.consultation.store.index', compact('item','items','data'));
+        $banners    = Service::where('status', 'active')->where('category_id', 534 )->get();
+        return view('user.consultation.store.index', compact('item','items','banners','data'));
     }
 
     public function show($id) {
         $item       = ServiceCat::where('status', 'active')->findOrFail($id);
         $data       = Data::where("page_id", 96)->where('status','active')->orderBy('sort')->get();
         $items      = Service::where('status', 'active')->where('category_id', $id )->get();
-        return view('user.consultation.store.index', compact('id','item','items','data'));
+        $banners    = Service::where('status', 'active')->where('category_id', 534 )->get();
+        return view('user.consultation.store.index', compact('id','item','items','banners','data'));
     }
 
     public function edit($id) {
@@ -120,8 +122,8 @@ class StoreController extends Controller {
                 break;
         }
         
-        $price      = $item->price?intval($item->price):0;
-        $all_price  = $price * $count;
+        $amount    = $item->amount?intval($item->amount):0;
+        $all_price = $amount * $count;
         
         try {
             ServiceFactor::create([
@@ -131,7 +133,7 @@ class StoreController extends Controller {
                 'count'         => $count,
                 'all_price'     => $all_price,
             ]);
-            return redirect()->back()->with('flash_message', 'سفارش با موفقیت ثبت شد');
+            return redirect()->back()->withInput()->with('flash_message', 'سفارش با موفقیت ثبت شد, برای ادامه به پنل خود مراجعه کنید');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در ثبت سفارش بوجود آمده،مجددا تلاش کنید');
         }

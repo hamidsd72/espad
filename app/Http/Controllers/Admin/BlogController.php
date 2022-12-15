@@ -53,7 +53,11 @@ class BlogController extends Controller {
                 $item->photo = file_store($request->photo, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'post-');;
             }
             if ($request->hasFile('video')) {
-                $item->video = file_store($request->video, 'source/asset/uploads/item/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'video_card-');
+                $item->video = file_store($request->video, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video_card-');
+            }
+            if ($request->hasFile('file')) {
+                $item->file_title = $request->file_title;
+                $item->file = file_store($request->file, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'attach-');
             }
             $item->save();
             return redirect()->route('admin.post.index.type',$item->type)->with('flash_message', 'با موفقیت ثبت شد.');
@@ -68,8 +72,7 @@ class BlogController extends Controller {
     }
 
     // Update Function
-    public function update(Request $request, $id)
-    { 
+    public function update(Request $request, $id) {
         $item = Post::findOrFail($id);
         $this->validate($request, [
             'title'     => 'required|max:240',
@@ -102,7 +105,14 @@ class BlogController extends Controller {
                 if ($item->video != null) {
                     File::delete($item->video);
                 }
-                $item->video = file_store($request->video, 'source/asset/uploads/item/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'video_card-');
+                $item->video = file_store($request->video, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/videos/', 'video_card-');
+            }
+            if ($request->hasFile('file')) {
+                $item->file_title = $request->file_title;
+                if ($item->file != null) {
+                    File::delete($item->file);
+                }
+                $item->file = file_store($request->file, 'source/asset/uploads/posts/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'attach-');
             }
             $item->save();
             return redirect()->route('admin.post.index.type',$item->type)->with('flash_message', 'با موفقیت ویرایش شد.');

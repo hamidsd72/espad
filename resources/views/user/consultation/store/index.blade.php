@@ -1,6 +1,9 @@
 @extends('layouts.layout_first_page')
 @section('content')
 <style>
+    a.hover-light-blue:hover {
+        color: #32c9db !important;
+    }
     .text-{
         text-align: justify;
     }
@@ -37,54 +40,67 @@
     }
 </style>
 <section class="about bg-white">
-    <div class="row my-3">
-        <div class="col-xl-2 col-lg-3 text-center"><h4 class="text-center" style="color: #32c9db">اسپاد کالا</h4></div>
-        <div class="col-auto my-auto">
-            <ul class="d-flex ul_menu_top my-auto">
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-xl-2 col-lg-3 text-center"><h4 class="text-center" style="color: #32c9db">اسپاد کالا</h4></div>
+            <div class="col-auto my-auto d-none d-lg-block">
+                <ul class="d-flex ul_menu_top my-auto">
+                    @foreach (\App\Model\ServiceCat::find(96)->child_cat->where('id','!=',534) as $child_cat)
+                        <li class="ms-4">
+                            <a href="{{ route('user.store.show',$child_cat->id) }}" class="hover-light-blue @if ($id??'') {{$id==$child_cat->id?'text-dark fw-bold':'text-secondary'}} 
+                                @else text-secondary @endif">{{$child_cat->title}}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="col-12 d-lg-none">
                 @foreach (\App\Model\ServiceCat::find(96)->child_cat->where('id','!=',534) as $child_cat)
-                    <li class="ms-4">
-                        <a href="{{ route('user.store.show',$child_cat->id) }}" class="@if ($id??'') {{$id==$child_cat->id?'text-dark fw-bold':'text-secondary'}} @else text-secondary @endif">{{$child_cat->title}}</a>
-                    </li>
+                    <div class="m-2">
+                        <a href="{{ route('user.store.show',$child_cat->id) }}" class="@if ($id??'') {{$id==$child_cat->id?'text-dark fw-bold':'text-secondary'}}
+                             @else text-secondary @endif">{{$child_cat->title}}</a>
+                    </div>
                 @endforeach
-            </ul>
+            </div>
         </div>
     </div>
     {{-- اسلایدر بالا --}}
-    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+    @if ($banners->count())    
+        <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-        <div class="carousel-indicators">
-            @foreach ($items as $key => $item)
-                @if ($item->photo->path)
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="{{$key}}" class="{{$key==0?'active':''}}"></button>
-                @endif
-            @endforeach
+            <div class="carousel-indicators">
+                @foreach ($banners as $key => $item)
+                    @if ($item->photo->path)
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="{{$key}}" class="{{$key==0?'active':''}}"></button>
+                    @endif
+                @endforeach
+            </div>
+            
+            <div class="carousel-inner">
+                <div class="d-none">{{$active='active'}}</div>
+                @foreach ($banners as $item)
+                    @if ($item->photo->path)
+                        <div class="carousel-item {{$active}}">
+                            <a href="{{route('user.store.edit',$item->id)}}">
+                                <img src="{{ url($item->photo->path) }}" class="d-block w-100" style="min-height: 180px;" alt="{{$item->title}}">
+                                <div class="carousel-caption">
+                                    <h4 class="d-none d-lg-block">{{$item->title}}</h4>
+                                    <p class="d-lg-none">{{$item->title}}</p>
+                                </div>
+                            </a>    
+                        </div>
+                        <div class="d-none">{{$active=''}}</div>
+                    @endif
+                @endforeach
+            </div>
+            
+            {{-- <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            </button> --}}
         </div>
-        
-        <div class="carousel-inner">
-            <div class="d-none">{{$active='active'}}</div>
-            @foreach (\App\Model\Service::where('status', 'active')->where('category_id', 534 )->get() as $item)
-                @if ($item->photo->path)
-                    <div class="carousel-item {{$active}}">
-                        <a href="{{route('user.store.edit',$item->id)}}">
-                            <img src="{{ url($item->photo->path) }}" class="d-block w-100" style="min-height: 180px;" alt="{{$item->title}}">
-                            <div class="carousel-caption">
-                                <h4 class="d-none d-lg-block">{{$item->title}}</h4>
-                                <p class="d-lg-none">{{$item->title}}</p>
-                            </div>
-                        </a>    
-                    </div>
-                    <div class="d-none">{{$active=''}}</div>
-                @endif
-            @endforeach
-        </div>
-        
-        {{-- <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button> --}}
-    </div>
+    @endif
 
     <div class="container pb-4">
 
@@ -119,7 +135,7 @@
                                                     <a href="{{route('user.store.edit',$item->id)}}">
                                                         <img src="{{ url($item->photo->path) }}" class="w-100" alt="{{$item->title}}">
                                                         {{$item->title}}
-                                                        <div class="text-start small">{{number_format($item->price).' تومان '}}</div>
+                                                        <div class="text-start small">{{number_format($item->amount).' تومان '}}</div>
                                                     </a>
                                                 </div>
                                             </div>
@@ -154,7 +170,7 @@
                                 @if ($item->photo->path)
                                     <a href="{{route('user.store.edit',$item->id)}}">
                                         <div class="bg-white text-center mx-1 p-1" style="width: 80px;height: 80px;border-radius: 50px;">
-                                            <img src="{{ url($item->photo->path) }}" class="w-100" style="border-radius: 50px;" alt="{{$item->title}}">
+                                            <img src="{{ url($item->photo->path) }}" class="w-100" style="height: 72px;border-radius: 50px;" alt="{{$item->title}}">
                                         </div>
                                     </a>
                                 @endif

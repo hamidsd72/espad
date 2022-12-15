@@ -42,12 +42,24 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <div class="form-group">
                                             {{ Form::label('info_plus', '* سطح مشاور') }}
                                             <select id="info_plus" name="info_plus" class="form-control select2">
                                                 <option value="0" selected>عادی</option>
                                                 <option value="1" >ویژه</option>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="form-group">
+                                            {{ Form::label('star', '* تعداد ستاره') }}
+                                            <select id="star" name="star" class="form-control">
+                                                <option value="1"  @if($item->star==1) selected @endif>یک</option>
+                                                <option value="2"  @if($item->star==2) selected @endif>دو</option>
+                                                <option value="3"  @if($item->star==3) selected @endif>سه</option>
+                                                <option value="4"  @if($item->star==4) selected @endif>چهار</option>
+                                                <option value="5"  @if($item->star==5) selected @endif>پنج</option>
                                             </select>
                                         </div>
                                     </div> 
@@ -100,11 +112,18 @@
                                         {{ Form::number('time',null, array('class' => 'form-control text-left')) }}
                                     </div>
                                 </div> --}}
-                                <div class="col-lg-6">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('price', ' هزینه (هر دقیقه)') }}
                                         {{ Form::number('price',null, array('class' => 'form-control','onkeyup'=>'number_price(this.value)')) }}
                                         <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-group">
+                                        {{ Form::label('amount', '* قیمت کالا (برای بخش فروشگاه)') }}
+                                        {{ Form::number('amount', null , array('class' => 'form-control','onkeyup'=>'number_price2(this.value)' )) }}
+                                        <span id="price_span" class="span_p"><span id="amount_price"></span> تومان </span>
                                     </div>
                                 </div>
                                 <h6 class="col-12">ساعت کاری روزهای شنبه</h6>
@@ -293,11 +312,27 @@
                 return lir1;
             })
         }
+        function number_price2(a){
+            $('#amount_price').text(a);
+            $('#amount_price_1').text(a);
+            $('#amount_price').text(function (e, n) {
+                var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+        }
         $(document).ready(function () {
             var a=$('#price').val();
             $('#pp_price').text(a);
             $('#pp_price_1').text(a);
             $('#pp_price').text(function (e, n) {
+                var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+
+            var b=$('#price').val();
+            $('#amount_price').text(b);
+            $('#amount_price_1').text(b);
+            $('#amount_price').text(function (e, n) {
                 var lir1= n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 return lir1;
             })

@@ -48,26 +48,46 @@
                         <input type="text" class="form-control " id="descriptionseo" name="descriptionseo" value="{{ $item->descriptionseo }}"/>
                     </div>
                     <div class="col-lg form-group">
-                        <label for="photo" class="form-label">* تصویر  :</label>
+                        <label for="photo" class="form-label"> تصویر  :</label>
                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*" />
+                        @if ($item->photo)
+                            <div class="my-1">
+                                <img src="{{ url($item->photo) }}" alt="{{ $item->title }}" height="80px">
+                            </div>
+                        @endif
                     </div>
-                    @if ($item->photo)
-                        <div class="col-lg form-group my-auto">
-                            <img src="{{ url($item->photo) }}" alt="{{ $item->title }}" width="100px">
-                        </div>
-                    @endif
                     <div class="col-lg form-group">
                         <label for="exampleInputFile">اگر ویدیو دارد و میخواهید تغییر دهید</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video" accept=".mp4">
                                 <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل</label>
                             </div>
+                            @if($item->video)
+                                <a href="{{url($item->video)}}" target="_black">مشاهده فایل در صفحه ای دیگر</a>
+                            @endif
                         </div>
-                        @if($item->video)
-                            <a href="{{url($item->video)}}" target="_black">مشاهده فایل در صفحه ای دیگر</a>
-                        @endif
                     </div>
+                    
+                    <div class="col-12"></div>
+
+                    <div class="col-lg-6 form-group">
+                        <label for="name" class="form-label">عنوان لینک فایل الحاقی</label>
+                        <input type="text" class="form-control" id="file_title" name="file_title"  value="{{ $item->file_title }}" />
+                    </div>
+                    <div class="col-lg form-group">
+                        <label for="exampleInputFile">اگر فایل الحاقی دارد و میخواهید تغییر دهید</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="file" accept=".pdf">
+                                <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل (.pdf *)</label>
+                            </div>
+                            @if($item->file)
+                                <a href="{{url($item->file)}}" target="_black">مشاهده فایل در صفحه ای دیگر</a>
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
     
                 <div class="form-group">
@@ -113,4 +133,3 @@
         });
     </script>
 @endsection
-        

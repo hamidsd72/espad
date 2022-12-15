@@ -88,7 +88,7 @@
                                         <h5 class="text-center mb-2 mt-2"> محتوا به درباره ما </h5>
                                         <hr>
                                     </div>
-                                    <div class="col-12 ">
+                                    <div class="col-12 p-2 p-lg-3">
                                         {{ Form::model($join,array('route' => array('admin.about-join.update', $join->id), 'method' => 'PATCH', 'id' => 'about-join'.$join->id, 'files' => true)) }}
                                             <div class="row mb-0">
                                                 <div class="col-lg-6">
@@ -114,13 +114,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{ Form::button('ویرایش این آیتم', array('type' => 'submit', 'class' => 'btn btn-info d-none')) }}
+                                            {{ Form::button('ویرایش این آیتم', array('type' => 'submit', 'class' => 'btn btn-info float-right')) }}
                                         {{ Form::close() }}
-                                    </div>
-                                    <div class="col-12 pb-3 d-flex">
-                                        <button class="btn btn-info " onclick="document.getElementById('{{'about-join'.$join->id}}').submit();">ویرایش این آیتم</button>
+
                                         {{ Form::model($join,array('route' => array('admin.about-join.destroy', $join->id), 'method' => 'DELETE')) }}
-                                            {{ Form::button('حذف این آیتم', array('type' => 'submit', 'class' => 'btn btn-danger mx-2')) }}
+                                            {{ Form::button('حذف این آیتم', array('type' => 'submit', 'class' => 'btn btn-danger float-left')) }}
                                         {{ Form::close() }}
                                     </div>
                                 </div>

@@ -103,43 +103,43 @@ class AboutController extends Controller {
             //     // end optimaiz
             //     );
             // }
-            if(isset($request->title_join)) {
-                $items=AboutJoin::where('type','about')->get();
-                foreach ($items as $itemss) {
-                    $itemss->delete();
-                }
-                foreach ($request->title_join as $key=>$val)
-                {
-                    $pic=null;
-                    if(isset($request->pic_join[$key]))
-                    {
-                        $pic=$request->pic_join[$key];
-                    }
-                    $about_join=new AboutJoin();
-                    $about_join->title=$val;
-                    $about_join->type='about';
-                    $about_join->text=$request->text_join[$key];
-                    if (is_file($pic)) {
-                        if(isset($request->pic_join1[$key]) and is_file($request->pic_join1[$key]))
-                        {
-                            File::delete($request->pic_join1[$key]);
-                        }
-                        $about_join->pic = file_store($pic, 'source/asset/uploads/about/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'pic_'.$key.'-');;
-                    }
-                    elseif($request->pic_join1[$key]!=null)
-                    {
-                        $about_join->pic=$request->pic_join1[$key];
-                    }
-                    // $about_join->save();
-                    // img_resize(
-                    //     $about_join->pic,//address img
-                    //     $about_join->pic,//address save
-                    //     700,// width: if width==0 -> width=auto
-                    //     0// height: if height==0 -> height=auto
-                    // // end optimaiz
-                    // );
-                }
-            }
+            // if(isset($request->title_join)) {
+            //     $items=AboutJoin::where('type','about')->get();
+            //     foreach ($items as $itemss) {
+            //         $itemss->delete();
+            //     }
+            //     foreach ($request->title_join as $key=>$val)
+            //     {
+            //         $pic=null;
+            //         if(isset($request->pic_join[$key]))
+            //         {
+            //             $pic=$request->pic_join[$key];
+            //         }
+            //         $about_join=new AboutJoin();
+            //         $about_join->title=$val;
+            //         $about_join->type='about';
+            //         $about_join->text=$request->text_join[$key];
+            //         if (is_file($pic)) {
+            //             if(isset($request->pic_join1[$key]) and is_file($request->pic_join1[$key]))
+            //             {
+            //                 File::delete($request->pic_join1[$key]);
+            //             }
+            //             $about_join->pic = file_store($pic, 'source/asset/uploads/about/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'pic_'.$key.'-');;
+            //         }
+            //         elseif($request->pic_join1[$key]!=null)
+            //         {
+            //             $about_join->pic=$request->pic_join1[$key];
+            //         }
+            //         // $about_join->save();
+            //         // img_resize(
+            //         //     $about_join->pic,//address img
+            //         //     $about_join->pic,//address save
+            //         //     700,// width: if width==0 -> width=auto
+            //         //     0// height: if height==0 -> height=auto
+            //         // // end optimaiz
+            //         // );
+            //     }
+            // }
 
             return redirect()->back()->with('flash_message', 'درباره ما با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
@@ -206,7 +206,7 @@ class AboutController extends Controller {
             }
             $item->save();
 
-            return redirect()->back()->with('flash_message', 'درباره ما با موفقیت ویرایش شد.');
+            return redirect()->back()->with('flash_message', 'ایتم درباره ما با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در ویرایش درباره ما بوجود آمده،مجددا تلاش کنید');
         }

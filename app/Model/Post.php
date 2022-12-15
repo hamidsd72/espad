@@ -22,6 +22,8 @@ class Post extends Model
         "other",
         "photo",
         "video",
+        "file_title",
+        "file",
     ];
 
     public function user() {

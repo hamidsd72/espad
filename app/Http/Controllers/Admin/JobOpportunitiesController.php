@@ -92,8 +92,8 @@ class JobOpportunitiesController extends Controller {
             'address'       => 'max:250',
             'description'   => 'max:2500',
         ]);
-
         try {
+            if ($request->sub_cat_id) $item->sub_cat_id = $request->sub_cat_id;
             $item->title        = $request->title;
             $item->history      = $request->history;
             $item->education    = $request->education;

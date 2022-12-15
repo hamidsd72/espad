@@ -13,8 +13,6 @@ use Intervention\Image\ImageManagerStatic as Image;
 |
 */
 
-// test register
-
 Auth::routes(['register' => false]);
 
 Route::get('/', function () {

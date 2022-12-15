@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="attach" class="form-label">* پیوست  :</label>
-                            <input type="file" class="form-control" id="attach" name="attach" value="{{ old('attach') }}" required/>
+                            <input type="file" class="form-control" id="attach" name="attach" value="{{ old('attach') }}"/>
                         </div>
                     @endif
                 </div>

@@ -78,7 +78,7 @@ class SettingController extends Controller
             'description' => 'nullable|max:500',
             'paginate' => 'required',
             'slogan' => 'required',
-            'map' => 'required',
+            // 'map' => 'required',
             'logo_site' => 'nullable|image|mimes:png|max:5120',
             'icon_site' => 'nullable|image|mimes:png|max:5120',
             'app_icon' => 'nullable|image|mimes:png|max:5120',

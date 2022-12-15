@@ -62,9 +62,6 @@
             font-weight: normal !important;
             font-family: "Vazirmatn" !important;
         }
-
-
-
         .sidebar {
         overflow-y: initial;
         padding-top: 0.5rem;
@@ -116,7 +113,6 @@
         .bg-violet {
         background: #2F2D51 !important
         }
-
     </style>
     @yield('css')
     @role('مدیر')
@@ -124,13 +120,13 @@
             .sidebar {overflow-y: auto !important;}
         </style>
     @endrole
-    @unless(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
+    {{-- @unless(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
         <style>
             .content-wrapper  , .main-footer , .main-header {
                 margin-right: unset !important;
             }
         </style>
-    @endunless
+    @endunless --}}
     @livewireStyles
 </head>
 <body class="hold-transition sidebar-mini">
@@ -149,11 +145,7 @@
         </ul>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown has-treeview">
-                <p class="m-0 mx-2 text-light">
-                    <i class="fa fa-user mx-1"></i>
-                    @item(Auth::user()->first_name) @item(auth()->user()->last_name)
-                </p>
-                {{-- <a class="nav-link" data-toggle="dropdown" href="#">
+                <a class="nav-link" data-toggle="dropdown" href="#">
                         @item(Auth::user()->first_name) @item(auth()->user()->last_name)
                         <i class="right fa fa-angle-down mr-1"></i>
                 </a>
@@ -163,14 +155,8 @@
                         پروفایل
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-power-off ml-1"></i>
-                        خروج
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div> --}}
+                    <a href="{{route('user.logout.web')}}" class="dropdown-item">خروج</a>
+                </div>
             </li>
 
         </ul>
@@ -495,6 +481,12 @@
                                 <ul class="nav nav-treeview border-bottom">
                                     @role('مدیر')
                                         <li class="nav-item">
+                                            <a href="{{route('admin.users.service.package.list')}}" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon"></i>
+                                                <p> کاربران کارگاه ها</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="{{route('admin.report.transaction.list')}}" class="nav-link">
                                                 <i class="fa fa-circle-o nav-icon"></i>
                                                 <p> تراکنش ها</p>
@@ -695,6 +687,18 @@
                                         <a href="{{route('admin.data.show','دعاوی-حقوقی')}}" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon"></i>
                                             <p>صفحه دعاوی حقوقی</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.data.show','سرمایه-گذاری-خارجی')}}" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p>صفحه سرمایه گذاری خارجی</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.data.show','کسب-و-کارهای-نوین')}}" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p>صفحه کسب و کار نوین</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">

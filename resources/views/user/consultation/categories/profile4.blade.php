@@ -160,7 +160,7 @@
                     <div class="col-6 text-start">
                         <img src="{{ asset('assets/images/qqq.png') }}" style="max-height:96px" alt="banner">
                         <div class="text-start text-white fs-4 fst-italic fw-bold" style="position: relative;top: -74px;left: 58px;">
-                            spadstock.com
+                            manabourse.com
                         </div>
                     </div>
                 </div>

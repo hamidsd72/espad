@@ -45,7 +45,7 @@ class ItemController extends Controller {
             'title' => 'nullable|max:250',
             'link'  => 'nullable|max:250',
             'pic'   => 'nullable|max:250',
-            'text'  => 'nullable|max:2500',
+            'text'  => 'nullable',
         ],
             [
                 'title.max' => 'نام آیتم نباید بیشتر از 240 کاراکتر باشد',
@@ -55,7 +55,7 @@ class ItemController extends Controller {
             ]);
         try {
             $item = new Item();
-            $page_name = ServiceCat::where('slug',$request->page_name)->first('id');
+            $page_name = ServiceCat::where('slug',$request->page_name)->first();
             if ($page_name) {
                 $item->page_id          = $page_name->id;
             }
@@ -90,7 +90,7 @@ class ItemController extends Controller {
             'title' => 'nullable|max:250',
             'link'  => 'nullable|max:250',
             'pic'   => 'nullable|max:250',
-            'text'  => 'nullable|max:2500',
+            'text'  => 'nullable',
         ],
             [
                 'title.max' => 'نام آیتم نباید بیشتر از 240 کاراکتر باشد',

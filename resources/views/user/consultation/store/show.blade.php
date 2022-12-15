@@ -58,8 +58,9 @@
                 </div>
 
                 <div class="col-lg-2"></div>
-                <div class="col-lg bg-light p-4" style="border-radius: 8px;">
-                    <img src="{{ $item->photo?url($item->photo->path):'' }}" class="w-100 mb-2" style="border-radius: 6px" alt="banner">
+                <div class="col-lg bg-light p-3 p-lg-4" style="border-radius: 8px;">
+                    <img src="{{ $item->photo?url($item->photo->path):'' }}" class="w-100" style="border-radius: 6px" alt="banner">
+                    <p class="m-0 mt-3 fs-6">{{number_format($item->amount).' تومان '}}</p>
                 </div>
 
                 <div class="d-lg-none">{!! $item->text !!}</div>

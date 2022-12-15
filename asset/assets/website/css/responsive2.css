@@ -14,19 +14,7 @@
         position: sticky;
         top: -85px;
     }
-    .text_cd1e40 {
-        background: #cd1e40;
-        color: #fff !important;
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        width: 61px;
-        height: 61px;
-        text-align: center;
-        line-height: 61px;
-    }
-
+    
     .search_992 {
         background: #e8e8e8;
         color: #3e4346 !important;
@@ -312,7 +300,7 @@
         width: 100%;
     }
 
-    .navbar-dark .navbar-nav > li:nth-child(1) > a {
+    /* .navbar-dark .navbar-nav > li:nth-child(1) > a {
         background: #008c3d;
         transition: all 0.6s;
         -webkit-transition: all 0.6s;
@@ -529,7 +517,7 @@
 
     .navbar-dark .navbar-nav > li:nth-child(10) > a:hover:before {
         border-color: #60686b transparent transparent transparent;
-    }
+    } */
 
     .navbar-dark .navbar-nav .nav-link:hover {
         background: #60686b
@@ -785,7 +773,7 @@ section.service_cats_items .items:hover .items_description {
 }
 section.service_cats_items .items:hover .items_header {
     font-size: 18px;
-    padding-top: 6px !important;
+    /* padding-top: 6px !important; */
     transition: 0.3s;
     color: #32C9DB !important;
 }
@@ -1014,6 +1002,7 @@ section.about .text-info:hover {
 }
 section.about .bg-gradient-blue {
     background: linear-gradient(180deg, #009fbb 0%, #00788D 100%);
+    background: #1B252E;
     border: 1px solid gray;
 }
 section.about .text-light-blue {
@@ -1075,12 +1064,14 @@ section.about .header-dark-blue {
 }
 .consultation {
     background: linear-gradient(325.1deg,#006d95,#003b5c);
+    background: #1B252E;
 }
 .bg-ligh-gray {
     background: #d7d7d7;
 }
 .bg-consultation , .card-consultation {
     background: linear-gradient(134.82deg,#04889f,#196e8c);
+    background: #1B252E;
 }
 .bg-consultation {
     border-radius: 8px;
@@ -1112,7 +1103,7 @@ section.about .jump-to {
 }
 section.about .logo-box {
     position: relative;
-    top: -44px;
+    top: -52px;
 }
 section.about .logo-box img {
     width: 60px;
@@ -1142,7 +1133,7 @@ section.about .card .kala img {
     border: 1px solid #fff;
     border-radius: 2px;
 }
-.mm img {
+.mm img , .mm video {
     width:68px !important;
     height:68px !important;
     border-radius:50%;
@@ -1171,6 +1162,9 @@ section.about .card .kala img {
     border: 1px solid #ebeeef;
 }
 @media only screen and (min-width: 920px) {
+    ul.navbar-nav {
+        max-height: 62px;
+    }
     #searchListBox {
         background: white;
         z-index: 2;
@@ -1188,11 +1182,15 @@ section.about .card .kala img {
         height: 400px;
     }
     section.service_cats_items {
-        min-height: 1036px;
+        /* min-height: 1036px; */
+        background: #1B252E;
     }
-    section.service_cats_items .items .items_header , .text-lg-light {
+    section.service_cats_items .items .items_header {
+        color: azure;;
+    }
+    /* section.service_cats_items .items .items_header , .text-lg-light {
         color: azure;
-    }
+    } */
     .text-lg-light:hover {
         color: azure;
     }
@@ -1230,7 +1228,7 @@ section.about .card .kala img {
     header {
         top: -142px;
     }
-    header .navbar-dark .navbar-nav > li:nth-child(4) > a {
+    /* header .navbar-dark .navbar-nav > li:nth-child(4) > a {
         background: #FFCC00;
         color: black;
     }
@@ -1239,7 +1237,7 @@ section.about .card .kala img {
     }
     .navbar-dark .navbar-nav > li:nth-child(1) > a::after {
         background: #009fbb;
-    }
+    } */
     .dropdown-menu-big .card_menu_2 {
         border-radius: 4px;
         height: 110px;
@@ -1252,6 +1250,9 @@ section.about .card .kala img {
         box-shadow: 0 0 10px 0;
         color: black;
         font-weight: bold;
+    }
+    .dropdown-menu-big .card_menu_2:hover .hover-red {
+        color: red !important;
     }
 
 }
@@ -1339,9 +1340,7 @@ video {
     width: 100%;
     height: auto;
 }
-ul.navbar-nav {
-    max-height: 62px;
-}
 .w-100 {
     width: 100%;
 }
+

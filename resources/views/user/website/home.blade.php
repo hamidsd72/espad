@@ -2,7 +2,7 @@
 @section('content')
 <style>
     .tgju-widget {
-        background: #ffffff2b !important;
+        background: #00000024 !important;
     }
     .tgju-copyright , .tgju-copyright-fix {
         display: none !important;
@@ -39,9 +39,6 @@
         transition: 0.4s;
         opacity: 0.6;
     }
-    section.service_cats_items {
-        background: transparent;
-    }
     @media only screen and (min-width: 920px) {
         .height-lg-840 {
             height: 840px;
@@ -52,50 +49,68 @@
         .video_items img.big {
             height: 330px;
         }
+        .tgju-widget {
+            background: transparent !important;
+        }
     }
 </style>
 
-<main id="home">
+<main id="home" style="overflow-x: hidden;">
     <!-- اسلایدر بالای صفحه-->
-    {{-- <section class="slider_top">
-        <div class="swiper mySwiper slider_single">
-            <div class="swiper-wrapper">
-                @foreach ($sliders as $item)
-                    <div class="swiper-slide">
-                        <div class="slider_top_card">
-                            <img src="{{$item->photo->path}}" alt="{{$item->title}}">
-                            <div class="text_slider">
-                                <div class="text_in">
-                                    <h5>{{$item->title}}</h5>
-                                    <p>{{$item->description}}</p>
-                                    <a href="{{$item->link}}">
-                                        <div class="scale-up-center">
-                                            {{$item->link_title}}
-                                            <i class="fas fa-angle-left"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
+    <div id="demo" class="slider_top carousel slide" data-bs-ride="carousel">
+        @php $index = 0; @endphp
+
+        <div class="carousel-indicators">
+            @foreach ($sliders as $item)
+                @if ($item->photo)
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="{{$index}}" class="{{$index==0?'active':''}}"></button>
+                    @php $index += 1; @endphp
+                @endif
+            @endforeach
         </div>
-    </section> --}}
+    
+        @php $index = 0; @endphp
+        <div class="slider_top_card carousel-inner">
+            @foreach ($sliders as $item)
+                @if ($item->photo)
+                    <div class="carousel-item {{$index==0?'active':''}}">
+                        <img src="{{$item->photo->path}}" alt="{{$item->title}}" class="d-block w-100">
+                        {{-- <div class="text_slider">
+                            <div class="text_in">
+                                <h5>{{$item->title}}</h5>
+                                <p>{{$item->description}}</p>
+                                <a href="{{$item->link}}">
+                                    <div class="scale-up-center">
+                                        {{$item->link_title}}
+                                        <i class="fas fa-angle-left"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div> --}}
+                    </div>
+                    @php $index += 1; @endphp
+                @endif
+            @endforeach
+        </div>
+    
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
 
     {{-- ویدیو بالای صفحه --}}
-    @foreach ($data->where('section',1) as $item)
-        {{-- <a href="{{ url($item->link) }}"> --}}
+    {{-- @foreach ($data->where('section',1) as $item)
+        <a href="{{ url($item->link) }}">
             @if ($item->video)
                 <video autoplay muted loop class="home">
                     <source src="{{url($item->video)}}" type="video/mp4">
                 </video>
             @endif
-        {{-- </a> --}}
-    @endforeach
+        </a>
+    @endforeach --}}
 
     {{-- بنر بالای صفحه --}}
     {{-- <div id="top_banner">
@@ -122,12 +137,10 @@
         @endforeach --}}
 
         {{-- ویجت بورس --}}
-        <div class="bourse-api pt-lg-4">
-            <div class="py-2">
-                @foreach ($data->where('section',2) as $item)
-                    {!! $item->text !!}
-                @endforeach
-            </div>
+        <div class="bourse-api pt-lg-3">
+            @foreach ($data->where('section',2) as $item)
+                {!! $item->text !!}
+            @endforeach
         </div>
 
         {{-- شش آیتم --}}
@@ -178,22 +191,26 @@
                 @endforeach
             </div> --}}
             {{-- شش آیتم جدید --}}
-            <div class="d-flex align-items-start flex-column bd-highlight height-lg-840" >
+            {{-- <div class="d-flex align-items-start flex-column bd-highlight height-lg-840" > --}}
+
+            <div class="row pb-2">
                 @foreach($serviceCats->whereIn('view',['body','both']) as $key => $item)
                     @if ($key==0)
                         {{-- <a href="#" class="text-lg-light fs-4 py-2" style="color: #32C9DB !important"> --}}
-                        <a href="#" class="text-lg-light fs-4 py-2 text-light">
-                            {{$data->where('section',1)->first()->title}}
-                            <span class="fs-5 ms-2" style="color: red">&gt;&gt;</span>
-                        </a>
+                        @if ($data->where('section',1)->count() && $data->where('section',1)->first()->title)
+                            <a href="#" class="text-lg-light fs-4 py-2 text-light">
+                                {{$data->where('section',1)->first()->title}}
+                                <span class="fs-5 ms-2" style="color: red">&gt;&gt;</span>
+                            </a>
+                        @endif
                     @endif
-                    <div class="bd-highlight col-12 col-md-6 col-lg-3 mt-2 mx-3">
+                    <div class="bd-highlight col-12 col-lg mt-2">
                         {{-- <div class="items p-2 p-lg-3 my-2 my-lg-0" style="background: #1d2d442b !important"> --}}
-                        <div class="items">
+                        <div class="items" style="border: none;">
                             <a href="{{ route('user.consultation.show',$item->id) }}" >
                                 {{-- <div class="items_header fs-5" style="color: #32C9DB !important">
                                     <span class="fs-1 me-2" style="color: #32C9DB">.</span> --}}
-                                <div class="items_header fs-5 text-light">
+                                <div class="items_header fs-6 text-center">
                                     <span class="fs-1 me-2 text-light">.</span>
                                     {{$item->title}}
                                 </div>
@@ -205,6 +222,7 @@
                     </div>
                 @endforeach
             </div>
+            {{-- </div> --}}
             {{-- <div class="pt-3 blue_link">
                 <a href='{{ route('user.consultation.index') }}' class="text-light d-none d-lg-block">
                     نمایش همه موارد
@@ -235,7 +253,7 @@
                             </div>
                             <div class="col-8 my-auto">
                                 <p class="text-secondary mb-2 pt-4 pt-lg-0">{{$item->title}}</p>
-                                <h5>{{$item->text}}</h5>
+                                {!! $item->text !!}
                             </div>
                         </div>
                     </div>
@@ -333,3 +351,4 @@
 </main>
     
 @endsection
+

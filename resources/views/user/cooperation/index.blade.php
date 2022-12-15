@@ -128,7 +128,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-primary col-12">ارسال فورم</button></div>
+                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-primary col-12">ارسال فرم</button></div>
                                                         <div class="col-6"><button type="button" class="btn btn-sm btn-secondary col-12" data-bs-dismiss="modal">بستن</button></div>
                                                     </div>
                                                 </form>

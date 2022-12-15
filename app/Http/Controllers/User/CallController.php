@@ -35,6 +35,7 @@ class CallController extends Controller
     }
     public function request($service_id,$type)
     {
+      $user=Auth::user();
         $service=Service::where('id',$service_id)->where('status', 'active')->first();
         if(!$service)
         {
@@ -68,28 +69,34 @@ class CallController extends Controller
             return redirect()->back()->with('call_message', $call_request1->status=='pending'?'مشاور یک تماس دارد،که منتظر پاسخ از طرف مشاور می باشد':'مشاور یک تماس دارد،که در حال حاضر برقرار می باشد');
         }
         try {
-            $rev=intval($service->time)>0?intval($service->time):1;
-            $price_min=$service->price/$rev;
+            //$rev=intval($service->time)>0?intval($service->time):1;
+          	$rev=round((int)auth()->user()->amount/(int)$service->price);
+            //$price_min=$service->price/$rev;
+          	$price_min=$service->price;
             $item=CallRequest::create([
                'unique_code'=>time().Auth::id().$service->user_id,
                'type'=>$type,
                'service_id'=>$service_id,
                'user_id'=>Auth::id(),
                'consultant_id'=>$service->user_id,
-               'price_service'=>$service->price,
-               'time_service'=>$service->time,
+               //'price_service'=>$service->price,
+              'price_service'=>$user->amount,
+               //'time_service'=>$service->time,
+              'time_service'=>$rev,
                'price_min'=>$price_min,
             ]);
 
             //minuse amount
-            $user=Auth::user();
-            $user->amount-=$item->price_service;
+            
+            //$user->amount-=$item->price_service;
+          	$user->amount=0;
             $user->update();
 
             session(['back_url' => url()->previous()]);
 
             return redirect()->route('user.call.index',$item->unique_code)->with('call_message', 'درخواست تماس از طرف شما ثبت گردید، از صفحه خارج نشوید و منتظر پاسخ باشید');
         }catch (\Exception $e) {
+         
             return redirect()->back()->withInput()->with('call_message', 'مشکلی بوجود آمده،مجددا تلاش کنید');
         }
     }
@@ -115,6 +122,7 @@ class CallController extends Controller
         {
             return redirect()->back()->withInput()->with('call_message', 'صفحه یافت نشد، مجددا تلاش کنید');
         }
+    
             $end_request=Carbon::parse($call->created_at)->addSeconds(20);
             $end_time=Carbon::parse($call->created_at)->addMinutes($call->time_service);
             $min_time=Carbon::now()->diffInSeconds($end_time,false);

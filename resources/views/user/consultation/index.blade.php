@@ -33,7 +33,7 @@
 </style>
 
 <section class="about">
- 
+
     {{-- <div class="bg-gradient-blue text-white p-4 p-lg-0 py-lg-5"> --}}
     <div class="text-white p-4 p-lg-0 py-lg-5">
         <div class="container pb-5">
@@ -64,7 +64,7 @@
     </div>
     <div class="container py-4">
         <div class="body">
-               
+
             {{-- زیردسته های اوراق بهادار --}}
             @if ($cats==83)
                 <div class="row">
@@ -77,6 +77,7 @@
                                     <div class="background-layer rounded"></div>
                                     <div class="background-layer-after rounded"></div>
                                     <div class="data">
+                                        <p class="m-1 ps-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
                                         <h4 class="text-center text-white pb-4">
                                             {{$item->title}}
                                         </h4>
@@ -89,7 +90,8 @@
                                 </div>
                                 <button class="bg-light-orange">
                                     <div class="before text-center text-white h4 my-auto">
-                                        <i class="fa fa-plus"></i>
+                                        <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
+                                        {{-- <i class="fa fa-plus"></i> --}}
                                     </div>
                                     <div class="after text-center text-white h4 my-auto">
                                         <i class="fas fa-arrow-right mx-3"></i>

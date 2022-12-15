@@ -1,22 +1,16 @@
 @extends('layouts.admin')
 @section('css')
 <style>
-    .dropdown-menu li a {
-        color: rgba(0, 0, 0, 0.774);
-    }
-    .dropdown-menu li:hover {
-        background: #2f665f;
-    }
-    .dropdown-menu li:hover a {
-        color: white;
-    }
+    .dropdown-menu li a {color: rgba(0, 0, 0, 0.774);}
+    .dropdown-menu li:hover {background: #2f665f;}
+    .dropdown-menu li:hover a {color: white;}
 </style>
 @endsection
 @section('content')
 
     <div class="col-12 m-lg-4">
         <div class="card p-4">
-            <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
                 <div class="row" id="fa" role="tabpanel" aria-labelledby="farsi-tab">
                     <input type="hidden" id="type" name="type"  value="{{$type}}" />
                     <div class="col-lg-6 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -47,16 +41,35 @@
                         <label for="name" class="form-label"> توضیحات سئو فارسی  :</label>
                         <input type="text" class="form-control" id="descriptionseo" name="descriptionseo" value="{{ old('descriptionseo') }}"/>
                     </div>
-                    <div class="col-12 form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
-                        <label for="photo" class="form-label">* تصویر  :</label>
+
+                    <div class="col-12"></div>
+
+                    <div class="col-lg form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+                        <label for="photo" class="form-label"> تصویر  :</label>
                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*" value="{{ old('photo') }}"/>
                     </div>
-                    <div class="col-12 form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+                    <div class="col-lg form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
                         <label for="exampleInputFile">اگر ویدیو دارد و میخواهید تغییر دهید</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="video" accept=".mp4">
                                 <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12"></div>
+
+                    <div class="col-lg-6 form-group">
+                        <label for="name" class="form-label">عنوان لینک فایل الحاقی</label>
+                        <input type="text" class="form-control" id="file_title" name="file_title"/>
+                    </div>
+                    <div class="col-lg form-group">
+                        <label for="exampleInputFile">اگر فایل الحاقی دارد و میخواهید تغییر دهید</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="file" accept=".pdf">
+                                <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل (.pdf *)</label>
                             </div>
                         </div>
                     </div>
@@ -105,4 +118,3 @@
         });
     </script>
 @endsection
-        

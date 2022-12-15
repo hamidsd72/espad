@@ -18,6 +18,7 @@ Route::resource('forms', 'FormController');
 // موقعیت های شغلی
 Route::resource('job-opportunities', 'JobOpportunitiesController');
 Route::get('job-opportunities/type/{id}', 'JobOpportunitiesController@index')->name('job-opportunities.type');
+Route::get('job-opportunities/destroy/{id}', 'JobOpportunitiesController@destroy')->name('job-opportunities.destroy');
 Route::get('job-opportunities/reactivate/{id}', 'JobOpportunitiesController@active')->name('job-opportunities.reactivate');
 // لیست بانک ها
 Route::resource('banks', 'BanksController');
@@ -39,7 +40,6 @@ Route::get('notification/destroy/item/{id}', 'NotificationController@destroy')->
 Route::get('setting-edit', 'SettingController@edit')->name('setting.edit');
 Route::post('setting-update/{id}', 'SettingController@update')->name('setting.update');
 Route::get('setting-update/destroy/{id}', 'SettingController@destroy')->name('setting.destroy');
-
 
 // about
 Route::post('about-update/{id}', 'AboutController@update2')->name('about.update');
@@ -166,6 +166,7 @@ Route::post('service-package-update/{id}', 'ServicePackageController@update')->n
 Route::post('sort-by-join', 'ServicePackageController@sort_by_join')->name('sort.by.join');
 Route::get('service-package-destroy/{id}', 'ServicePackageController@destroy')->name('service.package.destroy');
 Route::get('service-package-active/{id}/{type}', 'ServicePackageController@active')->name('service.package.active');
+Route::get('users-service-package-list/{id?}', 'ServicePackageController@users')->name('users.service.package.list');
 
 // service learn
 Route::get('service-learn-list', 'ServiceController@learn_index')->name('service.learn.list');

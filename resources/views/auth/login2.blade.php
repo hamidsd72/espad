@@ -52,6 +52,11 @@
                                     </div>
     
                                     <div class="form-group floating-form-group col-lg-6">
+                                        <label class="floating-label my-2">کد ملی خود را وارد کنید</label>
+                                        <input type="text" name="code" id="code" class="form-control floating-input">
+                                    </div>
+
+                                    <div class="form-group floating-form-group col-lg-6">
                                         <label class="floating-label my-2">نام خود را وارد کنید</label>
                                         <input type="text" name="f_name" id="f_name" class="form-control floating-input">
                                     </div>
@@ -59,11 +64,6 @@
                                     <div class="form-group floating-form-group col-lg-6">
                                         <label class="floating-label my-2">نام خانوادگی خود را وارد کنید</label>
                                         <input type="text" name="l_name" id="l_name" class="form-control floating-input">
-                                    </div>
-    
-                                    <div class="form-group floating-form-group col-lg-6">
-                                        <label class="floating-label my-2">کد ملی خود را وارد کنید</label>
-                                        <input type="text" name="code" id="code" class="form-control floating-input">
                                     </div>
 
                                 </div>

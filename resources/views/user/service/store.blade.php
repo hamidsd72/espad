@@ -61,10 +61,29 @@
                     </div>
                 @elseif($status=='offline')
                     <a  @unless(\App\Model\Evoke::where('user_id',auth()->user()->id)->where('consultation_id',$item->user_id)->count())
-                        href="{{ route('user.consultation.evoke',$item->user_id) }}" @endunless class="btn btn-lg btn-success">آنلاین شد خبرم کن
+                        href="{{ route('user.consultation.evoke',$item->user_id) }}" @endunless class="btn btn-lg btn-primary col-12">آنلاین شد خبرم کن
                     </a>
                 @endif
                 
+                <hr class="my-3">
+                <div class="col-12">
+                    <h6>افزودن به سبد خرید</h6>
+                    <form action="{{ route('user.store.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$item->id}}">
+                        <input type="hidden" name="type" value="service">
+                        <label for="count">تعداد را وارد کنید</label>
+                        <input type="number" id="count" name="count" class="form-control my-3" min="1" required>
+
+                        @if (auth()->user())
+                            <button class="btn btn-lg btn-success col-12">ثبت سفارش</button>
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn btn-lg btn-success col-12">افزودن به سبد خرید</a>
+                        @endif
+
+                    </form>
+                </div>
+
             </div>
         </div>
 

@@ -20,6 +20,35 @@ use App\Http\Controllers\Controller;
 
 class ConsultationController extends Controller {
 
+    public function sky_req($method , $id) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SKY_ROOM_API'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>"{
+                'action': $method,
+                'params': { 'room_id': $id }
+            }",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+            
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+
+    }
+
     public function today($type) {
         switch (Carbon::now()->dayName) {
             case 'شنبه':
@@ -80,16 +109,22 @@ class ConsultationController extends Controller {
             $items = ServiceCat::where('slug', $slug)->orderBy('sort')->get();
             $cats  = $items;
             
-
             $sub_service = ServiceCat::where('status', 'active')->where('type', 'sub_service')->whereIn('service_id', $items->pluck('id') )->get();
+            // dd($cats->first()->id);
             // اگر زیردسته داشت
             if ( $sub_service->count() ) {
                 $items = $sub_service;
             }
             // آکادمی به آکادمیک
-            if($cats->first()->id==27) {
+            // سرمایه گداری خارجی قالب دعاوی حقوقی
+            // کد تخفیف به کدهای تخفیف
+            // خدمات مالی به تامین مالی
+            // معاملات هوشمند به قراردادهای آتی و فیوچر
+            // مشاورین برتر به زیردسته مشاورین برتر
+            if(in_array( $cats->first()->id , [22,23,27,74,507,535] )) {
                 return redirect()->route('user.consultation.show', $sub_service->first()->id);
             }
+
             $item = $cats->first();
             $slug = $cats->first()->slug;
             $cats = $cats->first()->service_id;
@@ -114,12 +149,13 @@ class ConsultationController extends Controller {
             $body   = Item::whereIn("page_id", [78,530])->get();
             $header = Data::whereIn("page_id", [78,530])->where('status','active')->get();
         }
-        if ( $item->slug!="دعاوی-حقوقی" && ServiceCat::where('status', 'active')->where('type', 'sub_service')->where('service_id', $item->id )->count()>0 ) {
+        if ( $item->id!=80 && $item->id!=23 && ServiceCat::where('status', 'active')->where('type', 'sub_service')->where('service_id', $item->id )->count()>0 ) {
             return redirect()->route('user.consultation.category',$item->slug);
         }
         // دعاوی-حقوقی
-        if ($item->id==80) {
-            $items1 = Service::where('status', 'active')->whereIn('category_id', ServiceCat::where('service_id',80)->pluck('id'))->paginate($this->controller_paginate());
+        // سرمایه گداری خارجی قالب دعاوی حقوقی
+        if ($item->id==80 || $item->id==23) {
+            $items1 = Service::where('status', 'active')->whereIn('category_id', ServiceCat::where('service_id', $item->id)->pluck('id'))->paginate($this->controller_paginate());
         } else {
             $items1 = Service::where('status', 'active')->where('category_id', $id)->paginate($this->controller_paginate());
         }
@@ -135,6 +171,10 @@ class ConsultationController extends Controller {
 
     public function edit($id) {
         $item = ServicePackage::where('slug', $id)->firstOrFail();
+        // if ($item->room_link) {
+        //     dd( json_encode( $this->sky_req('getRoom' , $item->room_link ) ) );
+        // }
+
         $endItemSignUpDate  = Carbon::parse(j2g($this->toEnNumber($item->deleted_at)));
         if ($endItemSignUpDate->diffInDays(Carbon::now(), false) > 0) {
             $endItemSignUpDate = true;

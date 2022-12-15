@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-8">
-                        <button type="submit" class="btn btn-primary col-12">ارسال فورم</button>
+                        <button type="submit" class="btn btn-primary col-12">ارسال فرم</button>
                     </div>
                 </div>
             </form>

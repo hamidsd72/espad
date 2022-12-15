@@ -94,11 +94,16 @@
     <div class="container">
         @foreach ($header->where('section', 3) as $attr)
             <div class="sec3 my-lg-5">
-                <h3 class="fw-bold d-none d-lg-block text-center mb-3" style="color: #003b5c">{{$attr->title}}</h3>
-                <hr class="mx-auto mb-lg-4" style="width: 56px;color: #003b5c;height: 2px;">
-                <h6 class="d-none d-lg-block text-center">{!! $attr->text !!}</h6>
-                <h6 class="fw-bold d-lg-none text-gold text-center">{{$attr->title}}</h6>
-                <p class="d-lg-none text-center fw-light">{!! $attr->text !!}</p>
+                <div class="d-none d-lg-block">
+                    <h3 class="fw-bold text-center mb-3" style="color: #003b5c">{{$attr->title}}</h3>
+                    <hr class="mx-auto mb-lg-4" style="width: 56px;color: #003b5c;height: 2px;">
+                    <h6 class="text-center">{!! $attr->text !!}</h6>
+                </div>
+
+                <div class="d-lg-none">
+                    <h6 class="fw-bold d-lg-none text-gold text-center">{{$attr->title}}</h6>
+                    <p class="d-lg-none text-center fw-light">{!! $attr->text !!}</p>
+                </div>
             </div>
         @endforeach
     

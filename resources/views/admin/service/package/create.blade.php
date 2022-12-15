@@ -109,7 +109,7 @@
                                         {{ Form::text('started_at',null, array('class' => 'form-control form-control date_p', 'required' => 'required')) }}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('home_view', 'نمایش در صفحه اصلی') }}
                                         <select class="form-control" name="home_view" id="home_view">
@@ -119,6 +119,14 @@
                                         {{-- <input type="checkbox" name="home_view" class="form-control" {{$item->home_view==1?'checked':''}}> --}}
                                     </div>
                                 </div>
+
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-group">
+                                        {{ Form::label('room_link', 'لینک اسکای روم *') }}
+                                        {{ Form::number('room_link',null, array('class' => 'form-control')) }}
+                                    </div>
+                                </div>
+                                
 {{--                                <div class="col-sm-12">--}}
 {{--                                    <div class="form-group">--}}
 {{--                                        {{ Form::label('home_text', 'توضیحات صفحه اصلی') }}--}}
@@ -143,6 +151,14 @@
                                         </div> 
                                     </div>
                                 </div>
+
+                                {{-- <div class="col-lg-12">
+                                    <div class="form-group">
+                                        {{ Form::label('room_link', 'لینک اسکای روم') }}
+                                        {{ Form::url('room_link',null, array('class' => 'form-control')) }}
+                                    </div>
+                                </div> --}}
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         {{ Form::label('text', '* توضیحات') }}

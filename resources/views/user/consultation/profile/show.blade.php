@@ -56,7 +56,7 @@
                                     <div class="col">
                                         <div class="d-none d-lg-block">
                                             <div class="col-xl-6 col-lg-8 float-start p-0">
-                                                {{-- @if ($status=='online') --}}
+                                                @if ($status=='online')
                                                     <div class="row">
                                                         <div class="col p-0 text-center">
                                                             <a @if (auth()->user())
@@ -111,7 +111,7 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                {{-- @elseif($status=='offline')
+                                                @elseif($status=='offline')
                                                     <a  @if (auth()->user())
                                                             @unless(\App\Model\Evoke::where('user_id',auth()->user()->id)->where('consultation_id',$item->user_id)->count())
                                                                 href="{{ route('user.consultation.evoke',$item->user_id) }}"
@@ -125,7 +125,7 @@
                                                             خبرم کن
                                                         </h5>
                                                     </a>
-                                                @endif --}}
+                                                @endif
                                             </div>
                                         </div>
 
@@ -136,6 +136,12 @@
                                     <div class="d-lg-none">
                                         <div class="col-12 mt-2 mb-4">
                                             @if ($status=='online')
+                                                <a @if (auth()->user())
+                                                    href="{{auth()->user()->amount > $item->price?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
+                                                    @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="btn btn-light col-12 mb-3">
+                                                    تماس
+                                                    <i class="fas fa-phone"></i>
+                                                </a>
                                                 <a  @if (auth()->user())
                                                      href="{{auth()->user()->amount > ($item->price*10)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                                                     @else
@@ -238,7 +244,7 @@
                     <div class="col-6 text-start">
                         <img src="{{ asset('assets/images/qqq.png') }}" style="max-height:96px" alt="banner">
                         <div class="text-start text-white fs-4 fst-italic fw-bold" style="position: relative;top: -74px;left: 58px;">
-                            spadstock.com
+                            manabourse.com
                         </div>
                     </div>
                 </div>

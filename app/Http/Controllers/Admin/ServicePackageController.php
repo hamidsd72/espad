@@ -10,6 +10,7 @@ use App\Model\ServicePackage;
 use App\Model\ServiceJoinPackage;
 use App\Model\ServicePackagePrice;
 use App\Model\Photo;
+use App\Model\Basket;
 use App\Model\Filep;
 use App\Model\Video;
 use Carbon\Carbon;
@@ -53,6 +54,19 @@ class ServicePackageController extends Controller
     {
         $items = ServicePackage::orderBy('sort_by')->paginate($this->controller_paginate());
         return view('admin.service.package.index', compact('items'), ['title1' => 'خدمات', 'title2' => $this->controller_title('sum')]);
+    }
+
+    public function users($id=null)
+    {
+        $ServiceCats = ServicePackage::all(['id','title']);
+        $item = $ServiceCats;
+
+        if (isset($id)) $item = $ServiceCats->where('id',$id);
+
+        $list  = Basket::where('status', 'active')->where('type', 'package')->whereIn('sale_id', $item)->get('user_id');
+        $items = User::whereIn('id', $list)->get();
+        return view('admin.service.users_packages.index', compact('id','items','ServiceCats') , ['title1' => ' کاربران کارگاه', 'title2' => 'لیست کاربران کارگاه ها'] );
+
     }
 
     public function create()
@@ -119,6 +133,7 @@ class ServicePackageController extends Controller
             $item->user_id = $request->user_id;
             $item->reagent_id = $request->reagent_id;
             $item->title = $request->title;
+            $item->room_link = $request->room_link;
             $item->slug = $request->slug;
             $item->text = $request->text;
             $item->type = $request->type;
@@ -249,6 +264,7 @@ class ServicePackageController extends Controller
             $item->user_id = implode(',',$request->user_id);
             $item->reagent_id = $request->reagent_id;
             $item->title = $request->title;
+            $item->room_link = $request->room_link;
             $item->slug = $request->slug;
             $item->text = $request->text;
             $item->type = $request->type;

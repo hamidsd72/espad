@@ -1,5 +1,8 @@
 <?php 
 
+Route::get('/logout/web', function () {
+    return redirect()->route('user.home-goust')->with(auth()->logout());
+})->name('logout.web');
 //نظرات
 Route::resource('comment', 'CommentController');
 // امتیازات
@@ -57,11 +60,17 @@ Route::get('/basket_del/{id}/{type}', 'BasketController@del_basket')->name('bask
 Route::resource('my-basket', 'BasketController');
 /*Route::get('/basket_del', 'BasketController@del_basket')->name('basket.del');*/
 
+
 Route::get('report/user-transaction/{id}', 'TransactionController@index')->name('user-transaction-report');
 // app pay
 Route::resource('user-transaction', 'TransactionController');
 // web pay
 Route::resource('user-web-transaction', 'WebTransactionController');
+// bank callBack
+Route::get('bank1/call-back/transaction', function () {
+    return true;
+});
+
 Route::get('ads/tours/{name}', 'TourAdsController@show')->name('ads-tours-show-guest');
 Route::get('ads/tours/{name}/edit', 'TourAdsController@edit')->name('admin-ads-tours-filter');
 Route::get('ads/tours/service-destroy/{id}', 'TourAdsController@destroy')->name('admin-ads-tours-service-destroy');

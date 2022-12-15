@@ -40,13 +40,19 @@
 
                             @if ($item->photo)
                                 <img class="rounded" src="{{url($item->photo)}}" alt="{{$item->title}}">
-                            @else
+                            @elseif($item->video)
                                 <video controls><source src="{{$item->video?url($item->video):''}}" type="video/mp4"></video>
                             @endif
                             
                             <h5 class="px-4 mb-3 fs-6">{{$item->short_text}}</h5>
                             
                             <p class="px-4">{!! $item->text !!}</p>
+
+                            @if ($item->file)
+                                <div class="mb-4">
+                                    <a href="{{ url($item->file) }}" class="p-2 px-lg-3" target="_blank">{{$item->file_title?$item->file_title:'مشاهده فایل پیوست شده'}}</a>
+                                </div>
+                            @endif
 
                             @if ($item->photo && $item->video)
                                 <video controls><source src="{{url($item->video)}}" type="video/mp4"></video>

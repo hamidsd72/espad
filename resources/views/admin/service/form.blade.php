@@ -31,7 +31,7 @@
                             </select>
                         </div>
                     </div> 
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-3 col-md-6">
                         <div class="form-group">
                             {{ Form::label('info_plus', '* سطح مشاور') }}
                             <select id="info_plus" name="info_plus" class="form-control select2">
@@ -40,6 +40,18 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="form-group">
+                            {{ Form::label('star', '* تعداد ستاره') }}
+                            <select id="star" name="star" class="form-control">
+                                <option value="1" selected >یک</option>
+                                <option value="2" >دو</option>
+                                <option value="3" >سه</option>
+                                <option value="4" >چهار</option>
+                                <option value="5" >پنج</option>
+                            </select>
+                        </div>
+                    </div> 
                 @endif
                 <div id="exampleInputFileBox" class="col-lg-6">
                     <label for="exampleInputFile">* تصویر(500×500) مورد استفاده در دانش بنیان - بیمه - فروشگاه</label>
@@ -98,6 +110,13 @@
                         {{ Form::label('price', '* هزینه (هر دقیقه)') }}
                         {{ Form::number('price', 0 , array('class' => 'form-control','required' => 'required','onkeyup'=>'number_price(this.value)' )) }}
                         <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                    </div>
+                </div>
+                <div class="col-lg-12" id="amount_price">
+                    <div class="form-group">
+                        {{ Form::label('amount', '* قیمت کالا (برای بخش فروشگاه)') }}
+                        {{ Form::number('amount', 0 , array('class' => 'form-control','required' => 'required','onkeyup'=>'number_price2(this.value)' )) }}
+                        <span id="price_span" class="span_p"><span id="amount_price"></span> تومان </span>
                     </div>
                 </div>
                 <hr>
