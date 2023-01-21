@@ -135,7 +135,7 @@
                                                     <a href="{{route('user.store.edit',$item->id)}}">
                                                         <img src="{{ url($item->photo->path) }}" class="w-100" alt="{{$item->title}}">
                                                         {{$item->title}}
-                                                        <div class="text-start small">{{number_format($item->amount).' تومان '}}</div>
+                                                        <div class="text-start small">{{number_format($item->amount).' ریال '}}</div>
                                                     </a>
                                                 </div>
                                             </div>

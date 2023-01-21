@@ -1,22 +1,16 @@
 @extends('layouts.admin')
 @section('css')
 <style>
-    .dropdown-menu li a {
-        color: rgba(0, 0, 0, 0.774);
-    }
-    .dropdown-menu li:hover {
-        background: #2f665f;
-    }
-    .dropdown-menu li:hover a {
-        color: white;
-    }
+    .dropdown-menu li a { color: rgba(0, 0, 0, 0.774); }
+    .dropdown-menu li:hover { background: #2f665f; }
+    .dropdown-menu li:hover a { color: white; }
 </style>
 @endsection
 @section('content')
         <div class="condition pull-right w-100 mb-2">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('admin.post.show',$type) }}" class="btn btn-info float-left">{{' افزودن '.$title1}}</a>
+                    <a href="{{ route('admin.post.show',$type) }}" class="btn btn-info float-left">{{' افزودن '.str_replace('-',' ',$title1)}}</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered pull-right w-100">
@@ -47,6 +41,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="pag_ul">
+                    {{ $items->links() }}
                 </div>
             </div>
         </div>

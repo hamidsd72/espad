@@ -49,14 +49,14 @@
         position: relative;
         height: 276px;
         top: -276px;
-        background: linear-gradient(rgba(0, 121, 141, 0.75), rgba(0, 121, 141, 0.75));
+        background: #303642cc;
     }
     .about .top-consultation .background-layer-after {
         position: relative;
         height: 276px;
         width: 0px;
         top: -552px;
-        background: #00788D;
+        background: #303642;
     }
     .about .top-consultation:hover .background-layer-after {
         width: 100%;
@@ -64,7 +64,7 @@
     }
     .about .top-consultation .data {
         position: relative;
-        top: -700px;
+        top: -820px;
     }
     .about .top-consultation .data .description {
         display: none;
@@ -98,8 +98,13 @@
     .about .top-consultation:hover .description p {
         text-align: center;
     }
+    .about .top-consultation:hover .app_name {
+        color: transparent;
+    }
+    .app_name {
+        color: #7c93ff
+    }
 </style>
-
 <div class="bg-light-yasi text-white p-3">
     <div class="container">
         <div class="row " id="top-consultation">
@@ -168,12 +173,15 @@
                                 <div class="background-layer rounded"></div>
                                 <div class="background-layer-after rounded"></div>
                                 <div class="data">
+                                    <p class="m-1 ps-2 pb-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
                                     <h4 class="text-center text-white pb-4">{{$item->title}}</h4>
                                     <div class="description text-center text-white my-3 ln-1">{!! $item->text !!}</div>
                                 </div>
                             </div>
-                            <button class="bg-light-orange">
-                                <div class="before text-center text-white h4 my-auto"><i class="fa fa-plus"></i></div>
+                            <button class="bg-transparent">
+                                <div class="before text-center text-white h4 my-auto">
+                                    <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
+                                </div>
                                 <div class="after text-center text-white h4 my-auto"><i class="fas fa-arrow-right mx-3"></i></div>
                             </button>
                         </div>
@@ -187,290 +195,112 @@
         {{-- خدمات-بیمه" -> 66 , معرفی-کسب-و-کارهای-نوین -> 81 , کسب-و-کارهای-نوین -> 345 --}}
         @if ( in_array($item->id,[81,345,66]) )
             @include('user.consultation.categories.startup')
+        @elseif ($item->id==84 || $item->id==525)
+            <div class="row">
+                @foreach ($items as $item)
+                    <a href="{{ route('user.consultation.profile',$item->id) }}" class="col-lg-4">
+                        <div class="top-consultation mb-4">
+                            <div class="box">
+                                <img src="{{ url($item->user()->photo->path) }}" class="rounded" alt="avatar">
+                                <div class="background-layer rounded"></div>
+                                <div class="background-layer-after rounded"></div>
+                                <div class="data">
+                                    <p class="m-1 ps-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
+                                    <h4 class="text-center text-white pb-4">
+                                        {{$item->user()->first_name.' '.$item->user()->last_name}}
+                                    </h4>
+                                    <div class="description">
+                                        <p class="text-center text-white my-3 ln-1">
+                                            {{$item->title}}<br>رفتن به پروفایل مشاور
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="bg-transparent">
+                                <div class="before text-center text-white h4 my-auto">
+                                    <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
+                                    {{-- <i class="fa fa-plus"></i> --}}
+                                </div>
+                                <div class="after text-center text-white h4 my-auto">
+                                    <i class="fas fa-arrow-right mx-3"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </a>
+                @endforeach
+    
+                @foreach ($items2 as $item)
+                    <a href="{{ route('user.consultation.profile',$item->id) }}" class="col-lg-4">
+                        <div class="top-consultation mb-4">
+                            <div class="box">
+                                <img src="{{ url($item->user()->photo->path) }}" class="rounded" alt="avatar">
+                                <div class="background-layer rounded"></div>
+                                <div class="background-layer-after rounded"></div>
+                                <div class="data">
+                                    <p class="m-1 ps-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
+                                    <h4 class="text-center text-white pb-4">
+                                        {{$item->user()->first_name.' '.$item->user()->last_name}}
+                                    </h4>
+                                    <div class="description">
+                                        <p class="text-center text-white my-3 ln-1">
+                                            {{$item->title}}<br>رفتن به پروفایل مشاور
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="bg-transparent">
+                                <div class="before text-center text-white h4 my-auto">
+                                    <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
+                                    {{-- <i class="fa fa-plus"></i> --}}
+                                </div>
+                                <div class="after text-center text-white h4 my-auto">
+                                    <i class="fas fa-arrow-right mx-3"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+            @include('user.consultation.categories.top')
+        {{-- میزگرد-عمومی 58  ,  57 میزگرد-تخصصی  --}}
+        @elseif ( $item->id==57 || $item->id==58 )
+            <div class="d-none">{{$title=$item->title}}</div>
+            <div class="container my-3">
+                @include('user.consultation.categories.mizgerd')
+            </div>
+            {{-- کارگاه-های-تخصصی 53 --}}
+        @elseif ( $item->id==53 )
+            <div class="d-none">{{$page_name=$item->slug}}</div>
+            <div class="container">
+                <div class="row">
+                    @if ($items->count())
+                        @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items->pluck('user_id'))->whereIn('reagent_id',$items->pluck('id'))->get() as $item)
+                            @include('user.consultation.categories.kargah-takhasosi')
+                        @endforeach
+                    @endif
+    
+                    @if ($items2->count())
+                        @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items2->pluck('user_id'))->whereIn('reagent_id',$items2->pluck('id'))->get() as $item)
+                            @include('user.consultation.categories.kargah-takhasosi')
+                        @endforeach
+                    @endif
+                </div>
+            </div>
         @else
             {{-- مالیات -> 76 , مالیات و حسابرسی -> 508 --}}
             <div class="{{in_array( $item->id , [76,508])?'':'container'}} page-hoghoghi">
                 <div class="body {{in_array( $item->id , [76,508])?'':'p-4'}}">
                     
-                    {{-- 103 گروه-کالایی 55 , قراردادهای-آتی-و-آپشن-ها 54 , فرآیند-پذیرش-در-بورس-کالا 56 , املاک-مستغلات 102 , صندوق-مستغلات --}}
-                    {{-- 509,77,78,79 خدمات بورسی ، خدمات ارزی و ریالی ، صندوق ها و بازار های بین المللی --}}
-                    @if (in_array( $item->id , [55,54,56,103,102,509,77,78,79]) )
+                    @foreach ($items as $item)
                         <div class="d-none">{{$status='online'}}</div>
-                        <div class="row">
-                            @foreach ($items as $item)
-                                @include('user.consultation.categories.bource-kala')
-                            @endforeach
-                        </div>
+                        @include('user.consultation.profile.index')
+                    @endforeach
 
+                    @foreach ($items2 as $item)
                         <div class="d-none">{{$status='offline'}}</div>
-                        <div class="row">
-                            @foreach ($items2 as $item)
-                                @include('user.consultation.categories.bource-kala')
-                            @endforeach
-                        </div>
-                        {{-- طلا 77 --}}
-                    @elseif ($item->id==77)
+                        @include('user.consultation.profile.index')
+                    @endforeach
 
-                        <div class="d-none">{{$page_name=$item->slug}}</div>
-                        <div class="row">
-                            @foreach ($body->where('section',2)->sortBy('sort') as $item)
-                                @include('user.consultation.categories.kargah-takhasosi')
-                            @endforeach
-                        </div>
-
-                        <div class="row">
-                            @foreach ($body->where('section',3)->sortBy('sort') as $item)
-                                @include('user.consultation.categories.kargah-takhasosi')
-                            @endforeach
-                        </div>
-                        
-                        <div class="row">
-                            <div class="d-none">{{$page_name="آیتم-طلا"}}</div>
-                            @foreach ($items as $item)
-                                <div class="d-none">{{$status='online'}}</div>
-                                @include('user.consultation.categories.bource-kala')
-                                {{-- @include('user.consultation.categories.kargah-takhasosi') --}}
-                            @endforeach
-                            
-                            @foreach ($items2 as $item)
-                                <div class="d-none">{{$status='offline'}}</div>
-                                @include('user.consultation.categories.bource-kala')
-                                {{-- @include('user.consultation.categories.kargah-takhasosi') --}}
-                            @endforeach
-                        </div>
-                        
-                        {{-- رمزارز-ها -> 79 , ETF-،-پذیره نویسی -> 78--}}
-                    @elseif ($item->id==79 || $item->id==78)
-                        <div class="d-none">{{$page_name=$item->slug}}</div>
-
-                        <div class="row">
-                            @foreach ($body->where('section',3)->sortBy('sort') as $item)
-                                @include('user.consultation.categories.kargah-takhasosi')
-                            @endforeach
-                        </div>
-    
-                        <div class="d-none">{{$status='online'}}</div>
-                        <div class="row">
-                            @foreach ($items as $item)
-                                @include('user.consultation.categories.bource-kala')
-                            @endforeach
-                        </div>
-
-                        <div class="d-none">{{$status='offline'}}</div>
-                        <div class="row">
-                            @foreach ($items2 as $item)
-                                @include('user.consultation.categories.bource-kala')
-                            @endforeach
-                        </div>
-                        {{-- مالیات -> 76 --}}
-                    @elseif (in_array( $item->id , [76,508]))
-                        <style>
-                            .border-bottom-gold {
-                                border-bottom: 2px solid #c7a97b;
-                                max-width: 200px;
-                            }
-                            .consultation {
-                                background: white !important;
-                            }
-                            a.hover-dark:hover {
-                                color: black !important;
-                            }
-                            .top_banner img {
-                                width: 100%;
-                            }
-                            .top_banner div.box {
-                                position: relative;
-                                top: -210px;
-                                width: 20%;
-                                padding: 10px 12px;
-                                margin-right: 20%;
-                                background: #ffffff99;
-                            }
-                            .top_banner .msg {
-                                line-height: 36px;
-                                /* --borderColor: #c7a97b;
-                                border-left: 3px solid var(--borderColor,transparent);
-                                border-top: 3px solid var(--borderColor,transparent);
-                                margin-left: -20px;
-                                margin-top: -12px; */
-                            }
-                            @media only screen and (max-width: 640px) {
-                               
-                            }
-                        </style>
-
-                        <div class="top_banner">
-                            @foreach ($body->where('section',1) as $item)
-                                <img src="{{ $item->pic?url($item->pic):'' }}" alt="banner">
-                                {{-- <a href="{{ route('user.consultation.show', \App\Model\ServiceCat::where('sort', 8)->first('id')->id ) }}"> --}}
-                                <a href="{{ $item->link?url($item->link):'' }}">
-                                    <div class="d-none d-lg-block box">
-                                        <div class="text-center text-dark fs-4 msg" >{{$item->title}}</div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-
-                        <div class="container">
-                            <div class="py-4 mb-4">
-                                @foreach ($body->where('section',2) as $item)
-                                    <a href="{{ $item->link?url($item->link):'' }}" class="text-dark fw-bold h4 py-1 text-center border-bottom-gold">{{$item->title}}</a>
-                                @endforeach
-                                <div class="card-body row">
-                                    @foreach ($body->where('section',3) as $item)
-                                        <div class="col-lg-4 col-md-6 py-4">
-                                            <img src="{{ $item->pic?url($item->pic):'' }}" class="my-auto" height="50px" alt="banner">
-                                            <a href="{{ $item->link?url($item->link):'' }}" class="text-dark-violet h6 hover-dark fw-bold">{{$item->title}}</a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            {{-- <div class="swiper mySwiper swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
-                                <div class="swiper-wrapper" id="swiper-wrapper-c164578535e54f7f" aria-live="polite"> --}}
-
-                                    <div class="row">
-                                        @foreach ($items as $item)
-                                            {{-- <div class="swiper-slide p-0" role="group" > --}}
-                                            <div class="col-lg-6">
-                                                <div class="d-none">{{$status='online'}}</div>
-                                                @include('user.consultation.categories.maliat')
-                                            </div>
-                                        @endforeach
-            
-                                        @foreach ($items2 as $item)
-                                            {{-- <div class="swiper-slide p-0" role="group" > --}}
-                                            <div class="col-lg-6">
-                                                <div class="d-none">{{$status='offline'}}</div>
-                                                @include('user.consultation.categories.maliat')
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                {{-- </div>
-                            </div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-scrollbar"></div> --}}
-
-                        </div>
-                        {{-- مشاورین-برتر ,  مشاورین-برترر ۵۲۵ --}}
-                    @elseif ($item->id==84 || $item->id==525)
-                        <div class="row">
-                            @foreach ($items as $item)
-                                <a href="{{ route('user.consultation.profile',$item->id) }}" class="col-lg-4">
-                                    <div class="top-consultation mb-4">
-                                        <div class="box">
-                                            <img src="{{ url($item->user()->photo->path) }}" class="rounded" alt="avatar">
-                                            <div class="background-layer rounded"></div>
-                                            <div class="background-layer-after rounded"></div>
-                                            <div class="data">
-                                                <h4 class="text-center text-white pb-4">
-                                                    {{$item->user()->first_name.' '.$item->user()->last_name}}
-                                                </h4>
-                                                <div class="description">
-                                                    <p class="text-center text-white my-3 ln-1">
-                                                        {{$item->title}}<br>رفتن به پروفایل مشاور
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button class="bg-light-orange">
-                                            <div class="before text-center text-white h4 my-auto">
-                                                <i class="fa fa-plus"></i>
-                                            </div>
-                                            <div class="after text-center text-white h4 my-auto">
-                                                <i class="fas fa-arrow-right mx-3"></i>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </a>
-                            @endforeach
-                
-                            @foreach ($items2 as $item)
-                                <a href="{{ route('user.consultation.profile',$item->id) }}" class="col-lg-4">
-                                    <div class="top-consultation mb-4">
-                                        <div class="box">
-                                            <img src="{{ url($item->user()->photo->path) }}" class="rounded" alt="avatar">
-                                            <div class="background-layer rounded"></div>
-                                            <div class="background-layer-after rounded"></div>
-                                            <div class="data">
-                                                <p class="m-1 ps-2 text-start text-uppercase fw-bold app_name">{{env('APP_NAME')}}</p>
-                                                <h4 class="text-center text-white pb-4">
-                                                    {{$item->user()->first_name.' '.$item->user()->last_name}}
-                                                </h4>
-                                                <div class="description">
-                                                    <p class="text-center text-white my-3 ln-1">
-                                                        {{$item->title}}<br>رفتن به پروفایل مشاور
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button class="bg-light-orange">
-                                            <div class="before text-center text-white h4 my-auto">
-                                                <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
-                                                {{-- <i class="fa fa-plus"></i> --}}
-                                            </div>
-                                            <div class="after text-center text-white h4 my-auto">
-                                                <i class="fas fa-arrow-right mx-3"></i>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                        @include('user.consultation.categories.top')
-                        {{-- میزگرد-عمومی 58  ,  57 میزگرد-تخصصی  --}}
-                    @elseif ( $item->id==57 || $item->id==58 )
-                        <div class="d-none">{{$title=$item->title}}</div>
-                        
-                        @include('user.consultation.categories.mizgerd')
-                        {{-- کارگاه-های-تخصصی 53 --}}
-                    @elseif ( $item->id==53 )
-                        <div class="d-none">{{$page_name=$item->slug}}</div>
-
-                        <div class="row">
-                            @if ($items->count())
-                                @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items->pluck('user_id'))->whereIn('reagent_id',$items->pluck('id'))->get() as $item)
-                                    @include('user.consultation.categories.kargah-takhasosi')
-                                @endforeach
-                            @endif
-
-                            @if ($items2->count())
-                                @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items2->pluck('user_id'))->whereIn('reagent_id',$items2->pluck('id'))->get() as $item)
-                                    @include('user.consultation.categories.kargah-takhasosi')
-                                @endforeach
-                            @endif
-                        </div>
-                        {{-- معرفی-اساتید 52 --}}
-                    {{-- @elseif ($item->id==52)
-                        <div class="row">
-                            @if ($items->count())
-                                @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items->pluck('user_id'))->where('reagent_id',$items->pluck('id'))->get() as $item)
-                                    @include('user.consultation.categories.moarefi-asatid')
-                                @endforeach
-                            @endif
-                            @if ($items2->count())
-                                @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items2->pluck('user_id'))->where('reagent_id',$items2->pluck('id'))->get() as $item)
-                                    @include('user.consultation.categories.moarefi-asatid')
-                                @endforeach
-                            @endif
-                        </div> --}}
-                        {{-- $item->service_id == '80' -> زیرمجموعه های دعاوی حقوقی --}}{{-- دعاوی-حقوقی 80 --}}
-                    @elseif ($item->id==80 || $item->service_id==80 || $item->id==23 || $item->service_id==23 )
-                        @include('user.consultation.categories.hoghoghi')
-                    @else
-                        @foreach ($items as $item)
-                            <div class="d-none">{{$status='online'}}</div>
-                            @include('user.consultation.profile.index')
-                        @endforeach
-
-                        @foreach ($items2 as $item)
-                            <div class="d-none">{{$status='offline'}}</div>
-                            @include('user.consultation.profile.index')
-                        @endforeach
-
-                    @endif
                     <div class="container">
                         {{$items1->links()}}
                     </div>

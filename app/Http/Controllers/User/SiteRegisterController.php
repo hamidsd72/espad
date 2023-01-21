@@ -8,6 +8,7 @@ use App\Model\Sms;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Model\Evoke; 
+use Illuminate\Support\Facades\Session;
 
 class SiteRegisterController extends Controller {
     public function __construct() {
@@ -52,6 +53,8 @@ class SiteRegisterController extends Controller {
                     $user->save();
                     $user->assignRole('کاربر');
                     auth()->loginUsingId($user->id, true);
+                    auth()->user()->session_id = Session::getId();
+                    auth()->user()->save();
                     return redirect()->back()->withInput()->with('flash_message', 'ثبت نام شما با موفقیت انجام شد');
                 }
                 return redirect()->back()->withInput()->with('err_message', 'لطفا فیلدها را کامل کنید');
@@ -59,11 +62,13 @@ class SiteRegisterController extends Controller {
                 if ($user) {
                     if ( password_verify( $password, $user->password) ) {
                         auth()->loginUsingId($user->id);
+                        auth()->user()->session_id = Session::getId();
+                        auth()->user()->save();
                         $evokes = Evoke::where( 'consultation_id',auth()->user()->id )->where('notify','در انتظار ارسال')->get(['id','user_id','notify']);
                         foreach ($evokes as $evoke) {
                             $user = User::find($evoke->user_id);
                             if ($user && $user->mobile) {
-                                Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
+                                // Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
                             }
                             $evoke->notify = 'ارسال شده';
                             $evoke->update();
@@ -82,7 +87,7 @@ class SiteRegisterController extends Controller {
         $user->mobile_verified = rand(100000, 999999);
         $user->update();
         $id     = $user->mobile;
-        Sms::SendSms( (' کد تایید هویت شما : '.$user->mobile_verified.' سامانه اسپاد ') , $id);
+        // Sms::SendSms( (' کد تایید هویت شما : '.$user->mobile_verified.' سامانه مانابورس ') , $id);
         return view('auth.resend-password', compact('id'))->with('flash_message', 'کد ۶ رقمی تایید هویت به موبایل ارسال شد');
     }
     
@@ -108,9 +113,13 @@ class SiteRegisterController extends Controller {
                     $user->password = $request->password;
                     $user->update();
                     auth()->loginUsingId($user->id, true);
+                    auth()->user()->session_id = Session::getId();
+                    auth()->user()->save();
                     return redirect()->route('user.home-goust')->with('flash_message', 'رمز عبور تغییر یافت');
                 }
                 auth()->loginUsingId($user->id, true);
+                auth()->user()->session_id = Session::getId();
+                auth()->user()->save();
                 return redirect()->route('user.home-goust')->with('flash_message', 'رمز عبور با تکرار آن برابر نیست اما وارد حساب خود شدید');
             }
         }
@@ -147,6 +156,8 @@ class SiteRegisterController extends Controller {
                 $user->password = Hash::make($password);
                 $user->update();
                 auth()->loginUsingId($user->id, true);
+                auth()->user()->session_id = Session::getId();
+                auth()->user()->save();
                 return redirect()->route('user.index');
             }
             $error  = 'کد صحیح نیست یا تاریخ گذشته است';

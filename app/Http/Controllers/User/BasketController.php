@@ -236,7 +236,7 @@ class BasketController extends Controller  {
                 }
                 $basket->save();
                 if ( $item->limited && Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count() == $item->limited ) {
-                    Sms::SendSms( ' تکمیل شده است '.$item->title.' ظرفیت کارگاه ' , env('ADMIN_MOBILE'));
+                    // Sms::SendSms( ' تکمیل شده است '.$item->title.' ظرفیت کارگاه ' , env('ADMIN_MOBILE'));
                 }
             }
             // return redirect()->route('user.basket_index');

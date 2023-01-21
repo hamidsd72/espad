@@ -38,7 +38,7 @@ class CommentController extends Controller {
             $form->text     = $request->text;
         }
         $form->save();
-        Sms::SendSms( ' یک نظر ارسال شد ' , env('ADMIN_MOBILE'));
+        // Sms::SendSms( ' یک نظر ارسال شد ' , env('ADMIN_MOBILE'));
         return redirect()->back()->withInput()->with('flash_message', ' نظر شما با موفقیت ثبت شد.');
     }
 

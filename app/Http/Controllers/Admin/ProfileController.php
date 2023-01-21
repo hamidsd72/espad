@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Jobs\ClosePendingCall;
+
 
 class ProfileController extends Controller
 {
@@ -49,6 +51,7 @@ class ProfileController extends Controller
         $item  = User::find(Auth::user()->id);
         $forms = UserForm::where('user_id', auth()->user()->id)->get();
         $tours = TourForm::where('user_id', auth()->user()->id)->get();
+        ClosePendingCall::dispatch();
         return view('admin.profile.show',compact('item','forms','tours'),['title1' => $this->controller_title('sum'), 'title2' => $this->controller_title('single')]);
     }
     public function edit()

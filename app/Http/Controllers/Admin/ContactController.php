@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\User;
 use App\Model\Setting;
 use App\Model\Contact;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Model\Notification;
 
 class ContactController extends Controller
 {
@@ -34,26 +36,29 @@ class ContactController extends Controller
         $this->middleware(['auth','isAdmin']);
     }
   
-    public function index($type=null)
-    {
-        if (Auth::user()->hasRole('مدیر')) 
-        {
-            if ($type=='unread') {
-                $items = Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف'])->where('reply',0)->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0)->paginate($this->controller_paginate());
-            } elseif ($type=='read') {
-                $items = Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف'])->where('reply','>',0)->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0)->paginate($this->controller_paginate());
-            } elseif ($type=='unread-pay') {
-                $items = Contact::where('category','=','رسید پرداخت')->where('reply',0)->where('answered', 'no')->orderByDesc('id')->paginate($this->controller_paginate());
-            } elseif ($type=='read-pay') {
-                $items = Contact::where('category','=','رسید پرداخت')->where('reply','>',0)->where('answered', 'no')->orderByDesc('id')->paginate($this->controller_paginate());
-            } elseif ($type=='unread-offCode') {
-                $items = Contact::where('category','=','کد تخفیف')->where('reply',0)->where('answered', 'no')->orderByDesc('id')->paginate($this->controller_paginate());
-            } elseif ($type=='read-offCode') {
-                $items = Contact::where('category','=','کد تخفیف')->where('reply','>',0)->where('answered', 'no')->orderByDesc('id')->paginate($this->controller_paginate());
-            } else {
-                $items = Contact::where('category','!=','رسید پرداخت')->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0)->paginate($this->controller_paginate());
-            }
+    public function index($type=null) {
+        if ($type=='unread') {
+            $items = Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف','کاربر ویژه'])->where('reply',0)->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0);
+        } elseif ($type=='read') {
+            $items = Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف','کاربر ویژه'])->where('reply','>',0)->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0);
+        } elseif ($type=='unread-pay') {
+            $items = Contact::where('category','=','رسید پرداخت')->where('reply',0)->where('answered', 'no')->orderByDesc('id');
+        } elseif ($type=='read-pay') {
+            $items = Contact::where('category','=','رسید پرداخت')->where('reply','>',0)->where('answered', 'no')->orderByDesc('id');
+        } elseif ($type=='unread-offCode') {
+            $items = Contact::where('category','=','کد تخفیف')->where('reply',0)->where('answered', 'no')->orderByDesc('id');
+        } elseif ($type=='read-offCode') {
+            $items = Contact::where('category','=','کد تخفیف')->where('reply','>',0)->where('answered', 'no')->orderByDesc('id');
+        } elseif ($type=='unread-special') {
+            $items = Contact::where('category','=','کاربر ویژه')->where('reply',0)->where('answered', 'no')->orderByDesc('id');
+        } elseif ($type=='read-special') {
+            $items = Contact::where('category','=','کاربر ویژه')->where('reply','>',0)->where('answered', 'no')->orderByDesc('id');
+        } else {
+            $items = Contact::where('category','!=','رسید پرداخت')->where('answered', 'no')->orderByDesc('id')->where('belongs_to_item', '=', 0);
         }
+        if (auth()->user()->hasRole('مدیر')) $items = $items->paginate($this->controller_paginate());
+        else $items = $items->where('user_id',auth()->user()->id)->paginate($this->controller_paginate());
+
         // elseif (Auth::user()->hasRole('حقوقی')) {
         //     $items = Contact::where('category', 'حقوقی')->where('answered', 'no')->orderBy('id','desc')->where('belongs_to_item', '=', 0)->paginate($this->controller_paginate());
         // }
@@ -63,7 +68,8 @@ class ContactController extends Controller
         // elseif (Auth::user()->hasRole('استعدادیابی')) {
         //     $items = Contact::where('category', 'استعدادیابی')->where('answered', 'no')->orderBy('id','desc')->where('belongs_to_item', '=', 0)->paginate($this->controller_paginate());
         // }
-        $sub_items = Contact::where('answered', 'no')->whereIn('belongs_to_item', $items->pluck('id') )->get();
+        $sub_items = '';
+        if($items->count()) $sub_items = Contact::where('answered', 'no')->whereIn('belongs_to_item', $items->pluck('id') )->get();
         return view('admin.content.contact.index', compact('items','sub_items'), ['title1' => $this->controller_title('single'), 'title2' => $this->controller_title('sum')]);
     }
 
@@ -131,37 +137,57 @@ class ContactController extends Controller
         }
     }
 
-    public function accept($id) {
+    public function accept($id ,Request $request) {
         $item = Contact::findOrFail($id);
         $user = User::findOrFail($item->user_id);
         
-        if (Auth::user()->hasRole('مدیر')) {
-            $user->amount += $item->subject;
+        $notife = new Notification();
+        $notife->user_id = $user->id;
+
+        if (auth()->user()->hasRole('مدیر')) {
+            if ($item->category == 'کاربر ویژه' && $request->num > 0) {
+                $user->is_special = Carbon::now()->addMonth($request->num);
+                $notife->subject = 'فیش واریزی بررسی و دسترسی شما به قسمت ویژه فعال شد';
+            } else {
+                $user->amount += $item->subject;
+                $notife->subject = 'فیش واریزی تایید و پنل کاربری شارژ شد';
+            }
             $user->update();
             
             $item->reply += 1;
             $item->update();
+            
 
-            Sms::SendSms( (' تایید رسید پرداخت شماره : '.$item->id) , env('ADMIN_MOBILE'));
-            Sms::SendSms( (' تایید رسید پرداخت شماره : '.$item->id) , $user->mobile);
+            
+            $notife->description = $item->text;
+            $notife->save();
 
+            // Sms::SendSms( (' تایید رسید پرداخت شماره : '.$item->id) , env('ADMIN_MOBILE'));
+            // Sms::SendSms( (' تایید رسید پرداخت شماره : '.$item->id) , $user->mobile);
+            return redirect()->back()->with('flash_message', 'با موفقیت انجام شد.'); 
         }
-        return redirect()->back()->with('flash_message', 'با موفقیت انجام شد.'); 
+        abort('503');
     }
 
     public function reject($id) {
         $item = Contact::findOrFail($id);
         $user = User::findOrFail($item->user_id);
 
-        if (Auth::user()->hasRole('مدیر')) {
+        if (auth()->user()->hasRole('مدیر')) {
             $item->text   = 'این رسید تایید نشده است';
             $item->reply += 1;
             $item->update();
 
-            Sms::SendSms( (' عدم تایید رسید پرداخت شماره : '.$item->id) , env('ADMIN_MOBILE'));
-            Sms::SendSms( (' عدم تایید رسید پرداخت شماره : '.$item->id) , $user->mobile);
+            $notife = new Notification();
+            $notife->user_id = $user->id;
+            $notife->subject = 'عدم تایید فیش واریزی پرداخت آفلاین';
+            $notife->description = $item->text;
+            $notife->save();
+            // Sms::SendSms( (' عدم تایید رسید پرداخت شماره : '.$item->id) , env('ADMIN_MOBILE'));
+            // Sms::SendSms( (' عدم تایید رسید پرداخت شماره : '.$item->id) , $user->mobile);
+            return redirect()->back()->with('flash_message', 'با موفقیت انجام شد.'); 
         }
-        return redirect()->back()->with('flash_message', 'با موفقیت انجام شد.'); 
+        abort('503');
     }
 }
 

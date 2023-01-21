@@ -152,4 +152,14 @@
         padding: 0px;
         position: absolute;
     }
+    .bg-transparent {
+        background: transparent !important;
+    }
+    img.h-unset {
+        height: unset !important;
+    }
+    section.blogs .cats {
+        padding-left: 10%;
+        padding-right: 40%;
+    }
 </style>

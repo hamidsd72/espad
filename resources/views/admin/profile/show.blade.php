@@ -196,7 +196,33 @@
                         <p>مشاوره های من</p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-plane"></i>
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <a href="{{route('user.call.user_call_report')}}" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-4">
+                @php
+                    $userCall       = \App\Model\CallRequest::where('user_id',auth()->user()->id)->where('status','doing')->count();
+                    $consultantCall = \App\Model\CallRequest::where('consultant_id',auth()->user()->id)->where('status','doing')->count();
+                @endphp
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>
+                            @if ($userCall || $consultantCall)
+                                در حال مکالمه
+                            @else
+                                بدون مکالمه
+                            @endif
+                        </h3>
+                        <p>وضعیت تماس</p>
+                    </div>
+                    <div class="icon">
+                        @if ($userCall || $consultantCall)
+                            <i class="fa fa-refresh fa-spin"></i>
+                        @else
+                            <i class="fa fa-tty"></i>
+                        @endif
                     </div>
                     <a href="{{route('user.call.user_call_report')}}" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
                 </div>
@@ -242,7 +268,7 @@
             <div class="col-6 col-lg-4">
                 <div class="small-box bg-violet">
                     <div class="inner">
-                        <h3>{{App\Model\Contact::where('category','!=','رسید پرداخت')->where('user_id', auth()->user()->id )->count()}} تیکت</h3>
+                        <h3>{{App\Model\Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف','کاربر ویژه'])->where('user_id', auth()->user()->id )->count()}} تیکت</h3>
                         <p>تیکت های من</p>
                     </div>
                     <div class="icon">
@@ -401,5 +427,24 @@
 
 @endsection
 @section('js')
+    <script>
+        function ConvertNumberToPersion() {
+            let persian = { 0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹' };
+            function traverse(el) {
+                if (el.nodeType == 3) {
+                    var list = el.data.match(/[0-9]/g);
+                    if (list != null && list.length != 0) {
+                        for (var i = 0; i < list.length; i++)
+                            el.data = el.data.replace(list[i], persian[list[i]]);
+                    }
+                }
+                for (var i = 0; i < el.childNodes.length; i++) {
+                    traverse(el.childNodes[i]);
+                }
+            }
+            traverse(document.body);
+        }
 
+        ConvertNumberToPersion()
+    </script>
 @endsection

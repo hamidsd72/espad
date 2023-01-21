@@ -78,7 +78,7 @@
                                                                     ۱۰ دقیقه
                                                                 </h6>
                                                                 <small style="font-size: 10px;">
-                                                                    {{number_format($item->price*10).' تومان '}}
+                                                                    {{number_format($item->price*10).' ریال '}}
                                                                 </small>
                                                             </a>
                                                         </div>
@@ -92,7 +92,7 @@
                                                                     ۳۰ دقیقه
                                                                 </h6>
                                                                 <small style="font-size: 10px;">
-                                                                    {{number_format($item->price*30).' تومان '}}
+                                                                    {{number_format($item->price*30).' ریال '}}
                                                                 </small>
                                                             </a>
                                                         </div>
@@ -106,7 +106,7 @@
                                                                     ۶۰ دقیقه
                                                                 </h6>
                                                                 <small style="font-size: 10px;">
-                                                                    {{number_format($item->price*60).' تومان '}}
+                                                                    {{number_format($item->price*60).' ریال '}}
                                                                 </small>
                                                             </a>
                                                         </div>
@@ -149,7 +149,7 @@
                                                     @endif class="btn btn-light col-12">
                                                     پکیج ۱۰ دقیقه
                                                     <small style="font-size: 12px;">
-                                                        {{number_format($item->price*10).' تومان '}}
+                                                        {{number_format($item->price*10).' ریال '}}
                                                     </small>
                                                 </a>
                                                 <a  @if (auth()->user())
@@ -159,7 +159,7 @@
                                                     @endif class="btn btn-light col-12 my-3">
                                                         پکیج ۳۰ دقیقه
                                                     <small style="font-size: 12px;">
-                                                        {{number_format($item->price*30).' تومان '}}
+                                                        {{number_format($item->price*30).' ریال '}}
                                                     </small>
                                                 </a>
                                                 <a  @if (auth()->user())
@@ -169,7 +169,7 @@
                                                     @endif class="btn btn-light col-12">
                                                         پکیج ۶۰ دقیقه
                                                     <small style="font-size: 12px;">
-                                                        {{number_format($item->price*60).' تومان '}}
+                                                        {{number_format($item->price*60).' ریال '}}
                                                     </small>
                                                 </a>
                                             @elseif($status=='offline')
@@ -298,7 +298,7 @@
                             </td>
                             <td class="col-2" style="background: #dae1e566;">
                                 ۱۰ دقیقه
-                                {{number_format($item->price*10).' تومان '}}
+                                {{number_format($item->price*10).' ریال '}}
                             </td>
                         </tr>
                         <tr>
@@ -328,7 +328,7 @@
                             </td>
                             <td style="background: #f2f5f766;">
                                 ۳۰ دقیقه
-                                {{number_format($item->price*30).' تومان '}}
+                                {{number_format($item->price*30).' ریال '}}
                             </td>
                         </tr>
                         <tr>
@@ -342,7 +342,7 @@
                             <td></td>
                             <td>
                                 ۶۰ دقیقه
-                                {{number_format($item->price*60).' تومان '}}
+                                {{number_format($item->price*60).' ریال '}}
                             </td>
                         </tr>
                     </tbody>
@@ -377,15 +377,15 @@
                 <div class="col-12 p-1 p-lg-4" style="color: #00788D;">تعرفه ها</div>
                 <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #f2f5f766;">
                     مشاوره ۱۰ دقیقه
-                    {{number_format($item->price*10).' تومان '}}
+                    {{number_format($item->price*10).' ریال '}}
                 </div>
                 <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #dae1e566;">
                     مشاوره ۳۰ دقیقه
-                    {{number_format($item->price*30).' تومان '}}
+                    {{number_format($item->price*30).' ریال '}}
                 </div>
                 <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #f2f5f766;">
                     مشاوره ۶۰ دقیقه
-                    {{number_format($item->price*60).' تومان '}}
+                    {{number_format($item->price*60).' ریال '}}
                 </div>
 
                 <div class="col-12">

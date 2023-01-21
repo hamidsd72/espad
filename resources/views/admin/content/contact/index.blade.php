@@ -11,7 +11,7 @@
                             <div class="card-header">
                                 <h3 class="card-title float-right">{{$title2}}</h3>
                             </div>
-                            @if(count($items)>0)
+                            @if($items->count())
                                 @foreach($items as $item)
 
                                     @if (\Request::route()->getName()=='admin.contact.list.pay')
@@ -34,7 +34,7 @@
                                                 </span>
                                             @endif
 
-                                            <h6 class="my-3">{{' موضوع : '.(is_numeric($item->subject)?number_format($item->subject):$item->subject)}}</h6>
+                                            <h6 class="my-3">{{(is_numeric($item->subject)?' مبلغ : '.number_format($item->subject):' موضوع : '.$item->subject)}}</h6>
                                             <div class="d-none">{{$counter=1}}</div>
                                             @if ($item->text)
                                                 @if ($item->category=='کد تخفیف')
@@ -53,15 +53,25 @@
                                                 @endif
                                             @endif
                                             
-                                            @if ($item->category!='کد تخفیف')
-                                                @if($item->reply==0)
-                                                    <div class="mt-3">
-                                                        <a href="{{ route('admin.contact.list.pay.accept',$item->id) }}" class="text-dark border border-success rounded p-1 px-3 mx-2">تایید رسید</a>
+                                            @role('مدیر')
+                                                @if ($item->category!='کد تخفیف')
+                                                    @if($item->reply==0)
+                                                        <div class="mt-3">
+                                                            
+                                                            @if ($item->category=='کاربر ویژه')
+                                                                <a href="#" data-toggle="modal" data-target="#ModalAcceptTicket{{$item->id}}"
+                                                                    class="text-dark border border-success rounded p-1 px-3 mx-2">تایید رسید</a>
+                                                            @else
+                                                                <a href="{{ route('admin.contact.list.pay.accept',$item->id) }}"
+                                                                    class="text-dark border border-success rounded p-1 px-3 mx-2">تایید رسید</a>
+                                                            @endif
 
-                                                        <a href="{{ route('admin.contact.list.pay.reject',$item->id) }}" class="text-dark border border-danger rounded p-1 px-3 mx-2">عدم تایید رسید</a>
-                                                    </div>
+                                                            <a href="{{ route('admin.contact.list.pay.reject',$item->id) }}"
+                                                                class="text-dark border border-danger rounded p-1 px-3 mx-2">عدم تایید رسید</a>
+                                                        </div>
+                                                    @endif
                                                 @endif
-                                            @endif
+                                            @endrole
                                         </div>
                                     @else
                                         <div class="card-body res_table_in border mx-2 my-1 rounded">
@@ -116,8 +126,11 @@
                                                     @endif
                                                 </div>
                                             @endforeach
-                                            <a href="#" href="javascript:void(0);" data-toggle="modal" data-target="#ModalAnsweTicket{{$item->id}}" 
-                                            class="float-left text-dark border border-secondary rounded p-1 px-3">پاسخ تیکت مشاوره</a>
+                                            @role('مدیر')
+                                                <a href="#" href="javascript:void(0);" data-toggle="modal" data-target="#ModalAnsweTicket{{$item->id}}" 
+                                                class="float-left text-dark border border-secondary rounded p-1 px-3">پاسخ تیکت مشاوره</a>
+                                            @endrole
+                                            
                                         </div>
                                     @endif
                                     
@@ -130,52 +143,90 @@
 
                         </div>
                         <div class="pag_ul">
-                            {{ $items->links() }}
+                            @if ($items->count())
+                                {{ $items->links() }}
+                            @endif
                         </div>
                     </div>
                 </div>
         </div>
 
-        @foreach($items as $item)
-            <div class="modal fade" id="ModalAnsweTicket{{$item->id}}" role="dialog">
-                <div class="modal-dialog">
- 
-                    <div class="modal-content"> 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h6 class="modal-title">تیکت مشاوره {{$item->subject}}</h6>
-                        </div>
-                        <div class="modal-body">
-                            <div class="content">
-                                    <form method="post" action="{{ route('admin.contact.send.ticket',$item->id) }}" enctype="multipart/form-data">
-                                        @csrf
-                                    <fieldset>
-                                        <input type="hidden" name="belongs_to_item" value="{{$item->id}}" id="contactbelongs_to_itemField">
-                                        <input type="hidden" name="category" value="{{$item->category}}" id="contactbelongs_to_itemField">
+        @role('مدیر')
 
-                                        <div class="form-field form-email">
-                                            <label class="contactEmailField color-theme" for="contactEmailField">موضوع:<span>(required)</span></label>
-                                            <input type="text" name="subject" value="{{$item->subject}}" class="round-small form-control" id="contactEmailField">
-                                        </div>
-                                        <div class="form-field form-text">
-                                            <label class="contactMessageTextarea color-theme" for="contactMessageTextarea">متن:<span>(required)</span></label>
-                                            <textarea name="text" class="round-small form-control" id="contactMessageTextarea"></textarea>
-                                        </div>
-                                        <div class="my-4">
-                                            <input type="file" name="attach" id="attach">  الحاق فایل  
-                                        </div>
-                                        <div class="form-button">
-                                            <input type="submit" class="btn bg-highlight text-uppercase font-900 btn-m btn-full rounded-sm  shadow-xl contactSubmitButton" value="ارسال پیام" data-formid="contactForm">
-                                        </div>
-                                    </fieldset>
-                                </form>
+            @foreach($items as $item)
+                <div class="modal fade" id="ModalAnsweTicket{{$item->id}}" role="dialog">
+                    <div class="modal-dialog">
+    
+                        <div class="modal-content"> 
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h6 class="modal-title">تیکت مشاوره {{$item->subject}}</h6>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content">
+                                        <form method="post" action="{{ route('admin.contact.send.ticket',$item->id) }}" enctype="multipart/form-data">
+                                            @csrf
+                                        <fieldset>
+                                            <input type="hidden" name="belongs_to_item" value="{{$item->id}}" id="contactbelongs_to_itemField">
+                                            <input type="hidden" name="category" value="{{$item->category}}" id="contactbelongs_to_itemField">
+
+                                            <div class="form-field form-email">
+                                                <label class="contactEmailField color-theme" for="contactEmailField">موضوع:<span>(required)</span></label>
+                                                <input type="text" name="subject" value="{{$item->subject}}" class="round-small form-control" id="contactEmailField">
+                                            </div>
+                                            <div class="form-field form-text">
+                                                <label class="contactMessageTextarea color-theme" for="contactMessageTextarea">متن:<span>(required)</span></label>
+                                                <textarea name="text" class="round-small form-control" id="contactMessageTextarea"></textarea>
+                                            </div>
+                                            <div class="my-4">
+                                                <input type="file" name="attach" id="attach">  الحاق فایل  
+                                            </div>
+                                            <div class="form-button">
+                                                <input type="submit" class="btn bg-highlight text-uppercase font-900 btn-m btn-full rounded-sm  shadow-xl contactSubmitButton" value="ارسال پیام" data-formid="contactForm">
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+
+            @foreach($items as $item)
+                <div class="modal fade" id="ModalAcceptTicket{{$item->id}}" role="dialog">
+                    <div class="modal-dialog">
+    
+                        <div class="modal-content"> 
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h6 class="modal-title">تیکت مشاوره {{$item->subject}}</h6>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content">
+                                        <form method="post" action="{{ route('admin.contact.list.pay.accept.post',$item->id) }}" enctype="multipart/form-data">
+                                            @csrf
+                                        <fieldset>
+
+                                            <div class="form-field form-email">
+                                                <label class="contactEmailField color-theme" for="contactEmailField">تعداد ماه اشتراک:<span>(required)</span></label>
+                                                <input type="number" name="num" class="round-small form-control" id="contactEmailField">
+                                            </div>
+                                            <div class="form-button">
+                                                <input type="submit" class="btn bg-highlight text-uppercase font-900 btn-m btn-full rounded-sm  shadow-xl contactSubmitButton" value="ارسال پیام" data-formid="contactForm">
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            @endforeach
+
+        @endrole
 
     </section>
 

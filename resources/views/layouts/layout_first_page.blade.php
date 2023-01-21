@@ -85,7 +85,7 @@
                             <a href="{{ route('user.cooperation.index') }}">همکاری با ما</a>
                         </li>
                         <li>
-                            <a href="{{ route('user.post.index.type','آموزش') }}" >راهنما استفاده از مشاوران</a>
+                            <a href="{{ route('user.post.index.type','آموزش') }}" >راهنما</a>
                         </li>
                         <li>
                             <a href="{{ route('user.about.index') }}">درباره ما</a>
@@ -172,13 +172,14 @@
                             @foreach($ServiceCats as $cat)
                                 <li class="nav-item {{ $cat->id==$ServiceCats->last()->id?'me-lg-auto':'' }}" >
                                     {{-- فروشگاه 96 --}}
+                                    
                                     @if ($cat->id==96)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.store.index') }}" target="_blank">
                                     {{-- ثبت نام کارگزاری 97 --}}
                                     @elseif ($cat->id==97)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ env('SIGNUP') }}" target="_blank">
                                     @else
-                                        <a class="nav-link menu_in_a f-18 fw-bold" data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
+                                        <a class="nav-link menu_in_a f-18 fw-bold" @if ($cat->id==46) style="font-size: 20px;" @endif data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
                                     @endif
                                         {{$cat->title}}
                                         @if(count($cat->child_cat))
@@ -196,8 +197,9 @@
                                                                     @foreach($cat->child_cat->chunk( $cat->slug=='اوراق-بهادار'?intval($cat->child_cat->count() / 5):1  ) as $lists)
                                                                         <div class="col-2 p-0">
                                                                             @foreach($lists as $child)
-                                                                                <a class="text-light" href="{{ route('user.consultation.show',$child->id) }}">
-
+                                                                            
+                                                                                <a class="text-light"
+                                                                                 href="{{route( $child->id==543 ? 'user.stock-portfolio.index' : 'user.consultation.show',$child->id ) }}">
                                                                                     <div class="card_menu card_menu_2 mx-1 mb-2 p-2"
                                                                                      @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
                                                                                      style="background: #ffffff8c !important" @endif >
@@ -209,8 +211,8 @@
                                                                                          style="color: #003b5c" @endif >{{$child->title}}</div>
                                                                                         <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
                                                                                     </div>
-                                                                                    
                                                                                 </a>
+                                                                                    
                                                                             @endforeach
                                                                         </div>
                                                                     @endforeach
@@ -223,7 +225,7 @@
                                                                 <ul class="category">
                                                                     @foreach($cat->child_cat as $child)
                                                                         <li class="mb-3 text-lg-end me-lg-4">
-                                                                            <a href="{{ route('user.consultation.show',$child->id) }}">
+                                                                            <a @if ($child->id==543) href="{{route('user.stock-portfolio.index') }}" @else href="{{route('user.consultation.show',$child->id) }}" @endif>
                                                                                 <i class="fas fa-angle-left d-inline-block d-lg-none"></i>
                                                                                 {{$child->title}}
                                                                             </a>
@@ -453,6 +455,8 @@
                 </div>
             </div>
             <div class="container text-center pb-2">
+                <span class="text-secondary">تمامی حقوق این سایت متعلق به مانا بورس ( شعبه توحید کارگزاری دانایان ) می‌باشد</span>
+                <br>
                 <span class="text-secondary">All rights reserved by AdibGroup 2022</span>
             </div>
         </footer>

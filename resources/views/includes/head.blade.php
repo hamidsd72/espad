@@ -15,14 +15,16 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/css/fontawesome-all.min.css') }}">
     <link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
     {{-- <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/app/icons/icon-192x192.png') }}"> --}}
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ \App\Model\Setting::first()->icon_site }}">
-    <link rel="icon" type="image/x-icon" href="{{ \App\Model\Setting::first()->icon_site }}"> 
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url(\App\Model\Setting::first()->icon_site )}}">
+    <link rel="icon" type="image/x-icon" href="{{ url(\App\Model\Setting::first()->icon_site) }}">
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="{{asset('user/js/jquery3_6.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
- 
+{{--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>--}}
+    <script src="{{asset('user/js/popper.new.js')}}"></script>
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>--}}
+    <script src="{{asset('user/js/bootstrap.bundle.min.js')}}"></script>
+
     <style>
         @font-face {
             font-family: 'Vazirmatn';

@@ -17,7 +17,7 @@
                             <h6>جهت بازیابی رمز عبور شماره موبایل خود را وارد کنید</h6>
                             <div class="form-group floating-form-group col-lg-6">
                                 <label class="floating-label my-2">موبایل خود را وارد کنید</label>
-                                <input type="text" name="mobile" id="mobile156" class="form-control floating-input" required autofocus>
+                                <input type="text" name="mobile" id="mobile157" class="form-control floating-input" required autofocus>
                             </div>
 
                             <button id="submit" type="submit" class="btn btn-primary mt-3" >بازیابی</button>
@@ -90,13 +90,13 @@
     </div>
 </div>
 
-<script>
-    $(function(){
-        $("input[name='mobile']").on('input', function (e) {
-            $(this).val($(this).val().replace(/[^0-9]/g, ''));
-        });
-    });
-</script>
+{{--<script>--}}
+{{--    $(function(){--}}
+{{--        $("input[name='mobile']").on('input', function (e) {--}}
+{{--            $(this).val($(this).val().replace(/[^0-9]/g, ''));--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 <script>
     function changState(state) {
         switch (state) {

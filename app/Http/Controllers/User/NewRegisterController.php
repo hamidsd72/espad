@@ -73,7 +73,7 @@ class NewRegisterController extends Controller {
                             foreach ($evokes as $evoke) {
                                 $user = User::find($evoke->user_id);
                                 if ($user && $user->mobile) {
-                                    Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
+                                    // Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
                                 }
                                 $evoke->notify = 'ارسال شده';
                                 $evoke->update();
@@ -93,7 +93,7 @@ class NewRegisterController extends Controller {
         $user->mobile_verified = rand(100000, 999999);
         $user->update();
         $id     = $user->mobile;
-        Sms::SendSms( (' کد تایید هویت شما : '.$user->mobile_verified.' سامانه اسپاد ') , $id);
+        // Sms::SendSms( (' کد تایید هویت شما : '.$user->mobile_verified.' سامانه مانابورس ') , $id);
         return view('auth.app-resend-password', compact('id'))->with('flash_message', 'کد ۶ رقمی تایید هویت به موبایل ارسال شد');
     }
     

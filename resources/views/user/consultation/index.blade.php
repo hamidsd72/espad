@@ -88,10 +88,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="bg-light-orange">
+                                <button class="bg-transparent">
                                     <div class="before text-center text-white h4 my-auto">
                                         <img src="{{asset('user/pic/talk_logo.png')}}" alt="talk" class="w-100 h-unset">
-                                        {{-- <i class="fa fa-plus"></i> --}}
                                     </div>
                                     <div class="after text-center text-white h4 my-auto">
                                         <i class="fas fa-arrow-right mx-3"></i>

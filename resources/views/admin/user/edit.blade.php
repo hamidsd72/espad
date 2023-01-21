@@ -90,7 +90,7 @@
                                         {{ Form::text('education',null, array('class' => 'form-control')) }}
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                <div class="col-lg-6">
                                     <label for="exampleInputFile">تصویر پروفایل(100×100)</label>
                                     <div class="input-group">
                                         <div class="custom-file">

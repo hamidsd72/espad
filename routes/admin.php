@@ -25,8 +25,22 @@ Route::resource('banks', 'BanksController');
 // سبد خرید کاربر
 Route::resource('factor-buy', 'FactorBuyController');
 // website data
+// آیتم های توصیه های بورسی
+Route::resource('stock-portfolio', 'StockPortfolioController');
+Route::get('stock-portfolio/force/delete/{id}', 'StockPortfolioController@destroy')->name('stock-portfolio.force.delete');
+Route::get('stock-portfolio/custom/create/{id}', 'StockPortfolioController@create')->name('stock-portfolio.custom.create');
+// دسته بندی های توصیه های بورسی
+Route::resource('stock-portfolio-categories', 'StockPortfolioCategoryController');
+Route::post('stock-portfolio-categories/sort/{id}', 'StockPortfolioCategoryController@sort')->name('stock-portfolio-categories.sort');
+Route::get('stock-portfolio-categories/force/delete/{id}', 'StockPortfolioCategoryController@destroy')->name('stock-portfolio-categories.force.delete');
+// داده های صفحات
 Route::resource('data', 'DataController');
+// آیتم های صفحات
 Route::resource('item', 'ItemController');
+// آپلود فایل
+Route::resource('file-upload', 'FileController');
+Route::get('file-upload/force/delete/{id}', 'FileController@destroy')->name('file-upload.force.delete');
+// آیتم های صفحات
 Route::resource('sub-item', 'SubItemController');
 Route::get('create/item/{type?}', 'ItemController@create')->name('item.create.type');
 Route::get('delete/item/{id}', 'ItemController@destroy')->name('item.delete');
@@ -58,11 +72,12 @@ Route::get('contact-list', 'ContactController@index')->name('contact.list');
 Route::get('contact-list/type/{type}', 'ContactController@index')->name('contact.list.type');
 Route::get('contact-list/pay/{type}', 'ContactController@index')->name('contact.list.pay');
 Route::get('contact-list/pay/accept/{id}', 'ContactController@accept')->name('contact.list.pay.accept');
+Route::post('contact-list/pay/accept/{id}', 'ContactController@accept')->name('contact.list.pay.accept.post');
 Route::get('contact-list/pay/reject/{id}', 'ContactController@reject')->name('contact.list.pay.reject');
 Route::post('contact-send-email/{id}', 'ContactController@send_email')->name('contact.send.email');
 Route::post('contact-send-ticket/{id}', 'ContactController@send_ticket')->name('contact.send.ticket');
 Route::get('contact-destroy/{id}', 'ContactController@destroy')->name('contact.destroy');
- 
+
 // slider
 Route::get('slider-list', 'SliderController@index')->name('slider.list');
 Route::get('slider-create', 'SliderController@create')->name('slider.create');
@@ -203,8 +218,8 @@ Route::post('service-package-video-sort/{id}', 'ServicePackageVideoController@so
 Route::get('service-package-video-active/{id}/{type}', 'ServicePackageVideoController@active')->name('service.package.video.active');
 
 // package price
-Route::get('service-package-price-list/{id}', 'ServicePackagePriceController@index')->name('service.package.price.list');
-Route::post('service-package-price-store/{id}/{type}', 'ServicePackagePriceController@store')->name('service.package.price.store');
+Route::get('service-package-price-list', 'ServicePackagePriceController@index')->name('service.package.price.list');
+Route::post('service-package-price-store', 'ServicePackagePriceController@store')->name('service.package.price.store');
 Route::get('service-package-price-destroy/{id}', 'ServicePackagePriceController@destroy')->name('service.package.price.destroy');
 Route::get('service-package-price-active/{id}/{type}', 'ServicePackagePriceController@active')->name('service.package.price.active');
 

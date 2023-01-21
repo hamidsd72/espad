@@ -37,7 +37,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         {{ Form::label('user_id', '* نام استاد / مشاور') }}
-                                        <select class="form-control select2" name="user_id">
+                                        <select class="form-control select2" name="user_id[]" multiple>
                                             @foreach(\App\User::role('مدرس')->get(['id','first_name','last_name']) as $key => $user)
                                                 <option value="{{$user->id}}" {{ $key==0?'selected':'' }}>{{$user->first_name.' '.$user->last_name}}</option>
                                             @endforeach
@@ -94,7 +94,7 @@
                                     <div class="form-group">
                                         {{ Form::label('price', '*(اگر رایگان هست 0 قرار دهید) هزینه') }}
                                         {{ Form::number('price',0, array('class' => 'form-control','onkeyup'=>'number_price(this.value)')) }}
-                                        <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                                        <span id="price_span" class="span_p"><span id="pp_price"></span> ریال </span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

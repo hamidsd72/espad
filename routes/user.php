@@ -1,5 +1,4 @@
 <?php 
-
 Route::get('/logout/web', function () {
     return redirect()->route('user.home-goust')->with(auth()->logout());
 })->name('logout.web');
@@ -59,7 +58,7 @@ Route::post('/level_2', 'BasketController@level_2')->name('basket.pay');
 Route::get('/basket_del/{id}/{type}', 'BasketController@del_basket')->name('basket.del');
 Route::resource('my-basket', 'BasketController');
 /*Route::get('/basket_del', 'BasketController@del_basket')->name('basket.del');*/
-
+Route::resource('stock-portfolio', 'StockPortfolioController');
 
 Route::get('report/user-transaction/{id}', 'TransactionController@index')->name('user-transaction-report');
 // app pay
@@ -153,6 +152,7 @@ Route::get('call/{id}/{type}/request', 'CallController@request')->name('call.req
 Route::get('call/{unique_code}', 'CallController@index')->name('call.index');
 Route::get('call/{unique_code}/accept/{status}', 'CallController@accept')->name('call.accept');
 Route::get('call/{unique_code}/end', 'CallController@end')->name('call.end');
+Route::get('call/{unique_code}/end/not_device', 'CallController@end_not_device')->name('call.end.not.device');
 Route::get('call/{unique_code}/no_reply', 'CallController@no_reply')->name('call.no.reply');
 
 

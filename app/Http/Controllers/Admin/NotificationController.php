@@ -85,7 +85,7 @@ class NotificationController extends Controller
                     $notife->atach = file_store($request->attach, 'source/asset/uploads/notification/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
                 }
                 $notife->save();
-                Sms::SendSms( $msg , $request->user_id);
+                // Sms::SendSms( $msg , $request->user_id);
                 return redirect()->back()->withInput()->with('flash_message','با موفقیت ارسال شد');
             } catch (\Throwable $th) {
                 return redirect()->back()->withInput()->with('err_message','کاربر پیدا نشد , احتمالا شماره اشتباه است یا وارد نشده');
@@ -104,7 +104,7 @@ class NotificationController extends Controller
                             $notife->atach = file_store($request->attach, 'source/asset/uploads/notification/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
                         }
                         $notife->save();
-                        Sms::SendSms( $msg , $user->mobile);
+                        // Sms::SendSms( $msg , $user->mobile);
                     } catch (\Throwable $th) {
                         return redirect()->back()->withInput()->with('err_message','مشگل در ارسال اعلان , لطفا مجددا امتحان کنید');
                     }

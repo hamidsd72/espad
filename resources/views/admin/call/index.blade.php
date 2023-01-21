@@ -35,8 +35,10 @@
                                         <td>
                                             {{$item->status_set($item->status,$item->end_call_id)}}
                                         </td>
-                                        <td>{{$item->service() && $item->service()->category()?$item->service()->category()->title:''}}
-                                             {{-- - {{$item->service()?$item->service()->title:$item->service_id}} --}}
+                                        <td>
+                                            {{-- {{$item->service && $item->service->category?$item->service->category->title:''}} --}}
+                                            {{$item->service? $item->service->category()? $item->service->category()->title :'':''}}
+                                             - {{$item->service?$item->service->title:$item->service_id}}
                                         </td>
                                         <td>
                                             {{$item->time_call($item->start_call,$item->end_call,$item->time_service,$item->status)}}

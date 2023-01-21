@@ -68,7 +68,7 @@ class FormController extends Controller {
             $form->attach = file_store($request->attach, 'source/asset/uploads/form/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/forms/', 'form-');
         }
         $form->save();
-        Sms::SendSms( ' یک فرم ارسال شد ' , env('ADMIN_MOBILE'));
+        // Sms::SendSms( ' یک فرم ارسال شد ' , env('ADMIN_MOBILE'));
         return redirect()->back()->withInput()->with('flash_message', ' درخواست با موفقیت ثبت شد.');
     }
 

@@ -37,7 +37,8 @@ class FormController extends Controller {
 
     public function edit($id) {
         $item = UserForm::findOrFail($id);
-        return view('admin.admin-form.show', compact('item'), ['title1' => $this->controller_title('single'), 'title2' => $this->controller_title('sum')]);
+        $mobile = User::findOrFail($item->user_id)->mobile;
+        return view('admin.admin-form.show', compact('item','mobile'), ['title1' => $this->controller_title('single'), 'title2' => $this->controller_title('sum')]);
     }
 
     public function update(Request $request, $id) {

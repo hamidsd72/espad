@@ -94,7 +94,7 @@
                                     <div class="form-group">
                                         {{ Form::label('price', ' هزینه * (اگر رایگان هست 0 قرار دهید)') }}
                                         {{ Form::number('price',null, array('class' => 'form-control','onkeyup'=>'number_price(this.value)')) }}
-                                        <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                                        <span id="price_span" class="span_p"><span id="pp_price"></span> ریال </span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

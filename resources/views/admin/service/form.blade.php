@@ -109,14 +109,14 @@
                     <div class="form-group">
                         {{ Form::label('price', '* هزینه (هر دقیقه)') }}
                         {{ Form::number('price', 0 , array('class' => 'form-control','required' => 'required','onkeyup'=>'number_price(this.value)' )) }}
-                        <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                        <span id="price_span" class="span_p"><span id="pp_price"></span> ریال </span>
                     </div>
                 </div>
                 <div class="col-lg-12" id="amount_price">
                     <div class="form-group">
                         {{ Form::label('amount', '* قیمت کالا (برای بخش فروشگاه)') }}
                         {{ Form::number('amount', 0 , array('class' => 'form-control','required' => 'required','onkeyup'=>'number_price2(this.value)' )) }}
-                        <span id="price_span" class="span_p"><span id="amount_price"></span> تومان </span>
+                        <span id="price_span" class="span_p"><span id="amount_price"></span> ریال </span>
                     </div>
                 </div>
                 <hr>

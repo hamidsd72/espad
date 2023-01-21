@@ -25,7 +25,7 @@ class BlogController extends Controller {
     // create
     public function show($id) {
         $type = $id;
-        return view('admin.blogs.create',compact('type'), ['title1' => $id.' افزودن ', 'title2' => $id.' افزودن ']);
+        return view('admin.blogs.create',compact('type'), ['title1' => ' افزودن '.$id, 'title2' => ' افزودن '.$id]);
     }
 
     public function store(Request $request) {
@@ -35,9 +35,7 @@ class BlogController extends Controller {
             'short_text'=> 'required',
             'text'      => 'required',
         ]);
-        if( Post::where('type',$request->type)->where('slug',$request->slug)->count() ) {
-            return redirect()->back()->withInput()->with('flash_message', 'عنوان تکراری می باشد');
-        }
+        if( Post::where('type',$request->type)->where('slug',$request->slug)->count() ) return redirect()->back()->withInput()->with('flash_message', 'عنوان تکراری می باشد');
         try {
             $item = new Post();
             $item->type             = $request->type;
@@ -45,7 +43,7 @@ class BlogController extends Controller {
             $item->slug             = $request->slug;
             $item->short_text       = $request->short_text;
             $item->text             = $request->text;
-            $item->writer           = auth()->user()->id;
+            $item->writer           = $request->writer?$request->writer:'ادمین سایت';
             $item->titleseo         = $request->titleseo;
             $item->keywordsseo      = $request->keywordsseo;
             $item->descriptionseo   = $request->descriptionseo;
@@ -62,6 +60,7 @@ class BlogController extends Controller {
             $item->save();
             return redirect()->route('admin.post.index.type',$item->type)->with('flash_message', 'با موفقیت ثبت شد.');
         } catch (\Exception $e) {
+            // dd($e);
             return redirect()->back()->with('err_message', 'یک خطا رخ داده است، لطفا بررسی بفرمایید.');
         }
     }
@@ -90,7 +89,7 @@ class BlogController extends Controller {
             $item->slug             = $request->slug;
             $item->short_text       = $request->short_text;
             $item->text             = $request->text;
-            $item->writer           = auth()->user()->id;
+            $item->writer           = $request->writer?$request->writer:'ادمین سایت';
             $item->titleseo         = $request->titleseo;
             $item->keywordsseo      = $request->keywordsseo;
             $item->descriptionseo   = $request->descriptionseo;
@@ -147,3 +146,4 @@ class BlogController extends Controller {
     }
 
 }
+

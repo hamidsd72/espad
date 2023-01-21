@@ -209,19 +209,19 @@
                             </div>
                             <div class="col-lg-9 p-0">
 
-                                <div class="px-0 py-1 py-lg-2 text-center m-1 c-bg-green text-white rounded fw-bold">
+                                <div class="px-0 py-1 py-lg-2 text-center m-1 c-bg-green text-white rounded fw-bold" @if(auth()->user()) style="cursor: pointer;" onclick="goToGetway() @endif">
                                     ۱۰ دقیقه
                                     <br>
                                     {{number_format($item->price*100).' ریال '}}
                                 </div>
 
-                                <div class="px-0 py-1 py-lg-1 text-center m-1 c-bg-green text-white rounded fw-bold">
+                                <div class="px-0 py-1 py-lg-1 text-center m-1 c-bg-green text-white rounded fw-bold" @if(auth()->user()) style="cursor: pointer;" onclick="goToGetway() @endif">
                                     ۳۰ دقیقه
                                     <br>
                                     {{number_format($item->price*300).' ریال '}}
                                 </div>
 
-                                <div class="px-0 py-1 py-lg-1 text-center m-1 c-bg-green text-white rounded fw-bold">
+                                <div class="px-0 py-1 py-lg-1 text-center m-1 c-bg-green text-white rounded fw-bold" @if(auth()->user()) style="cursor: pointer;" onclick="goToGetway() @endif">
                                     ۶۰ دقیقه
                                     <br>
                                     {{number_format($item->price*600).' ریال '}}
@@ -445,3 +445,8 @@
     </div>
 @endif --}}
 
+<script>
+    function goToGetway() {
+        location.href = '{{route("user.user-web-transaction.index")}}';
+    }
+</script>

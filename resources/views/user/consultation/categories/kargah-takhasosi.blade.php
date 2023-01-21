@@ -41,10 +41,10 @@
     <div class="col-lg-3 col-md-6 moshaver">
         <div class="p-lg-4 box">
             <a href="{{ route('user.consultation.profile3',[$item->reagent_id,$item->id]) }}"  class="text-center text-secondary">
-                <img src="{{ $item->photo?url($item->photo->path):'' }}" alt="avatar">
-                <h6 class="text-dark mt-3">{{$item->title}}</h6>
+                <img src="{{ $item->photo?url($item->photo->path):'' }}" class="mb-4" alt="avatar">
+                <h6 class="text-dark mt-4">{{$item->title}}</h6>
                 <p class="small my-2">{{$item->user()?$item->user()->first_name.' '.$item->user()->last_name:''}}</p>
-                <div class="sub-title text-center">اسپاد گروپ</div>
+                <div class="sub-title text-center">مــانا بــورس</div>
             </a>
         </div>
     </div>
@@ -66,23 +66,6 @@
         width: 240px;
         height: 240px;
         border-radius: 50%;
-        @unless ($page_name=="رفتن-به-میزگرد" || $page_name=="امور-گمرک-و-ترخیص" || $page_name=="طلا")
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-        @endunless
-    }
-    @media only screen and (min-width: 920px) {
-        .moshaver .box img {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            @unless ($page_name=="رفتن-به-میزگرد" || $page_name=="امور-گمرک-و-ترخیص" || $page_name=="طلا")
-                width: 100%;
-                height: auto;
-                border-radius: 6px;
-            @endunless
-        }
     }
     .moshaver:hover div {
         padding: 12px !important;

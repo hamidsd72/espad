@@ -102,7 +102,7 @@
                                     @endif class="btn btn-success col-12">
                                         ۱۰ دقیقه
                                     <small style="font-size: 12px;">
-                                        {{number_format($item->price*10).' تومان '}}
+                                        {{number_format($item->price*10).' ریال '}}
                                     </small>
                                 </a>
                             </div>
@@ -115,7 +115,7 @@
                                     @endif class="btn btn-success col-12">
                                         ۳۰ دقیقه
                                     <small style="font-size: 12px;">
-                                        {{number_format($item->price*30).' تومان '}}
+                                        {{number_format($item->price*30).' ریال '}}
                                     </small>
                                 </a>
                             </div>
@@ -128,7 +128,7 @@
                                     @endif class="btn btn-success col-12">
                                         ۶۰ دقیقه
                                     <small style="font-size: 12px;">
-                                        {{number_format($item->price*60).' تومان '}}
+                                        {{number_format($item->price*60).' ریال '}}
                                     </small>
                                 </a>
                             </div>
@@ -157,7 +157,7 @@
                     <a href="{{ route('user.consultation.edit',$services->find($package)->slug) }}" class="btn btn-success col-12">
                         {{ ' شرکت در کارگاه '.$services->find($package)->title }}
                         <div class="text-dark text-center small">
-                            {{ $services->find($package)->price>0?' تومان '.$services->find($package)->price:' رایگان ' }}
+                            {{ $services->find($package)->price>0?' ریال '.$services->find($package)->price:' رایگان ' }}
                         </div>
                     </a>
 
@@ -186,7 +186,7 @@
                                         <div class="mx-2 text-secondary selected">
                                     @endif
                                         {{$service->title}}
-                                        <div class="float-start pe-lg-5 me-lg-5">{{$service->price>0?price( $service->price ).'تومان':'رایگان'}}</div>
+                                        <div class="float-start pe-lg-5 me-lg-5">{{$service->price>0?price( $service->price ).'ریال':'رایگان'}}</div>
                                     </div>
                                 </a>
                             @endforeach

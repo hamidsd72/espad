@@ -53,6 +53,7 @@ class ServicePackageController extends Controller
     public function index()
     {
         $items = ServicePackage::orderBy('sort_by')->paginate($this->controller_paginate());
+        
         return view('admin.service.package.index', compact('items'), ['title1' => 'خدمات', 'title2' => $this->controller_title('sum')]);
     }
 
@@ -407,12 +408,16 @@ class ServicePackageController extends Controller
 
     public function sort_by_join(Request $request)
     {
+        $item = ServicePackage::find($request->id);
+
         try {
-            foreach ($request->id_join as $key => $id) {
-                $srvice_join = ServiceJoinPackage::find($id);
-                $srvice_join->sort_by = $request->sort_by[$key];
-                $srvice_join->save();
-            }
+            $item->sort_by = $request->sort;
+            $item->save();
+            // foreach ($request->id_join as $key => $id) {
+            //     $srvice_join = ServiceJoinPackage::find($id);
+            //     $srvice_join->sort_by = $request->sort_by[$key];
+            //     $srvice_join->save();
+            // }
             return redirect()->back()->with('flash_message', 'ترتیب نمایش با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی بوجود آمده لطفا دباره تلاش کنید');

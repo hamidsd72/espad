@@ -84,6 +84,9 @@ class CallController extends Controller
                //'time_service'=>$service->time,
               'time_service'=>$rev,
                'price_min'=>$price_min,
+               'type_phone'=>str_contains(type_phone(),'iPhone')?'iphone':'no_iphone',
+               'reload_answer'=>0,
+               'reload_answer2'=>0,
             ]);
 
             //minuse amount
@@ -100,7 +103,7 @@ class CallController extends Controller
             return redirect()->back()->withInput()->with('call_message', 'مشکلی بوجود آمده،مجددا تلاش کنید');
         }
     }
-    public function index($unique_code)
+    public function index($unique_code,Request $request)
     {
         $call=CallRequest::where('unique_code',$unique_code)->whereIN('status',['pending','doing'])->first();
         if(!$call)
@@ -122,7 +125,17 @@ class CallController extends Controller
         {
             return redirect()->back()->withInput()->with('call_message', 'صفحه یافت نشد، مجددا تلاش کنید');
         }
-    
+
+        if($call->consultant_id == auth()->id())
+        {
+            $call->reload_answer2+=1;
+            $call->update();
+        }
+        if($call->consultant_id == auth()->id())
+        {
+            $call->reload_answer+=1;
+            $call->update();
+        }
             $end_request=Carbon::parse($call->created_at)->addSeconds(20);
             $end_time=Carbon::parse($call->created_at)->addMinutes($call->time_service);
             $min_time=Carbon::now()->diffInSeconds($end_time,false);
@@ -231,6 +244,61 @@ class CallController extends Controller
             return redirect()->route('user.subServices',$cal->service->category_id)->with('call_message', ' تماس توسط شما پایان یافت');
         else
             return redirect()->route('user.index')->with('call_message', ' تماس توسط شما پایان یافت');
+    }
+    public function end_not_device($unique_code)
+    {
+        $cal=CallRequest::where('unique_code',$unique_code)->first();
+        if(!$cal)
+        {
+            return redirect()->back()->withInput()->with('call_message', 'تماس یافت نشد، مجددا تلاش کنید');
+        }
+        if($cal->user_id!=Auth::id() && $cal->consultant_id!=Auth::id())
+        {
+            return redirect()->back()->withInput()->with('call_message', 'تماس یافت نشد، مجددا تلاش کنید');
+        }
+
+        $old_status=$cal->status;
+
+        $cal->status='end';
+        if($old_status=='doing')
+            $cal->end_call=Carbon::now();
+
+        $cal->end_call_id=Auth::id();
+        $cal->update();
+
+        if($old_status=='doing')
+        {
+            $min_call=Carbon::parse($cal->start_call)->diffInSeconds(Carbon::parse($cal->end_call),false);
+
+            $cal->price_call=(round($min_call/60,1))*$cal->price_min;
+            $cal->update();
+
+            //return amount
+            $user=$cal->user;
+            if($user)
+            {
+                $user->amount+=($cal->price_service-$cal->price_call);
+                $user->update();
+            }
+        }
+        elseif($old_status=='pending')
+        {
+            //return amount
+            $user=$cal->user;
+            if($user)
+            {
+                $user->amount+=$cal->price_service;
+                $user->update();
+            }
+        }
+
+
+        if (session()->has('back_url'))
+            return redirect(session('back_url'))->with('call_message', ' تماس بعلت یافت نشدن دستگاه میکروفن قطع شد');
+        elseif($cal->service)
+            return redirect()->route('user.subServices',$cal->service->category_id)->with('call_message', ' تماس بعلت یافت نشدن دستگاه میکروفن قطع شد');
+        else
+            return redirect()->route('user.index')->with('call_message', ' تماس بعلت یافت نشدن دستگاه میکروفن قطع شد');
     }
     public function no_reply($unique_code)
     {

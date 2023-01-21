@@ -12,13 +12,20 @@
                 <div class="col-12 my-5">
                     <h5 class="p-4" id="show-price"></h5>
                 </div>
-                <div class="col">
+                {{-- <div class="col">
                     <a href="#" class="btn btn-lg col-12 btn-primary">پرداخت از درگاه</a>
-                </div>
-                <div class="col">
+                </div> --}}
+                <div class="col-md-6 col-lg-4 mx-auto">
                     
                     <a href="#" data-bs-toggle="modal" data-bs-target="#ModalTicket" class="btn btn-lg col-12 btn-secondary">رسید بانکی</a>
                 </div>
+            </div>
+
+            <div class="pt-5">
+                <h4 class="text-center py-2">اطلاعات جهت پرداخت  (کارت به کارت)</h4>
+                <h5 class="text-center">IR {{ env('SHABA_NUM') }}</h5>
+                <h5 class="text-center"> شماره کارت {{ str_replace('-',' ',env('CARD_NUM')) }}</h5>
+                <h5 class="text-center">به نام : سارا ستاری نیا</h5>
             </div>
         </div>
 

@@ -32,9 +32,14 @@ class CallController extends Controller
 
     public function index()
     {
-        $items = CallRequest::orderByDesc('id');
         if(auth()->user()->hasRole('مدرس')) {
-            $items = $items->where('consultant_id',auth()->id());
+            $items = CallRequest::where('consultant_id',auth()->id())->orderByDesc('id');
+        } elseif(auth()->user()->hasRole('کاربر')) {
+            $items = CallRequest::where('user_id',auth()->id())->orderByDesc('id');
+        } elseif(auth()->user()->hasRole('مدیر')) {
+            $items = CallRequest::orderByDesc('id');
+        } else {
+            return false;
         }
         $items = $items->paginate( $this->controller_paginate() );
         return view('admin.call.index', compact('items'), ['title1' => $this->controller_title('single'), 'title2' => $this->controller_title('sum')]);

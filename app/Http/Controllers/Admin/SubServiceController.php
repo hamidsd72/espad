@@ -36,7 +36,7 @@ class SubServiceController extends Controller
     public function index($category_id=null)
     {
         $category_id = $category_id;
-        $ServiceCats = ServiceCat::where('slug','!=','کد-تخفیف')->where('type','service')->get();
+        $ServiceCats = ServiceCat::where('status','active')->where('slug','!=','کد-تخفیف')->where('type','service')->get();
         if(isset($category_id)){
             $items = ServiceCat::orderByDesc('id')->where('type','sub_service')->where('service_id',$category_id)->paginate($this->controller_paginate());
         }else {

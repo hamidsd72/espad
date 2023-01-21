@@ -10,43 +10,6 @@
     <div class="col-12">
         <div class="row">
     
-            <div class="col-lg-8 pt-lg-4">
-                <div class="blog">
-                    @if ($items->count()==0)
-                        <div class="items p-4 border-bottom">
-                            <div class="hashtaq mb-4 py-2">
-                                <a class="p-2 px-3" href="#">{{$type}}</a>
-                            </div>
-                            <a href="#"><h5>موردی یافت نشد</h5></a>
-                        </div>
-                    @endif
-                    @foreach ($items as $item)
-                        <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
-                            <div class="hashtaq mb-4 py-2">
-                                <a class="p-2 px-3" href="#">{{$type??' همه پست ها '}}</a>
-                            </div>
-                            
-                            <a href="{{ route('user.post.show',$item->slug) }}">
-                                <h5>{{$item->title}}</h5>
-                                <p class="py-2 mb-0">{{$item->short_text}}</p>
-                            </a>
-                            
-                            <small>
-                                {{' نویسنده : '.$item->user()->first_name.' '.$item->user()->last_name}}
-                                <span class="text-secondary mx-1">{{my_jdate($item->updated_at,'d F Y')}}</span>
-                            </small>
-                            <div id="old{{$item->id}}" class="col-12 pt-2 old">
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <div id="new{{$item->id}}" class="col-12 pt-2 d-none">
-                                <i class="fa fa-close text-secondary"></i>
-                            </div>
-                        </div>
-                    @endforeach
-                    <div class="pagy"></div>
-                </div>
-            </div>
-    
             <div class="col-lg-4">
                 <div class="cats">
     
@@ -55,10 +18,10 @@
                         @csrf
                         <div class="searchbox mt-4">
                             <div class="input-group">
+                                <input type="text" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
                                 <div class="input-group-prepend">
                                     <button class="btn"><i class="fas fa-search"></i></button>
                                 </div>
-                                <input type="text" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
                             </div>
                         </div>
                     </form>
@@ -109,6 +72,46 @@
 
                 </div>
             </div>
+
+            <div class="col-lg-8 pt-lg-4">
+                <div class="blog">
+                    @if ($items->count()==0)
+                        <div class="items p-4 border-bottom">
+                            <div class="hashtaq mb-4 py-2">
+                                <a class="p-2 px-3" href="#">{{$type}}</a>
+                            </div>
+                            <a href="#"><h5>موردی یافت نشد</h5></a>
+                        </div>
+                    @endif
+                    @foreach ($items as $item)
+                        <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
+                            <div class="hashtaq mb-4 py-2">
+                                <a class="p-2 px-3" href="#">{{$type??' همه پست ها '}}</a>
+                            </div>
+                            
+                            <a href="{{ route('user.post.show',$item->slug) }}">
+                                <h5>{{$item->title}}</h5>
+                                <p class="py-2 mb-0">{{$item->short_text}}</p>
+                            </a>
+                            
+                            <small class="px-4">
+                                {{' نویسنده : '.$item->writer}}
+                                <span class="text-secondary mx-1">{{my_jdate($item->updated_at,'d F Y')}}</span>
+                            </small>
+                            <div id="old{{$item->id}}" class="col-12 pt-2 old">
+                                <i class="fa fa-plus"></i>
+                            </div>
+                            <div id="new{{$item->id}}" class="col-12 pt-2 d-none">
+                                <i class="fa fa-close text-secondary"></i>
+                            </div>
+                        </div>
+                    @endforeach
+                    @if ($items->count())
+                        <div class="pagy">{{$items->links()}}</div>
+                    @endif
+                </div>
+            </div>
+    
         </div>
     </div>
 </section>

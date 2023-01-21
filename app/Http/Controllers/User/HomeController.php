@@ -144,11 +144,12 @@ class HomeController extends Controller {
         foreach ($evokes as $evoke) {
             $user = User::find($evoke->user_id);
             if ($user && $user->mobile) {
-                Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
+                // Sms::SendSms( 'مشاور مورد نظر آنلاین شد' , $user->mobile);
             }
             $evoke->notify = 'ارسال شده';
             $evoke->update();
         }
+        return redirect()->route('user.home-goust');
         
         return view('user.index', compact('serviceCat2','serviceCat','sliders', 'about', 'joins', 'packages','network'));
     }
@@ -162,8 +163,8 @@ class HomeController extends Controller {
         return view('user.ticket.index', compact('items', 'serviceCat')); 
     }
     
-    public function web_tickets() {
-        $items = Contact::where('category','!=','رسید پرداخت')->where('user_id', Auth::user()->id )->where('belongs_to_item', '=', 0)->orderBy('id','desc')->paginate(10);
+    public function web_tickets() { 
+        $items = Contact::whereNotIn('category',['رسید پرداخت','کد تخفیف','کاربر ویژه'])->where('user_id', Auth::user()->id )->where('belongs_to_item', '=', 0)->orderBy('id','desc')->paginate(10);
         foreach ($items as $item) {
             $item->mobile = Contact::where('belongs_to_item', $item->id )->count();
         }

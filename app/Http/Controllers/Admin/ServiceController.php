@@ -38,7 +38,7 @@ class ServiceController extends Controller
     public function index(Request $request) 
     {
         $category_id = $request->category_id;
-        $ServiceCats = ServiceCat::where('slug','!=','کد-تخفیف')->where('type','service')->get();
+        $ServiceCats = ServiceCat::where('status','active')->where('slug','!=','کد-تخفیف')->where('type','service')->get();
         if (Auth::user()->hasRole('مدیر')) {
             if(isset($category_id)){
                 $cats = ServiceCat::where('service_id',$category_id)->pluck('id');

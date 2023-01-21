@@ -28,53 +28,9 @@
     }
 </style>
 
-<section class="blogs"> 
+<section class="blogs">
     <div class="col-12">
         <div class="row">
-    
-            <div class="col-lg-8 pt-lg-4">
-                <div class="blog blog-show">
-                    @if ($item->count())
-                        <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
-                            <h5 class="px-4">{{$item->title}}</h5>
-
-                            @if ($item->photo)
-                                <img class="rounded" src="{{url($item->photo)}}" alt="{{$item->title}}">
-                            @elseif($item->video)
-                                <video controls><source src="{{$item->video?url($item->video):''}}" type="video/mp4"></video>
-                            @endif
-                            
-                            <h5 class="px-4 mb-3 fs-6">{{$item->short_text}}</h5>
-                            
-                            <p class="px-4">{!! $item->text !!}</p>
-
-                            @if ($item->file)
-                                <div class="mb-4">
-                                    <a href="{{ url($item->file) }}" class="p-2 px-lg-3" target="_blank">{{$item->file_title?$item->file_title:'مشاهده فایل پیوست شده'}}</a>
-                                </div>
-                            @endif
-
-                            @if ($item->photo && $item->video)
-                                <video controls><source src="{{url($item->video)}}" type="video/mp4"></video>
-                            @endif
-                            
-                            @unless ($type=='اطلاعیه')
-                                <small class="px-4">
-                                    {{' نویسنده : '.$item->user()->first_name.' '.$item->user()->last_name}}
-                                    <span class="text-secondary mx-1">{{my_jdate($item->updated_at,'d F Y')}}</span>
-                                </small>
-                            @endunless
-                        </div>
-                    @else
-                        <div class="items p-4 border-bottom">
-                            <div class="hashtaq mb-4 py-2">
-                                <a class="p-2 px-3" href="#">{{$type}}</a>
-                            </div>
-                            <a href="#"><h5>موردی یافت نشد</h5></a>
-                        </div>
-                    @endif
-                </div>
-            </div>
     
             <div class="col-lg-4">
                 <div class="cats">
@@ -85,10 +41,10 @@
                         @csrf
                         <div class="searchbox mt-4">
                             <div class="input-group">
+                                <input type="text" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
                                 <div class="input-group-prepend">
                                     <button class="btn"><i class="fas fa-search"></i></button>
                                 </div>
-                                <input type="text" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
                             </div>
                         </div>
                     </form>
@@ -104,12 +60,12 @@
     
                     <h6 class="pt-5">تازه‌ها</h6>
 
-                    @foreach ($latest as $item)
+                    @foreach ($latest as $new)
                         <div class="pt-4">
                             <div>
-                                <a href="{{ route('user.post.show',$item->slug) }}" class="link">{{$item->title}}</a>
+                                <a href="{{ route('user.post.show',$new->slug) }}" class="link">{{$new->title}}</a>
                             </div>
-                            <span class="text-secondary">{{my_jdate($item->updated_at,'d F Y')}}</span>
+                            <span class="text-secondary">{{my_jdate($new->updated_at,'d F Y')}}</span>
                         </div>
                     @endforeach
                     
@@ -139,6 +95,42 @@
 
                 </div>
             </div>
+
+            <div class="col-lg-8 pt-lg-4">
+                <div class="blog blog-show">
+                    <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$blog->id}}')" onmouseout="oldIco(this, '{{$blog->id}}')">
+                        <h5 class="px-4">{{$blog->title}}</h5>
+
+                        @if ($blog->photo)
+                            <img class="rounded" src="{{url($blog->photo)}}" alt="{{$blog->title}}">
+                        @elseif($blog->video)
+                            <video controls><source src="{{$blog->video?url($blog->video):''}}" type="video/mp4"></video>
+                        @endif
+                        
+                        <h5 class="px-4 mb-3 fs-6">{{$blog->short_text}}</h5>
+                        
+                        <p class="px-4">{!! $blog->text !!}</p>
+
+                        @if ($blog->file)
+                            <div class="mb-4">
+                                <a href="{{ url($blog->file) }}" class="p-2 px-lg-3" target="_blank">{{$blog->file_title?$blog->file_title:'مشاهده فایل پیوست شده'}}</a>
+                            </div>
+                        @endif
+
+                        @if ($blog->photo && $blog->video)
+                            <video controls><source src="{{url($blog->video)}}" type="video/mp4"></video>
+                        @endif
+                        
+                        @unless ($type=='اطلاعیه')
+                            <small class="px-4">
+                                {{' نویسنده : '.$blog->writer}}
+                                <span class="text-secondary mx-1">{{my_jdate($blog->updated_at,'d F Y')}}</span>
+                            </small>
+                        @endunless
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </section>

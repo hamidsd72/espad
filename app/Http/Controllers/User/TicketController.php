@@ -5,8 +5,7 @@ use App\Model\Sms;
 use App\Model\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-
+ 
 class TicketController extends Controller {
     public function __construct() {
        $this->middleware('auth');
@@ -16,14 +15,14 @@ class TicketController extends Controller {
         try {
             $name = 'بدون نام';
             $belongs_to_item = 0;
-            if (Auth::user()->first_name || Auth::user()->last_name) {
-                $name = Auth::user()->first_name.' '.Auth::user()->last_name;
+            if (auth()->user()->first_name || auth()->user()->last_name) {
+                $name = auth()->user()->first_name.' '.auth()->user()->last_name;
             }
             if ($request->belongs_to_item) {
                 $belongs_to_item = $request->belongs_to_item;
             }
             $ticket = new Contact();
-            $ticket->user_id         = Auth::user()->id; 
+            $ticket->user_id         = auth()->user()->id; 
             $ticket->full_name       = $name;
             $ticket->subject         = $request->subject;
             $ticket->category        = $request->category;
@@ -49,7 +48,7 @@ class TicketController extends Controller {
             } elseif ($request->category=='کد تخفیف') {
                 $msg = ' یک درخواست کد تخفیف ارسال شد ';
             }
-            Sms::SendSms( $msg , env('ADMIN_MOBILE'));
+            // Sms::SendSms( $msg , env('ADMIN_MOBILE'));
             return redirect()->back()->withInput()->with('flash_message', 'پیام شما با موفقیت ارسال شد');
         }
         catch (\Exception $error) {

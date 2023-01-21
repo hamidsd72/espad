@@ -92,6 +92,11 @@
                                     <a href="{{route('admin.forms.show', 'contact')}}" class="btn btn-secondary mb-0">بازگشت</a>
                                 @endif
                                 @if ($item->status=='pending')
+                                    <div class="float-left">
+                                        <a href="#" type="button" class="btn btn-success" data-toggle="modal" data-target="#sendNotification">
+                                            پاسخ دادن
+                                        </a>
+                                    </div>
                                     {{ Form::button('فرم بررسی شد', array('type' => 'submit', 'class' => 'btn btn-info mr-2')) }}
                                 @endif
                                 {{ Form::close() }}
@@ -103,6 +108,57 @@
         </div>
     </section>
 
+    <div class="modal" id="sendNotification">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {{ Form::open(array('route' => 'admin.notification.store', 'method' => 'POST', 'files' => true)) }}
+                                
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">ارسال پاسخ به کاربر</h4>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        
+                        {{Form::hidden('type', 'single', array())}}
+                        {{Form::hidden('user_id', $mobile, array())}}
+
+                        <div class="form-group">
+                            {{Form::label('subject', ' عنوان اعلان *')}}
+                            {{Form::text('subject', null, array('class' => 'form-control','required'))}}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{Form::label('description', ' توضیحات اعلان *')}}
+                            {{Form::textarea('description', null, array('class' => 'form-control','required'))}}
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('file', 'پیوست')}}
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="attach" name="attach">
+                                    <label class="custom-file-label" dir="ltr" for="exampleInputFile">انتخاب فایل</label>
+                                </div>
+                            </div>
+                            <p class="text-danger">_<small>حداکثر سایز هر پیوست 10Mb می باشد</small></p>
+                        </div>
+
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mx-3" data-dismiss="modal">انصراف</button>
+                        {{ Form::button('ارسال اعلان', array('type' => 'submit', 'class' => 'btn btn-success')) }}
+                    </div>
+                    
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('js')
 @endsection
+

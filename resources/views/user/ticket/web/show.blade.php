@@ -96,7 +96,7 @@
                                     @csrf
                                 <fieldset>
                                     <input type="hidden" name="belongs_to_item" value="{{$item->id}}" id="contactbelongs_to_itemField">
-                                    <input type="hidden" name="category" value="{{$serviceCat->id}}" id="category_to_itemField">
+                                    <input type="hidden" name="category" value="{{$serviceCat->id??$item->category}}" id="category_to_itemField">
                                     <input type="hidden" name="subject" value="{{$item->subject}}" id="contactEmailField">
                                     <div class="form-field form-text">
                                         <label class="contactMessageTextarea color-theme" for="contactMessageTextarea">متن:<span>(required)</span></label>

@@ -28,49 +28,6 @@
                                 <tbody>
                                 @if(count($items)>0)
                                     @foreach($items as $key=>$item)
-                                        <div class="modal fade" id="modal_{{$item->id}}" tabindex="-1" role="dialog"
-                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title dir-rtl">{{$item->title}}</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row alert alert-info row_head">
-                                                            <div class="col-md-6">نام خدمت</div>
-                                                            <div class="col-md-6">ترتیب نمایش</div>
-                                                        </div>
-
-
-                                                    {{ Form::open(array('route' => ['admin.sort.by.join'], 'method' => 'POST', 'files' => true)) }}
-
-                                                            @foreach($item->joins as $key=> $join)
-
-                                                                <div class="row row_tabale alert alert-secondary mb-0">
-                                                                    <div class="col-md-6">
-                                                                        {{-- {{$join->service->title}} --}}
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        {{ Form::number('id_join[]',$join->id, array('class' => 'form-control text-left','hidden')) }}
-                                                                        {{ Form::number('key_join',$key+1, array('class' => 'form-control text-left','hidden')) }}
-                                                                        {{ Form::number('sort_by[]',$join->sort_by, array('class' => 'form-control text-center')) }}
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        <br>
-                                                        {{ Form::button('<i class="fa fa-circle-o mtp-1 ml-1"></i>تنظیم ترتیب', array('type' => 'submit', 'class' => 'btn btn-outline-info float-left')) }}
-                                                        {{ Form::close() }}
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">بستن
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         {{-- <tr class="{{$item->custom==1?'backgrond_tb':''}}"> --}}
                                         <tr >
@@ -93,6 +50,7 @@
                                                    class="badge bg-primary ml-1"
                                                    title="مشاهده"><i class="fa fa-eye"></i>
                                                 </a>
+                                                <span class="px-4">{{$item->sort_by}}</span>
                                             </td>
                                             <td>
                                                 {{$item->home_view==1?'نمایش':'عدم نمایش'}}
@@ -141,6 +99,45 @@
         </div>
     </section>
 
+    @if(count($items)>0)
+        @foreach($items as $key=>$item)
+            <div class="modal fade" id="modal_{{$item->id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title dir-rtl">{{$item->title}}</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            {{ Form::open(array('route' => ['admin.sort.by.join'], 'method' => 'POST', 'files' => true)) }}
+                                {{ Form::number('id',$item->id, array('class' => 'form-control text-left','hidden')) }}
+                                {{ Form::number('sort',$item->sort_by, array('class' => 'form-control text-left')) }}
+
+                                    {{-- @foreach($item->joins as $key=> $join)
+
+                                        <div class="row row_tabale alert alert-secondary mb-0">
+                                            <div class="col-md-6">
+                                                {{$join->service->title}}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{ Form::number('id_join[]',$join->id, array('class' => 'form-control text-left','hidden')) }}
+                                                {{ Form::number('key_join',$key+1, array('class' => 'form-control text-left','hidden')) }}
+                                                {{ Form::number('sort_by[]',$join->sort_by, array('class' => 'form-control text-center')) }}
+                                            </div>
+                                        </div>
+                                    @endforeach --}}
+                                <br>
+                                {{ Form::button('<i class="fa fa-circle-o mtp-1 ml-1"></i>تنظیم ترتیب', array('type' => 'submit', 'class' => 'btn btn-primary')) }}
+                                <button type="button" class="btn btn-secondary mx-3" data-dismiss="modal">بستن</button>
+                            {{ Form::close() }}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
 @endsection
 @section('js')
     <script>

@@ -11,7 +11,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('admin/plugins/font-awesome/css/font-awesome.min.css')}}">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    {{-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('admin/plugins/select2/select2.min.css')}}">
     <!-- Theme style -->
@@ -140,7 +140,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{route('user.index')}}" target="_blank" class="nav-link">@item($setting->title)</a>
+                <a href="{{url('/')}}" target="_blank" class="nav-link">@item($setting->title)</a>
             </li>
         </ul>
         <ul class="navbar-nav mr-auto">
@@ -195,13 +195,9 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <a href="{{route('user.home-goust')}}" class="nav-link">
-                            <i class="fa fa-home" style="font-size: 24px;"></i>
-                            <p class="px-1">صفحه اصلی</p>
-                        </a>
                         <li class="nav-item has-treeview">
                             <a href="javascript:void(0);" class="nav-link">
-                                <i class="nav-icon fa fa-dashboard"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                 <p>
                                     داشبورد
                                     <i class="right fa fa-angle-left"></i>
@@ -225,7 +221,7 @@
                         @role('مدیر')
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-user"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         کاربران
                                         <i class="right fa fa-angle-left"></i>
@@ -250,7 +246,7 @@
                             </li>
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         تیکت مشاوره
                                         <i class="fa fa-angle-left right"></i>
@@ -323,7 +319,7 @@
                         @if(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-th"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         @role('مدیر')
                                             پکیج های مشاوران
@@ -355,20 +351,20 @@
                                                 <p>ایجاد پکیج جدید</p>
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.service.package.list')}}" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon"></i>
+                                                <p>کارگاه ها</p>
+                                            </a>
+                                        </li>
                                     @endrole
-                                    <li class="nav-item">
-                                        <a href="{{route('admin.service.package.list')}}" class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon"></i>
-                                            <p>کارگاه ها</p>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
                         @endif
                         @role('مدیر')
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-th"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         دسته بندی ها
                                         <i class="right fa fa-angle-left"></i>
@@ -424,9 +420,62 @@
                                     </li> --}}
                                 </ul>
                             </li>
+                        @endrole                            
+                        <li class="nav-item has-treeview">
+                            <a href="javascript:void(0);" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon px-2"></i>
+                                <p>سبد سهام<i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview border-bottom">
+                                @role('مدیر')
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.stock-portfolio-categories.index')}}" class="nav-link ">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p>دسته های سبد سهام</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.service.package.price.list')}}" class="nav-link ">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p>پکیج قیمت سبد سهام</p>
+                                        </a>
+                                    </li>
+                                @endrole
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','unread-special')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای عضویت در انتظار
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','کاربر ویژه')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @else 
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','کاربر ویژه')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','read-special')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای عضویت دریافتی
+                                            <span class="text-success mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','کاربر ویژه')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @else 
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','کاربر ویژه')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @role('مدیر')
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-th"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         فرم ها
                                         <i class="right fa fa-angle-left"></i>
@@ -468,85 +517,115 @@
                                 </ul>
                             </li>
                         @endrole
-                        @if(in_array(auth()->user()->getRoleNames()->first(),['مدیر','مدرس']))
-                        {{-- @hasanyrole('مدیر'|'مدرس') --}}
-                            <li class="nav-item has-treeview">
-                                <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-pie-chart"></i>
-                                    <p>
-                                        گزارشات
-                                        <i class="right fa fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview border-bottom">
-                                    @role('مدیر')
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.users.service.package.list')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p> کاربران کارگاه ها</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.report.transaction.list')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p> تراکنش ها</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.contact.list.pay','unread-pay')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p>رسیدهای در انتظار تایید
-                                                    <span class="text-danger mx-1">
-                                                        {{\App\Model\Contact::where('category','=','رسید پرداخت')->where('reply',0)->where('answered', 'no')->count()}}
-                                                    </span>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.contact.list.pay','read-pay')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p>لیست رسیدهای دریافتی
-                                                    <span class="text-success mx-1">
-                                                        {{\App\Model\Contact::where('category','=','رسید پرداخت')->where('reply','>',0)->where('answered', 'no')->count()}}
-                                                    </span>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.contact.list.pay','unread-offCode')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p>درخواست کد تخفیف 
-                                                    <span class="text-danger mx-1">
-                                                        {{\App\Model\Contact::where('category','=','کد تخفیف')->where('reply',0)->where('answered', 'no')->count()}}
-                                                    </span>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        {{-- <li class="nav-item">
-                                            <a href="{{route('admin.contact.list.pay','read-offCode')}}" class="nav-link">
-                                                <i class="fa fa-circle-o nav-icon"></i>
-                                                <p>درخواست های کد تخفیف
-                                                    <span class="text-success mx-1">
-                                                        {{\App\Model\Contact::where('category','=','کد تخفیف')->where('reply','>',0)->where('answered', 'no')->count()}}
-                                                    </span>
-                                                </p>
-                                            </a>
-                                        </li> --}}
-                                    @endrole
+                        <li class="nav-item has-treeview">
+                            <a href="javascript:void(0);" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon px-2"></i>
+                                <p>
+                                    گزارشات
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview border-bottom">
+                                @role('مدیر')
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.users.service.package.list')}}" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p> کاربران کارگاه ها</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.report.transaction.list')}}" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p> تراکنش ها</p>
+                                        </a>
+                                    </li>
+                                @endrole
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','unread-pay')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای مشاوره در انتظار
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','رسید پرداخت')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @else
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','رسید پرداخت')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','read-pay')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>لیست رسیدهای مشاوره دریافتی
+                                            <span class="text-success mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','رسید پرداخت')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @else
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','رسید پرداخت')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','unread-special')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای عضویت در انتظار
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','کاربر ویژه')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @else
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','کاربر ویژه')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','read-special')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای عضویت دریافتی
+                                            <span class="text-success mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','کاربر ویژه')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @else
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','کاربر ویژه')->where('reply','>',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a href="{{route('admin.contact.list.pay','unread-offCode')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>درخواست های کد تخفیف 
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\Contact::where('category','=','کد تخفیف')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @else
+                                                    {{\App\Model\Contact::where('user_id',auth()->user()->id)->where('category','=','کد تخفیف')->where('reply',0)->where('answered', 'no')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                @role('مدیر')
                                     <li class="nav-item">
                                         <a href="{{route('admin.call.request')}}" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon"></i>
                                             <p>تماس های مشاوره</p>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
-                        @endif
+                                @endrole
+                            </ul>
+                        </li>
                         @role('مدیر')
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         تنظیمات اصلی
                                         <i class="fa fa-angle-left right"></i>
@@ -599,7 +678,7 @@
                             </li>
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         موقعیت های شغلی
                                         <i class="fa fa-angle-left right"></i>
@@ -634,7 +713,7 @@
                             </li>
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         محتوا صفحات
                                         <i class="fa fa-angle-left right"></i>
@@ -723,7 +802,7 @@
                             </li> 
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         محتوا صفحات زیردسته ها
                                         <i class="fa fa-angle-left right"></i>
@@ -782,7 +861,7 @@
                             </li>
                             <li class="nav-item has-treeview">
                                 <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-icon fa fa-cog"></i>
+                                    <i class="fa fa-circle-o nav-icon px-2"></i>
                                     <p>
                                         آیتم های صفحات
                                         <i class="fa fa-angle-left right"></i>
@@ -805,6 +884,10 @@
                                     @endforeach
                                 </ul>
                             </li>
+                            <a href="{{route('admin.file-upload.index')}}" class="nav-link">
+                                <i class="fa fa-circle-o nav-icon px-2"></i>
+                                <p>آپلود فایل</p>
+                            </a>
                             <a href="{{route('admin.about.edit')}}" class="nav-link">
                                 <i class="fa fa-circle-o nav-icon px-2"></i>
                                 <p>درباره ما</p>
@@ -918,9 +1001,8 @@
 {{--<script src="{{asset('admin/plugins/fastclick/fastclick.js')}}"></script>--}}
 <!-- AdminLTE App -->
 <script src="{{asset('admin/js/adminlte.js')}}"></script>
-
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('admin/js/demo.js')}}"></script>
+<script src="{{asset('admin/js/demo.js')}}"></script> 
 <!-- Persian Data Picker -->
 <script src="{{asset('admin/js/persian-date.min.js')}}"></script>
 <script src="{{asset('admin/js/persian-datepicker.min.js')}}"></script>
@@ -1011,3 +1093,22 @@
 </body>
 </html>
                         
+
+{{-- function ConvertNumberToPersion() {
+    let persian = { 0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹' };
+    function traverse(el) {
+        if (el.nodeType == 3) {
+            var list = el.data.match(/[0-9]/g);
+            if (list != null && list.length != 0) {
+                for (var i = 0; i < list.length; i++)
+                    el.data = el.data.replace(list[i], persian[list[i]]);
+            }
+        }
+        for (var i = 0; i < el.childNodes.length; i++) {
+            traverse(el.childNodes[i]);
+        }
+    }
+    traverse(document.body);
+}
+
+ConvertNumberToPersion() --}}

@@ -68,12 +68,12 @@ class BlogController extends Controller {
     }
 
     public function show($id) {
-        $item   = Post::where('status','active')->where('slug',$id)->firstOrFail();
-        $type   = $item->type;
-        $item->seen+=1;
-        $item->update();
+        $blog   = Post::where('status','active')->where('slug',$id)->firstOrFail();
+        $type   = $blog->type;
+        $blog->seen+=1;
+        $blog->update();
         $latest = Post::orderByDesc('id')->take(4)->get();
-        return view('user.blog.show', compact('item','latest','type'));
+        return view('user.blog.show', compact('blog','latest','type'));
     }
 
 }

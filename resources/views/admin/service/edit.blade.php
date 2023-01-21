@@ -116,14 +116,14 @@
                                     <div class="form-group">
                                         {{ Form::label('price', ' هزینه (هر دقیقه)') }}
                                         {{ Form::number('price',null, array('class' => 'form-control','onkeyup'=>'number_price(this.value)')) }}
-                                        <span id="price_span" class="span_p"><span id="pp_price"></span> تومان </span>
+                                        <span id="price_span" class="span_p"><span id="pp_price"></span> ریال </span>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('amount', '* قیمت کالا (برای بخش فروشگاه)') }}
                                         {{ Form::number('amount', null , array('class' => 'form-control','onkeyup'=>'number_price2(this.value)' )) }}
-                                        <span id="price_span" class="span_p"><span id="amount_price"></span> تومان </span>
+                                        <span id="price_span" class="span_p"><span id="amount_price"></span> ریال </span>
                                     </div>
                                 </div>
                                 <h6 class="col-12">ساعت کاری روزهای شنبه</h6>

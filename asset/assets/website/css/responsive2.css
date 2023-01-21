@@ -858,13 +858,13 @@ footer .social-icon .svg-inline--fa {
 }
 footer .social-icon a:hover .svg-inline--fa {
     color: #c5dcff;
-    color: deepskyblue;
+    color: white;
     font-size: 28px;
     margin-top: 0px;
     transition: 0.4s;
 }
 footer .links-footer a:hover {
-    color: deepskyblue;
+    color: white;
     font-size: 18px;
     transition: 0.4s;
 }
@@ -938,7 +938,7 @@ section.about p.contact:hover , p.contact:hover a {
     transition: 0.4s;
 }
 section.blogs .row {
-    direction: ltr;
+    direction: rtl;
 }
 section.blogs .cats {
     background: #f7f7f7;
@@ -1219,7 +1219,8 @@ section.about .card .kala img {
     }
     section.blogs .cats {
         padding: 10%;
-        padding-right: 40%;
+        padding-left: 40%;
+        height: 100%;
     }
     section.blogs .blog {
         padding: 2%;

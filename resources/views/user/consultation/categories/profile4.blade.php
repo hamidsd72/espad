@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="mx-2 text-secondary">
                                         {{$service->title}}
-                                        <div class="float-start pe-lg-5 me-lg-5">{{$service->price>0?price( $service->price ).'تومان':'رایگان'}}</div>
+                                        <div class="float-start pe-lg-5 me-lg-5">{{$service->price>0?price( $service->price ).'ریال':'رایگان'}}</div>
                                     </div>
                                 </a>
                             @endforeach
@@ -214,7 +214,7 @@
                             </td>
                             <td class="col-2" style="background: #dae1e566;">
                                 ۱۰ دقیقه
-                                {{number_format($item->price*10).' تومان '}}
+                                {{number_format($item->price*10).' ریال '}}
                             </td>
                         </tr>
                         <tr>
@@ -244,7 +244,7 @@
                             </td>
                             <td style="background: #f2f5f766;">
                                 ۳۰ دقیقه
-                                {{number_format($item->price*30).' تومان '}}
+                                {{number_format($item->price*30).' ریال '}}
                             </td>
                         </tr>
                         <tr>
@@ -258,7 +258,7 @@
                             <td></td>
                             <td>
                                 ۶۰ دقیقه
-                                {{number_format($item->price*60).' تومان '}}
+                                {{number_format($item->price*60).' ریال '}}
                             </td>
                         </tr>
                     </tbody>
@@ -271,15 +271,15 @@
                     <div class="col-12 p-1 p-lg-4" style="color: #00788D;">تعرفه ها</div>
                     <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #f2f5f766;">
                             ۱۰ دقیقه
-                        {{number_format($item->price*10).' تومان '}}
+                        {{number_format($item->price*10).' ریال '}}
                     </div>
                     <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #dae1e566;">
                             ۳۰ دقیقه
-                        {{number_format($item->price*30).' تومان '}}
+                        {{number_format($item->price*30).' ریال '}}
                     </div>
                     <div class="col-12 p-2 p-lg-4 m-1 text-center small" style="background: #f2f5f766;">
                             ۶۰ دقیقه
-                        {{number_format($item->price*60).' تومان '}}
+                        {{number_format($item->price*60).' ریال '}}
                     </div>
                 </div>
 
