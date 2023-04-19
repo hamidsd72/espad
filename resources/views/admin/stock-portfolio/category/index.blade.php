@@ -15,6 +15,7 @@
                         <th data-toggle="true">تعداد آیتم</th>
                         <th data-toggle="true">ترتیب</th>
                         <th data-toggle="true">نمایش/عدم نمایش</th>
+                        <th data-toggle="true">تعداد بازدید</th>
                         <th data-hide="phone">عملیات</th>
                     </tr>
                     </thead>
@@ -31,6 +32,7 @@
                                     <input type="number" min="0" name="sort" class="form-control text-center" onchange="this.form.submit()" value="{{$item->sort}}">
                                 </form>
                             </td>
+                            <td>{{ $item->seen }}</td>
 
                             <td class="table-td-icons">
                                 <a href="{{ route('admin.stock-portfolio.show', $item->id) }}" class="badge bg-success p-1">مدیریت محتوا</a>

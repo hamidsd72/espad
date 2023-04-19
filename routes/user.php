@@ -25,6 +25,7 @@ Route::get('consultation/offline/evoke/{consultation_id}', 'ConsultationControll
 Route::resource('cooperation', 'CooperationController');
 // بلاگ , آموزش و اطلاعیه
 Route::get('post/type/{id}', 'BlogController@index')->name('post.index.type');
+Route::get('post/{id}/view/{slug?}', 'BlogController@show')->name('post.show-by-slug');
 Route::resource('post', 'BlogController');
 // فرم های مشاوره
 Route::resource('forms', 'FormController');
@@ -59,6 +60,7 @@ Route::get('/basket_del/{id}/{type}', 'BasketController@del_basket')->name('bask
 Route::resource('my-basket', 'BasketController');
 /*Route::get('/basket_del', 'BasketController@del_basket')->name('basket.del');*/
 Route::resource('stock-portfolio', 'StockPortfolioController');
+Route::get('stock-portfolio/{id}/view/{slug?}', 'StockPortfolioController@show')->name('stock-portfolio.show-by-slug');
 
 Route::get('report/user-transaction/{id}', 'TransactionController@index')->name('user-transaction-report');
 // app pay
@@ -154,5 +156,13 @@ Route::get('call/{unique_code}/accept/{status}', 'CallController@accept')->name(
 Route::get('call/{unique_code}/end', 'CallController@end')->name('call.end');
 Route::get('call/{unique_code}/end/not_device', 'CallController@end_not_device')->name('call.end.not.device');
 Route::get('call/{unique_code}/no_reply', 'CallController@no_reply')->name('call.no.reply');
+
+//new Calling
+Route::get('new-call-request/{service_id}/{type}', 'NewCallController@request_call')->name('new.call.request');
+Route::get('new-call-cancel/{call_id}', 'NewCallController@cancel_call')->name('new.call.cancel');
+Route::get('new/force-end-call/{call_id}', 'NewCallController@force_end_call')->name('new.force-end-call');
+
+// ofline package payment
+Route::post('packages/offline/payment/form', 'OfflinePaymentController@form_post')->name('package.offline_payment.form_post');
 
 

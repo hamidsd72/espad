@@ -7,6 +7,7 @@ use App\Model\ServiceCat;
 use App\Model\Setting;
 use App\Model\Service;
 use App\Model\CallRequest;
+use App\Model\NewCallRequest;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -337,7 +338,7 @@ class CallController extends Controller
     }
     public function user_call_report()
     {
-        $items = CallRequest::orderByDesc('id')->where('user_id',auth()->id())->paginate( $this->controller_paginate() );
+        $items = NewCallRequest::orderByDesc('id')->where('user_id',auth()->id())->orWhere('consultant_id',auth()->id())->paginate( $this->controller_paginate() );
         return view('admin.call.index', compact('items'), ['title1' => $this->controller_title('single'), 'title2' => $this->controller_title('sum')]);
     }
     public function app_user_call_report()

@@ -68,9 +68,22 @@ class UserController extends Controller
             $items = User::role('کاربر')->paginate($this->controller_paginate());
             // $items = User::role('کاربر')->where('reagent_code',Auth::user()->reagent_id)->where('abbreviation_agent',Auth::user()->abbreviation_agent)->paginate($this->controller_paginate());
         }
+
         $serviceCat = ServiceCat::all();
         return view('admin.user.index', compact('items','serviceCat'), ['title1' => 'کاربران', 'title2' => $this->controller_title('sum')]);
     }
+
+    public function search(Request $request)
+    {
+        if (Auth::user()->hasRole('مدیر')) {
+            $items = User::orWhere('mobile','LIKE','%'.$request->search.'%')->orWhere('first_name','LIKE','%'.$request->search.'%')->orWhere('last_name','LIKE','%'.$request->search.'%')
+            ->orderByDesc('id')->paginate($this->controller_paginate());
+        }
+        else abort(404);
+        $serviceCat = ServiceCat::all();
+        return view('admin.user.index', compact('items','serviceCat'), ['title1' => 'کاربران', 'title2' => $this->controller_title('sum')]);
+    }
+
     public function show($id)
     {
         if (Auth::user()->hasRole('مدیر')) {

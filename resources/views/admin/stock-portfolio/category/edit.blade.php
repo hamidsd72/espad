@@ -27,6 +27,14 @@
                         <label for="text" class="form-label">* توضیحات فارسی :</label>
                         <textarea class="form-control textarea " id="text" name="text">{{ old('text') }}</textarea>
                     </div> --}}
+                    <div class="col-lg-3 form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+                        <label for="photo" class="form-label"> تصویر  :</label>
+                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*" value="{{ old('photo') }}"/>
+                    </div>
+                    
+                    @if ($item->pic)
+                        <img src="{{ url($item->pic->path) }}" alt="{{ $item->title }}" height="100px">
+                    @endif
                 </div>
     
                 <div class="form-group">

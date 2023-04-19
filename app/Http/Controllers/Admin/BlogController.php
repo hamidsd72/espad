@@ -32,7 +32,7 @@ class BlogController extends Controller {
         $this->validate($request, [
             'title'     => 'required|max:240',
             'slug'      => 'required|max:250',
-            'short_text'=> 'required',
+            // 'short_text'=> 'required',
             'text'      => 'required',
         ]);
         if( Post::where('type',$request->type)->where('slug',$request->slug)->count() ) return redirect()->back()->withInput()->with('flash_message', 'عنوان تکراری می باشد');
@@ -76,7 +76,7 @@ class BlogController extends Controller {
         $this->validate($request, [
             'title'     => 'required|max:240',
             'slug'      => 'required|max:250',
-            'short_text'=> 'required',
+            // 'short_text'=> 'required',
             'text'      => 'required',
         ]);
 

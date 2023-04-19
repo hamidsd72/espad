@@ -132,24 +132,18 @@
                             </div>
                         @endif
                         <div class="card-footer border-top border-color">
-                            {{-- <div class="row mb-0">
-                                <div class="col my-auto">
-                                    <a href="{{ \Request::route()->getName()=='user.user-tours.create'? route('user.ads-tours-show-guest',$package->slug) : route('user.package',$package->slug)}}" 
-                                        class="small text-secondary">اطلاعات بیشتر</a>
-                                </div>
-                                <div class="col-auto">
-                                    <a href="{{ \Request::route()->getName()=='user.user-tours.create'? route('user.ads-tours-show-guest',$package->slug) : route('user.package',$package->slug)}}" 
-                                        class="btn border border-color btn-info">مشاهده</a>
-                                </div>
-                            </div> --}}
                             {!! $package->text !!}
+                            <div class="row m-0">
+                                <div class="col my-auto">
+                                    <a href="{{ route('user.consultation.edit', $package->slug) }}" class="text-primary">نمایش وبینار</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
-
 @endsection
 @section('js')  
 @endsection

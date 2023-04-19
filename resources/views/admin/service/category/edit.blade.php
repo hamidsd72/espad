@@ -44,9 +44,9 @@
                                         {{ Form::color('text_color',null, array('class' => 'w-100 d-block')) }}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        {{ Form::label('view', '* محل نمایش') }}
+                                        {{ Form::label('view', 'محل نمایش') }}
                                         <select class="form-control" name="view">
                                             <option value="header" @if ($item->view=="header") selected @endif>نوبار دوم</option>
                                             <option value="body" @if ($item->view=="body") selected @endif>۶ آیتم</option>
@@ -54,7 +54,16 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        {{ Form::label('view_mod', ' قالب نمایش') }}
+                                        <select class="form-control" name="view_mod">
+                                            <option value="sample" @if ($item->view=="sample") selected @endif>قالب شیشه ای (قدیم)</option>
+                                            <option value="new" @if ($item->view=="new") selected @endif>قالب سرمه ای (جدید)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
                                     <label for="exampleInputFile">تصویر کارت</label>
                                     <div class="input-group">
                                         <div class="custom-file">

@@ -22,7 +22,7 @@
                         <input type="text" class="form-control" id="slug" name="slug"  value="{{ old('slug') }}" />
                     </div>
                     <div class="col-lg form-group{{ $errors->has('short_text') ? ' has-error' : '' }}">
-                        <label for="name" class="form-label">* خلاصه فارسی :</label>
+                        <label for="name" class="form-label"> خلاصه فارسی :</label>
                         <input type="text" class="form-control" id="short_text" name="short_text"  value="{{ old('short_text') }}" />
                     </div>
                     @unless ($type=='سبد-سهام')

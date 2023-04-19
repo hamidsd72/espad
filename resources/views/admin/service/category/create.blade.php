@@ -44,7 +44,7 @@
                                         {{ Form::color('text_color',null, array('class' => 'w-100 d-block')) }}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('view', '* محل نمایش') }}
                                         <select class="form-control" name="view">
@@ -54,7 +54,16 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        {{ Form::label('view_mod', ' قالب نمایش') }}
+                                        <select class="form-control" name="view_mod">
+                                            <option value="sample" selected>قالب شیشه ای (قدیم)</option>
+                                            <option value="new">قالب سرمه ای (جدید)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
                                     <label for="exampleInputFile">تصویر کارت</label>
                                     <div class="input-group">
                                         <div class="custom-file">

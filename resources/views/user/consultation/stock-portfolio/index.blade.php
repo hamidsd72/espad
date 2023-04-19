@@ -1,10 +1,11 @@
 @extends('layouts.layout_first_page')
 @section('content')
 <style>
-    .blogs .blog .card {border-radius: 20px;border: 2px solid #928c8c !important;}
+    .blogs .blog .card {border-radius: 12px;border: none !important;max-width: 128px;padding: 3px}
+    .blogs .blog .card:hover {padding: 0px;transition: 0.3s;}
     .blogs .blog .card-border-bottom {border-bottom: 2px solid #928c8c !important;}
-    .blogs .blog .card .body {width: 148px;height: 148px;}
-    
+    .blogs .blog .card .body {height: 136px;}
+    .blogs .blog .card .card-bottom-null {height: 18px;background: #303642;margin: auto 4px;}
     .stock {background: #ecf0f3}
     .redu8 {border-radius: 8px}
     .c-blue {color: #214f7a}
@@ -13,13 +14,23 @@
     .stock .card-header {background: #5271ff3b !important}
     .stock a.green {background: #07b451;border-radius: 12px}
     .stock .text-darkness {color: #303642}
-    .stock .left-lorem {border-bottom-left-radius: 15% 50%;border-top-left-radius: 15% 50%;box-shadow: -20px -10px 20px white;}
-    .stock .right-lorem {border-bottom-right-radius: 15% 50%;border-top-right-radius: 15% 50%;box-shadow: 20px -10px 20px white;}
     .stock .icon {border-radius: 50%;width: 36px;height: 36px;background: black;text-align: center;}
-
     .stock , .blogs {max-width: 100% !important;overflow: hidden !important;}
+    .bg-0 {background: #355764;color: whitesmoke}
+    .bg-1 {background: #5a8f7b;color: whitesmoke}
+    .bg-2 {background: #ffbd59;color: #1D2D44}
+    .bg-3 {background: #81cacf;color: whitesmoke}
+    .bg-4 {background: #ced8df;color: #1D2D44}
+    .bg-0 a {background: #355764;color: whitesmoke}
+    .bg-1 a {background: #5a8f7b;color: whitesmoke}
+    .bg-2 a {background: #ffbd59;color: #1D2D44}
+    .bg-3 a {background: #81cacf;color: whitesmoke}
+    .bg-4 a {background: #ced8df;color: #1D2D44}
+    a.link {color: #23394b !important;font-weight: bold;}
+    a.link:hover {color: black !important;font-size: 18px !important;background: ghostwhite;}
+    .section.blogs .cats {background: #ced8df}
+    .day-show {position: absolute;left: -22px;width: 42px;height: 42px;border-radius: 50px;border: 4px solid white;top: 8px;padding-top: 6px;}
 </style>
-
 @if (auth()->user() && auth()->user()->is_special())
     <section class="blogs"> 
         <div class="col-12">
@@ -27,21 +38,23 @@
         
                 <div class="col-lg-4">
                     <div class="cats">
-        
+                        @if ($data->where('section',99)->first() && $data->where('section',99)->first()->pic)
+                            <img src="{{url($data->where('section',99)->first()->pic)}}" class="w-100" alt="manabource">
+                        @endif
+                            
                         <h6>جست‌و‌جو</h6>
                         
                         <form id="searchForm" action="{{ route('user.stock-portfolio.store') }}" method="POST">
                             @csrf
                             <div class="searchbox mt-4">
                                 <div class="input-group">
-                                    <input type="text" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
+                                    <input type="text" name="search" onclick="manualySubmit()" class="form-control" id="inlineFormInputGroupSubmitable" placeholder="...جست‌و‌جو">
                                     <div class="input-group-prepend">
                                         <button class="btn"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                        
 
                         <script>
                             function manualySubmit() {
@@ -56,7 +69,7 @@
                         @foreach ($latest as $item)
                             <div class="pt-4">
                                 <h6>
-                                    <a href="{{ route('user.stock-portfolio.show',$item->slug) }}" class="link">{{$item->title}}</a>
+                                    <a href="{{ route('user.stock-portfolio.show-by-slug',[$item->id ,$item->slug]) }}" class="link fw-bold">{{$item->title}}</a>
                                 </h6>
                                 <span class="text-secondary">{{my_jdate($item->updated_at,'d F Y')}}</span>
                             </div>
@@ -65,21 +78,36 @@
                         <h5 class="pt-5 fw-bold">دسته‌ بندی ها</h5>
                         
                         @foreach ($cats as $cat)
-                            <h6 class="pt-3">
-                                <a href="{{ route('user.stock-portfolio.edit',$cat->slug) }}" class="link">{{$cat->title}}</a>
-                            </h6>
+                            <div class="d-flex pt-2">
+                                <img src="{{$cat->pic?url($cat->pic->path):''}}" alt="{{$cat->title}}" style="height: 36px" class="rounded">
+                                <h6 class="mt-2 mx-2" ><a href="{{ route('user.stock-portfolio.edit',$cat->slug) }}" class="link fs-16 fw-bold" >{{$cat->title}}</a></h6>
+                            </div>
                         @endforeach
 
                     </div>
                 </div>
 
-                <div class="col-lg-8 pt-3 pt-lg-4">
+                <div class="col-lg-8 pt-3">
                     <div class="blog">
 
                         @if ( \Request::route()->getName()=='user.stock-portfolio.index' )
                             
-                            <h1 class="text-center">آرشیو</h1>
-                            <h4 class="text-center pb-3">گزارش لحظه های مهم بازار</h4>
+                            {{-- <h1 class="text-center">آرشیو</h1> --}}
+                            <div class="row">
+                                <div class="col-lg"></div>
+                                @if ($data->where('section',1)->first() && $data->where('section',1)->first()->pic)
+                                    <div class="col-auto p-0">
+                                        <img src="{{url($data->where('section',1)->first()->pic)}}" style="max-height: 200px;" alt="manabource">
+                                    </div>
+                                @endif
+                                <div class="col-auto my-auto p-0">
+                                    {!! $data->where('section',1)->first() ? $data->where('section',1)->first()->text : 'گزارش لحظه های مهم بازار' !!}
+                                </div>
+                                <div class="col-lg"></div>
+                            </div>
+                                
+                            <h4 class="text-center pb-3">
+                            </h4>
                             @if ($items->count()==0)
                                 <div class="items p-4 border-bottom">
                                     <div class="hashtaq mb-4 py-2">
@@ -88,23 +116,28 @@
                                     <a href="#"><h5>موردی یافت نشد</h5></a>
                                 </div>
                             @endif
-                            <div class="row">
-                                @foreach ($items as $item)
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="card shadow m-1 mb-4">
-                                            <div class="card-border-bottom text-center p-1">{{my_jdate($item->created_at,'Y/m/d')}}</div>
-
-                                            <a href="{{ route('user.stock-portfolio.show',$item->slug) }}">
-                                                <div class="body text-dark text-center mx-auto p-2">
-                                                    <img src="{{asset('/assets/stock/1.png')}}" style="max-height: 48px;" alt="{{$item->title}}"> 
-                                                    <h6 class="text-center m-0" style="line-height: 1.6;">{{$item->title}}</h6>
-                                                </div>
-                                            </a>
-
+                            @php $pic = $data->where('section', 2)->where('sort', 1)->first() @endphp
+                            @php $index = 0; @endphp
+                            @foreach($items->chunk(5) as $rows)
+                                <div class="row">            
+                                    @foreach ($rows as $item)
+                                        <div class="col-md-4 col-lg mx-auto mx-lg-0 mb-4">
+                                            <div class="card mx-auto bg-{{$index}}">
+                                                <a href="{{ route('user.stock-portfolio.show-by-slug',[$item->id ,$item->slug]) }}">
+                                                    <div class="body text-center mx-auto">
+                                                        <img src="{{$pic ? url($pic->pic) :asset('/assets/stock/1.png')}}" style="max-height: 48px;" alt="{{$item->title}}">
+                                                        <h6 class="text-center my-1">MANA</h6>
+                                                        <p class="text-center m-0 px-2">{{$item->title}}</p>
+                                                    </div>
+                                                </a>
+                                                <div class="p-1 text-center">{{my_jdate($item->created_at,'F Y')}}</div>
+                                                <div class="day-show text-center bg-{{$index}}">{{my_jdate($item->created_at,'d')}}</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                                        @php if($index > 3) {$index = 0;} else {$index += 1;}  @endphp
+                                    @endforeach
+                                </div>
+                            @endforeach
 
                         @else
 
@@ -116,17 +149,20 @@
                             @foreach ($items as $item)
                                 <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
                                     
-                                    <a href="{{ route('user.stock-portfolio.show',$item->slug) }}">
+                                    <a href="{{ route('user.stock-portfolio.show-by-slug',[$item->id ,$item->slug]) }}">
                                         <h5>{{$item->title}}</h5>
-                                        <p class="py-2 mb-0">{{$item->short_text}}</p>
+                                        @if ($item->short_text)
+                                            <p class="py-2 mb-0">{{$item->short_text}}</p>
+                                        @endif
                                     </a>
                                     
-                                    <div id="old{{$item->id}}" class="col-12 pt-2 old">
+                                    <div class="pt-3"><button class="btn btn-outline-info redu20" onclick="window.location.href='{{ route('user.stock-portfolio.show-by-slug',[$item->id ,$item->slug]) }}'">مشاهده</button></div>
+                                    {{-- <div id="old{{$item->id}}" class="col-12 pt-2 old">
                                         <i class="fa fa-plus"></i>
                                     </div>
                                     <div id="new{{$item->id}}" class="col-12 pt-2 d-none">
                                         <i class="fa fa-close text-secondary"></i>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             @endforeach
 
@@ -144,6 +180,10 @@
 @else
     <section class="stock">
     
+        {{-- <div class="float-start bg-secondary" style="clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 100%, 25% 100%, 0 100%);height: 160px;width: 180px">
+            <h6 class="mt-5 fw-bold text-white" style="rotate: -42deg;margin-right: 48px;">{{$data->count() ? $data->first()->title : 'بسته های تخفیفی'}}</h6>
+        </div> --}}
+
         <div class="header text-center">
             <div class="d-none d-lg-block">
                 <h1 class="text-center py-3 c-blue">برای دسترسی به این صفحه باید کاربر ویژه مانابورس باشید</h1>
@@ -157,24 +197,56 @@
                 <img src="{{asset('/assets/stock/4.png')}}" style="max-height: 64px;" alt="مانابورس"> 
             </a>
         </div>
-    
-        <div class="container py-4">
+
+        @if ($old_user)
+            <div id="lorem" class="container p-4">
+                <div class="col-md-9 col-lg-6 col-xl-5 mx-auto">
+                    <div class="row">
+                        <div class="col ">
+                            {{auth()->user()->first_name.' '.auth()->user()->last_name}}
+                        </div>
+                        <div class="col-8 p-0">
+                            برای مشاهده تحلیل ها, اشتراک ویژه خود را تمدید کنید
+                        </div>
+                        <div class="col-12 py-3 text-center">
+                            برای مشاهده پکیج های اشتراک ویژه و تمدید اشتراک روی دکمه زیر کلیک کنید.
+                        </div>
+                        <div class="col-12 text-center">
+                            <a href="#" onclick="changeBox()" class="btn btn-primary">متوجه شدم</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div id="servicePackagePrice" class="container py-4 {{$old_user?'d-none':''}}">
             <div class="row">
-                @foreach (\App\Model\ServicePackagePrice::all() as $package)
+                @foreach (\App\Model\ServicePackagePrice::orderBy('sort')->get() as $package)
                     <div class="col-lg mb-4">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="font-weight-bold text-dark text-center m-0">{{$package->title}}</h4>
                             </div>
                             <div class="card-body">
-                                <h4 class="font-weight-bold text-center m-0 py-2 c-blue">{{number_format( $package->price )}} ریال </h4>
-                                {{-- <h5 class="font-weight-bold text-center text-dark m-0 pb-3"> ریال</h5> --}}
+                                <h4 class="font-weight-bold text-center m-0 pt-2 pb-3 c-blue" style="{{ intVal($package->off_price) > 0 ? 'text-decoration: line-through' : '' }}">
+                                    {{number_format( $package->price )}} ریال </h4>
+                                    
+                                @if (intVal($package->off_price) > 0)
+                                    <h4 class="font-weight-bold text-center m-0 c-blue">{{number_format( $package->off_price )}} ریال </h4>
+                                    <span class="badge bg-danger" style="position: relative;top: -44px;right: 24px;">تخفیف</span>
+                                @endif
+
+                                @if ($data->where('section', 100)->count() && $data->where('section', 100)->first()->text)
+                                    <div class="mx-3 mb-4 p-1 py-3 text-center text-white" style="background: #2e343e;border-radius: 50px;">
+                                        {{$data->where('section', 100)->first()->title}}    
+                                    </div>
+                                @endif
 
                                 <div class="my-2">
-                                    <h6 class="px-4">
+                                    <h6 class="px-3">
                                         <i class="fa fa-circle" style="font-size: 6px;"></i>
                                         دسترسی به تمام تحلیل های ویژه</h6>
-                                    <h6 class="px-4">
+                                    <h6 class="px-3">
                                         <i class="fa fa-circle" style="font-size: 6px;"></i>
                                         دسترسی به لحظه های مهم بازار</h6>
                                 </div>
@@ -189,9 +261,12 @@
                                     {{-- <a href="#" @if (auth()->user()) onclick="alert('سرویس فعلا دردسترس نیست. لطفا از طریق سفارش آفلاین اقدام نمایید')" @else data-bs-toggle="modal" data-bs-target="#login" @endif class="p-1 text-white font-weight-bold h5 green">
                                         سفارش آنلاین 
                                     </a> --}}
-                                    <a href="#" data-bs-toggle="modal" @if (auth()->user()) data-bs-target="#ModalTicket" @else  data-bs-target="#login" @endif
-                                         class="p-2 px-3 text-white font-weight-bold h5 green">ثبت سفارش</a>
-
+                                    @if (auth()->user())
+                                        <a href="#" onclick="changeAmount('{{$package->off_price?$package->off_price:$package->price}}')" class="p-2 px-3 text-white font-weight-bold h5 green">ثبت سفارش</a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#ModalTicket" id="openToModalTicket" class="p-2 px-3 text-white font-weight-bold h5 green d-none">ثبت سفارش</a>
+                                    @else
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="p-2 px-3 text-white font-weight-bold h5 green">ثبت سفارش</a>
+                                    @endif
                                 </div>
 
                             </div>
@@ -207,35 +282,54 @@
                 <div class="col-lg-4">
                     <div class="left-lorem p-4 m-2 m-lg-0">
                         {{-- <a href="#" data-bs-toggle="modal" @if (auth()->user()) data-bs-target="#ModalTicket" @else  data-bs-target="#login" @endif --}}
-                        <a href="#" 
-                             class="p-2 px-3 text-white font-weight-bold h5 green">مراحل ثبت سفارش</a>
-                        <h5 class="pt-3 text-darkness">۱-عضویت در سایت و انتخاب بسته اشتراکی</h5>
-                        <h5 class="text-darkness">۲-پرداخت و ارسال فیش از طریق سایت</h5>
-                        <h5 class="text-darkness">۳-تایید فیش واریزی و فعال شدن دسترسی</h5>
-                        <h5 class="text-darkness">IR {{ env('SHABA_NUM') }}</h5>
-                        <h5 class="text-darkness">شماره کارت {{ str_replace('-',' ',env('CARD_NUM')) }}</h5>
-                        <h5 class="text-darkness">به نام : سارا ستاری نیا</h5>
+                        <a href="#" class="p-2 px-3 text-white font-weight-bold h5 green">مراحل ثبت سفارش</a>
+                        <h5 class="text-darkness pt-3">واریز مبلغ موردنظر از طریق شماره شبا یا شماره کارت</h5>
+                        <h5 class="text-darkness">ثبت سند واریزی</h5>
+                        <h5 class="text-darkness">بارگذاری و ارسال رسید پرداخت</h5>
+                        <h5 class="text-darkness">تایید رسید و فعال شدن دسترسی</h5>
                     </div>
                 </div>
     
                 <div class="col-lg my-4"></div>
     
-                <div class="col-lg-4 text-center my-auto">
-                    <img src="{{asset('/assets/stock/1.png')}}" class="p-2" style="max-height: 128px;border-radius: 50%;border: 20px solid white;" alt="مانابورس"> 
-                    <h1 class="text-darkness text-center font-weight-bold pt-3">مانابورس</h1>
+                <div class="col-lg-4">
+                    <div class="pb-2 text-darkness" style="direction: ltr;">
+                        <h5 class="text-center m-0 py-1">شماره کارت</h5>
+                        <div><h4 class="text-center">{{ str_replace('-',' ',env('CARD_NUM')) }}</h4></div>
+                    </div>
+    
+                    <div class="pb-2 text-darkness" style="direction: ltr;">
+                        <h5 class="text-center m-0 py-1">شماره شبا</h5>
+                        <div><h4 class="text-center">IR {{ env('SHABA_NUM') }}</h4></div>
+                    </div>
+                    
+                    <div class="text-center pb-4">
+                        <a href="#" class="p-2 px-3 text-white font-weight-bold h5 green">به نام سارا ستاری نیا</a>
+                    </div>
                 </div>
             </div>
     
             <div class="row py-4">
                 <div class="col-lg my-auto">
-                    <h1 class="text-darkness font-weight-bold text-center">
-                        راه های ارتباط با مانابورس
-                    </h1>
+                    <div class="row">
+    
+                        <div class="col-lg"></div>
+
+                        <div class="col-lg-auto my-auto">
+                            <h1 class="text-darkness font-weight-bold text-center">
+                                راه های ارتباط با مانابورس
+                            </h1>
+                        </div>
+    
+                        <div class="col-lg-4 text-center text-lg-end">
+                            <img src="{{asset('/assets/stock/1.png')}}" class="p-2 my-1 me-lg-3" style="max-height: 128px;border-radius: 50%;border: 20px solid white;" alt="مانابورس"> 
+                        </div>
+
+                    </div>
                 </div>
                 
                 <div class="col-lg-4">
                     <div class="right-lorem pt-2 px-4 m-2 m-lg-0">
-    
                         <div class="pb-2 text-darkness d-flex" style="direction: ltr;">
                             <div class="p-1 icon">
                                 <i class="fa fa-phone text-white pt-1"></i>
@@ -280,7 +374,6 @@
                                 09398435746
                             </h5>
                         </div>
-    
                     </div>
                 </div>
             </div>
@@ -306,8 +399,8 @@
                             <input type="hidden" name="category" value="کاربر ویژه">
                             {{-- <input type="hidden" name="type" value="رسید پرداخت نقدی - کارت به کارت"> --}}
                             <div class="form-group">
-                                <label class="form-group mb-1" for="fish_id">مبلغ :<span>(required)</span></label>
-                                <input type="number" id="amount-form" name="subject" class="form-control">
+                                <label class="form-group mb-1" for="amount" id="label_amount_id">مبلغ :<span>(required)</span></label>
+                                <input id="amount_id" type="number" id="amount-form" name="subject" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-group mb-1" for="fish_id"> شماره فیش :<span>(required)</span></label>
@@ -352,6 +445,16 @@
         document.getElementById(`new${index}`).classList.add("d-none");
         document.getElementById(`old${index}`).classList.remove("d-none");
     }
-</script>
     
+    function changeBox() {
+        document.querySelector('#lorem').classList.add("d-none");
+        document.querySelector('#servicePackagePrice').classList.remove("d-none");
+    }
+
+    function changeAmount(val) {
+        document.querySelector('#amount_id').value = val;
+        document.querySelector('#openToModalTicket').click();
+    }
+    
+</script>
 @endsection

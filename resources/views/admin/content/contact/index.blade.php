@@ -21,6 +21,13 @@
                                                     <img src="{{ url($item->attach) }}" alt="{{$item->subject}}" style="height: 88px;">
                                                 </a>
                                             @endif
+
+                                            <div>
+                                                <a href="{{ route('admin.user.show', $item->user_id) }}" target="_blank" class="text-info h6" target="_blank">
+                                                    مشاهده اطلاعات {{$item->user() ? $item->user()->first_name.' '.$item->user()->last_name : 'کاربر یافت نشد'}}
+                                                </a>
+                                            </div>
+
                                             @if ($item->category=='کد تخفیف')
                                                 {{my_jdate($item->created_at,'d F Y').' - '.$item->user()->first_name.' '.$item->user()->last_name.' - '.$item->user()->mobile}}
                                             @else
@@ -201,7 +208,7 @@
                         <div class="modal-content"> 
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h6 class="modal-title">تیکت مشاوره {{$item->subject}}</h6>
+                                <h6 class="modal-title"> {{$item->subject}}</h6>
                             </div>
                             <div class="modal-body">
                                 <div class="content">

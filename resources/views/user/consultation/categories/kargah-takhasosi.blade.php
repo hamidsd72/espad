@@ -13,7 +13,7 @@
     </div>
 @else --}}
 @if ($page_name=="امور-گمرک-و-ترخیص" || $page_name=="طلا")
-    <div class="{{$body->where('section',3)->count()>3?'col-lg-6':'col-lg'}} moshaver">
+    <div class="{{$body->where('section',3)->count()>3?'col-lg-6':'col-lg'}} moshaver pt-3">
         <div class="p-2 p-lg-5 box">
             <a href="{{ $item->link?url($item->link):'' }}"  class="text-center text-secondary">
                 @if ($item->pic)
@@ -26,7 +26,7 @@
         </div>
     </div>
 @elseif ($page_name=="آیتم-طلا")
-    <div class="col-lg moshaver">
+    <div class="col-lg moshaver pt-3">
         <div class="p-2 p-lg-5 box">
             <a href="{{ route('user.consultation.profile',$item->id) }}"  class="text-center text-secondary">
                 @if ($body->where('section',5)->count())
@@ -38,11 +38,11 @@
         </div>
     </div>
 @else
-    <div class="col-lg-3 col-md-6 moshaver">
+    <div class="col-lg-3 col-md-6 moshaver pt-3">
         <div class="p-lg-4 box">
             <a href="{{ route('user.consultation.profile3',[$item->reagent_id,$item->id]) }}"  class="text-center text-secondary">
                 <img src="{{ $item->photo?url($item->photo->path):'' }}" class="mb-4" alt="avatar">
-                <h6 class="text-dark mt-4">{{$item->title}}</h6>
+                <h6 class="text-dark mt-5">{{$item->title}}</h6>
                 <p class="small my-2">{{$item->user()?$item->user()->first_name.' '.$item->user()->last_name:''}}</p>
                 <div class="sub-title text-center">مــانا بــورس</div>
             </a>
@@ -58,14 +58,11 @@
     .moshaver .box {
         border: 1px solid white;
         text-align: center;
-        @unless ($page_name=="رفتن-به-میزگرد" || $page_name=="امور-گمرک-و-ترخیص" || $page_name=="طلا" || $page_name=="آیتم-طلا")
-            max-height: 356px;
-        @endunless
     }
     .moshaver .box img {
         width: 240px;
         height: 240px;
-        border-radius: 50%;
+        border-radius: 4%;
     }
     .moshaver:hover div {
         padding: 12px !important;
@@ -77,13 +74,13 @@
         margin: -4px !important;
     }
     .moshaver:hover .sub-title {
-        bottom: 114px;
+        bottom: 116px;
         transition: 0.3s;
         border-radius: 0px;
     }
     .sub-title {
         position: relative;
-        bottom: 98px;
+        bottom: 106px;
         background: #f1f1f1;
         width: 100px;
         padding: 4px;

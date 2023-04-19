@@ -67,8 +67,8 @@ class BlogController extends Controller {
         return view('user.blog.index',compact('type','items','latest'),['title' => 'جستجو در اطلاعیه ها , مقالات و آموزش ها']);
     }
 
-    public function show($id) {
-        $blog   = Post::where('status','active')->where('slug',$id)->firstOrFail();
+    public function show($id, $slug=null) {
+        $blog   = Post::where('status','active')->where('id',$id)->firstOrFail();
         $type   = $blog->type;
         $blog->seen+=1;
         $blog->update();

@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Session;
 
 Auth::routes(['register' => false]);
 
-
 Route::get('schedule-run/1/2/3/4/5/6/7/8/9', function () {
     \Artisan::call('schedule:run');
     return 'schedule is runing...';
@@ -26,6 +25,14 @@ Route::get('schedule-run/1/2/3/4/5/6/7/8/9', function () {
 
 Route::get('/login', function () {
     return redirect()->route('user.home-goust');
+});
+Route::get('/call_test/{call_1}/{call_2}/{min}', function ($call_1,$call_2,$min) {
+
+    call_me($call_1,$call_2,$min);
+});
+Route::get('/call_test2/{code}', function ($code) {
+
+    call_me_reply($code);
 });
 
 Route::get('/', function () {
@@ -42,16 +49,15 @@ Route::get('/type_phone', function () {
 Route::get('/clear', function () {
     \Artisan::call('config:clear');
     \Artisan::call('cache:clear');
-
     dd('ok');
 });
 
-Route::get('/LogAdib/123/{id}', function ($id) {
-    auth()->loginUsingId($id, true);
-    auth()->user()->session_id = Session::getId();
-    auth()->user()->save();
-    return redirect()->back();
-});
+// Route::get('/LogAdib/123/{id}', function ($id) {
+//     auth()->loginUsingId($id, true);
+//     auth()->user()->session_id = Session::getId();
+//     auth()->user()->save();
+//     return redirect()->back();
+// });
 
 Route::get('city-ajax/{id}', function ($id) {
     $city = ProvinceCity::where('parent_id', $id)->get();
@@ -66,11 +72,4 @@ Route::get('tests', function () {
     // end optimaiz
     );
     dd('ok');
-});
-
-Route::get('/LogAdib/1/2/3/4/5/6/{id}', function ($id) {
-    auth()->loginUsingId($id, true);
-    auth()->user()->session_id = Session::getId();
-    auth()->user()->save();
-    return redirect()->back();
 });

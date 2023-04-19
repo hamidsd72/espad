@@ -162,4 +162,55 @@
         padding-left: 10%;
         padding-right: 40%;
     }
+    .consultantCall {
+        padding: 6px 10px;
+        left: 2%;
+        bottom: 3%;
+        position: fixed;
+        border-radius: 8px;
+        z-index: 999;
+        background: darkgrey;
+    }
+    .tgju-widget-title-text , .marquee-row .tgju-widget-current-price {
+        color: wheat;
+    }
+    div .item-description {
+        text-align: justify;
+    }
+    .fs-16 {
+        font-size: 16px !important;
+    }
+    .fs-20 a {
+        font-size: 20px !important;
+    }
+    .new-mod .dropdown-menu-big {
+        background: transparent;
+        box-shadow: none;
+    }
+    .new-mod .dropdown-menu-big .medad {
+        background: #2e343e;
+        max-height: 640px;
+    }
+    .new-mod .dropdown-menu-big .medad h6 {
+        color:#00c8b5!important;
+        border-bottom: 1px solid white;
+    }
+    .redu20 {
+        border-radius: 20px !important;
+    }
+    .new-mod .dropdown-menu-big .card_menu_2 {
+        height: unset;
+        box-shadow: unset;
+        background: unset !important;
+        min-height: unset;
+    }
+    .new-mod .dropdown-menu-big .card_menu_2:hover {
+        color:#00c8b5!important;
+    }
+    .new-mod .dropdown-menu-big .card_menu_2 .mt-4 {
+        margin-top: 6px !important;
+    }
+    .new-mod .dropdown-menu-big .card_menu_2 div.text-start , .new-mod .dropdown-menu-big .card_menu_2 p.fixed-bottom {
+        display: none;
+    }
 </style>

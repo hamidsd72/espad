@@ -4,6 +4,13 @@
     .body {
         min-height: 480px;
     }
+    #setMoney .card {border-radius: 20px;border: 3px solid #303642 !important;}
+    #setMoney .card-border-bottom {border-bottom: 2px solid #928c8c !important;}
+    #setMoney .card .body {width: 148px;height: 148px;}
+    #setMoney .card .card-bottom-null {height: 18px;background: #303642;margin: auto 4px;}
+    #setMoney a.green {background: #07b451;border-radius: 12px}
+
+    
 </style>
 
     <div class="body">
@@ -30,7 +37,7 @@
         </div>
 
         <div id="one-step">
-
+ 
             <div class="container mt-5">
                 <div class="col-md-10 col-lg-6 mx-auto">
                     <input type="number" name="price" id="price" class="form-control form-control-lg" onkeyup="changeAmount()" placeholder="مبلغ شارژ را وارد کنید">
@@ -44,47 +51,57 @@
             </div>
         
             <div id="setMoney" class="container">
-                <div class="col-lg-8 col-md-10 mx-auto mb-3">
+                <div class="col-lg-8 col-md-10 mx-auto mb-4">
                     <h4>شارژ سریع</h4>
                     <small class="text-secondary text-uppercase">جهت انتخاب بسته کلیک کنید</small>
                 </div>
                 <div class="row">
 
-                @for ($i = 0; $i < 6; $i++)
+                @for ($i = 0; $i < 5; $i++)
                     <div class="d-none">
                         @switch($i)
                             @case(0)
                                 {{$amount   = 100000}}
-                                {{$text     = '۱۰۰,۰۰۰'}}
                                 @break
                             @case(1)
-                                {{$amount   = 200000}}
-                                {{$text     = '۲۰۰,۰۰۰'}}
+                                {{$amount   = 250000}}
                                 @break
                             @case(2)
-                                {{$amount   = 400000}}
-                                {{$text     = '۴۰۰,۰۰۰'}}
+                                {{$amount   = 800000}}
                                 @break
                             @case(3)
-                                {{$amount   = 800000}}
-                                {{$text     = '۸۰۰,۰۰۰'}}
+                                {{$amount   = 1200000}}
                                 @break
                             @case(4)
-                                {{$amount   = 1000000}}
-                                {{$text     = '۱۰۰۰,۰۰۰'}}
-                                @break
-                            @case(5)
                                 {{$amount   = 2000000}}
-                                {{$text     = '۲۰۰۰,۰۰۰'}}
                                 @break
                         @endswitch
                     </div>
                 
-                    <div class="col-lg-4 col-md-6 my-2">
-                        <button onclick="setMoney('{{$amount}}')" class="btn btn-primary col-12">
+                    <div class="col-lg col-md-6 my-2">
+                        {{-- <button onclick="setMoney('{{$amount}}')" class="btn btn-primary col-12">
                             <h5 class="text-center my-2">پکیج شماره {{$i+1}}</h5>
-                            <h6 class="text-center mb-2"> انتخاب بسته {{$text}} تومان</h6>
-                        </button>
+                            <h6 class="text-center mb-2"> انتخاب بسته  تومان</h6>
+                        </button> --}}
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="font-weight-bold text-dark text-center m-0">بسته مکالمه</h4>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="font-weight-bold text-center m-0 py-2 c-blue">{{num2fa(number_format($amount))}} ریال </h4>
+
+                                <h6 class="text-right text-dark m-0 pb-3">
+                                    <img src="{{asset('/assets/stock/3.png')}}" style="max-height: 54px;" alt="مانابورس"> 
+                                    فعالسازی سریع
+                                </h6>
+
+                                <div class="text-center pb-3">
+                                    <a href="#" onclick="setMoney('{{$amount}}')" class="p-2 px-3 text-white font-weight-bold h5 green">ثبت سفارش</a>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     
                     @endfor

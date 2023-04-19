@@ -72,6 +72,7 @@ class ServiceCategoryController extends Controller
             $item->bg_color         = $request->bg_color;
             $item->bg_color_hover   = $request->bg_color_hover;
             $item->text_color       = $request->text_color;
+            $item->view_mod         = $request->view_mod;
             if ($request->hasFile('pic')) {
                 if ($item->pic != null) {
                     $old_path = $item->pic;
@@ -119,6 +120,7 @@ class ServiceCategoryController extends Controller
             $item->bg_color         = $request->bg_color;
             $item->bg_color_hover   = $request->bg_color_hover;
             $item->text_color       = $request->text_color;
+            $item->view_mod         = $request->view_mod;
             if ($request->hasFile('pic')) {
                 if ($item->pic != null) {
                     $old_path = $item->pic;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Model\StockPortfolio;
 use App\Model\Setting;
+use App\Model\Photo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,7 @@ class StockPortfolioCategoryController extends Controller {
         $this->validate($request, [
             'title' => 'required|max:240',
             'slug'  => 'required|max:250',
+            // 'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:4096',
             // 'text'  => 'required|max:2550',
         ]);
 
@@ -45,15 +47,19 @@ class StockPortfolioCategoryController extends Controller {
             $item->slug     = $request->slug;
             $item->text     = $request->text;
             $item->save();
+            if ($request->hasFile('photo')) {
+                $photo = new Photo();
+                $photo->path = file_store($request->photo, 'source/asset/uploads/stock-portfolio/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
+                $item->photo()->save($photo);
+            }
             return redirect()->route('admin.stock-portfolio-categories.index')->with('flash_message', 'با موفقیت ثبت شد.');
         } catch (\Exception $e) {
-            // dd($e);
             return redirect()->back()->with('err_message', 'یک خطا رخ داده است، لطفا بررسی بفرمایید.');
         }
     }
 
     public function edit($id) {
-        $item = StockPortfolio::findOrFail($id);
+        $item   = StockPortfolio::findOrFail($id);
         return view('admin.stock-portfolio.category.edit', compact('item'), ['title1' => ' ویرایش '.$this->controller_title('sum') , 'title2' => $this->controller_title('single')]);
     }
 
@@ -62,6 +68,7 @@ class StockPortfolioCategoryController extends Controller {
         $this->validate($request, [
             'title' => 'required|max:240',
             'slug'  => 'required|max:250',
+            // 'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:4096',
             // 'text'  => 'required|max:2550',
         ]);
 
@@ -71,6 +78,15 @@ class StockPortfolioCategoryController extends Controller {
             $item->text     = $request->text;
             $item->status   = $request->status;
             $item->save();
+            if ($request->hasFile('photo')) {
+                if ($item->photo) {
+                    File::delete($item->photo->path);
+                    $item->photo->delete();
+                }
+                $photo = new Photo();
+                $photo->path = file_store($request->photo, 'source/asset/uploads/stock-portfolio/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');
+                $item->photo()->save($photo);
+            }
             return redirect()->route('admin.stock-portfolio-categories.index')->with('flash_message', 'با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
             return redirect()->back()->with('err_message', 'یک خطا رخ داده است، لطفا بررسی بفرمایید.');
@@ -96,5 +112,6 @@ class StockPortfolioCategoryController extends Controller {
         StockPortfolio::findOrFail($id)->delete();
         return redirect()->back()->withInput()->with('flash_message',' با موفقیت حذف شد.');
     }
+
 
 }

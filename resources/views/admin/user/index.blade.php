@@ -11,10 +11,15 @@
                     <div class="col-12">
                         <div class="card res_table">
                             <div class="card-header">
-                                <h3 class="card-title float-right">{{$title2}}</h3>
                                 <a href="{{route('admin.user.create')}}" class="float-left btn btn-info"><i class="fa fa-circle-o mtp-1 ml-1"></i>افزودن</a>
+                                <div class="col-md-6 col-lg-4">
+                                    <form action="{{route('admin.user.search')}}" method="post" class="d-flex">
+                                        @csrf
+                                        <input type="text" name="search" id="search" class="form-control" placeholder="برا اساس  : نام - فامیلی - موبایل">
+                                        <button type="submit" class="btn btn-primary mr-2">جستجو</button>
+                                    </form>
+                                </div>
                             </div>
-                            <!-- /.card-header -->
                             <div class="card-body res_table_in">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
@@ -25,6 +30,7 @@
                                         <th>ایمیل</th>
                                         <th>واتساپ</th>
                                         <th>معرف</th>
+                                        <th>عضویت ویژه</th>
                                         <th>عملیات</th>
                                     </tr>
                                     </thead>
@@ -41,6 +47,7 @@
                                         <td>@item($item->email)</td>
                                         <td>@item($item->whatsapp)</td>
                                         <td>@if($item->reagent) @item($item->reagent->first_name) @item($item->reagent->last_name) @else ندارد @endif</td>
+                                        <td>@item(my_jdate($item->is_special, 'd m Y'))</td>
                                         <td class="text-center">
                                             <a href="{{route('admin.user.show',$item->id)}}" class="badge bg-info ml-1" title="پروفایل"><i class="fa fa-eye"></i> </a>
                                             <a href="{{route('admin.user.edit',$item->id)}}" class="badge bg-primary ml-1" title="ویرایش"><i class="fa fa-edit"></i> </a>

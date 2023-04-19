@@ -80,10 +80,19 @@
                                     این کارگاه برای شما فعال است - نمایش آیتم های من
                                 </a>
                             @else
-                                <a @if (auth()->user()->amount > $item->price) href="{{route('user.add_basket',[$item->id,'package'])}}"
+                                <a @if (auth()->user()->amount >= $item->price) href="{{route('user.add_basket',[$item->id,'package'])}}"
                                     @else href="{{route('user.user-web-transaction.index')}}" @endif class="mt-2 btn btn-primary btn-block"> 
                                     شرکت در این کارگاه
                                 </a>
+                                @if ($item->price>0 )
+                                    @if ($open_offline_payment)
+                                        <buttum class="mt-2 btn btn-info btn-block">پردازش رسید ارسالی</buttum>
+                                    @else
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#ModalTicket" class="mt-2 btn btn-info btn-block"> 
+                                            شرکت در این کارگاه (پرداخت آفلاین)
+                                        </a>
+                                    @endif
+                                @endif
                             @endif
                         @else
                             <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="mt-2 btn btn-primary btn-block">
@@ -108,7 +117,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form action="{{ route('user.add_basket_with_offCode',[$item->id,'package']) }}" method="post">
@@ -131,6 +139,54 @@
         </div>
     </div>
   
+    <!-- Modal send ticket -->
+    <div class="modal fade" id="ModalTicket">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content redu20"> 
+                <div class="modal-header">
+                    <h4 class="modal-title">رسید پرداخت نقدی - کارت به کارت {{number_format($item->price)}}</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="content">
+                        <form method="post" action="{{route('user.package.offline_payment.form_post')}}" enctype="multipart/form-data">
+                            @csrf
+                            <fieldset>
+                                <input type="hidden" name="item_id" value="{{$item->id}}">
+                                <input type="hidden" name="model_type" value="App\Model\ServicePackage">
+                                {{-- <input type="hidden" name="type" value="رسید پرداخت نقدی - کارت به کارت"> --}}
+                                <div class="form-group">
+                                    <label class="form-group mb-1" for="fish_id"> شماره فیش :<span>(required)</span></label>
+                                    <input type="text" name="fish_id" class="form-control" id="fish_id">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group mt-3 mb-1" for="number"> چهار رقم آخر کارت :<span>(required)</span></label>
+                                    <input type="number" name="card_number" class="form-control" id="number">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-group mt-3 mb-1" for="bank">بانک خود را انتخاب کنید</label>
+                                    <select class="form-control" name="bank">
+                                        @foreach (\App\Model\Bank::orderByDesc('id')->get('title') as $key => $bank)
+                                            <option value="{{$bank->title}}" @if ($key==0) selected @endif>{{$bank->title}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group my-3">
+                                    تصویر رسید را وارد کنید  
+                                    <input type="file" name="attach" class="form-control mt-2" id="attach" accept=".jpeg,.jpg,.png" required> 
+                                </div>
+                                <div class="form-button">
+                                    <input type="submit" class="btn btn-lg btn-primary mt-2" value="ارسال رسید پرداخت" data-formid="contactForm">
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script>
         function copy() {

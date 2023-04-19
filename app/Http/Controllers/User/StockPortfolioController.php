@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\StockPortfolio;
 use App\Model\Setting;
+use App\Model\Data;
+use Carbon\Carbon;
 
 class StockPortfolioController extends Controller {
 
@@ -59,36 +61,56 @@ class StockPortfolioController extends Controller {
         return implode("",$arr);
     }
 
+    function old_special_user() {
+        if (auth()->user()) {
+            $special = Carbon::parse(auth()->user()->is_special);
+            $created = Carbon::parse(auth()->user()->created_at);
+            if ( $created->diffInDays($special,false) > 0 ) return true;
+        }
+        return false;
+    }
+
     public function index() {
-        $items  = StockPortfolio::where('status','active')->where('cat_id',8)->orderByDesc('id')->paginate($this->controller_paginate());
-        $latest = StockPortfolio::where('status','active')->orderByDesc('id')->take(4)->get();
-        $cats   = StockPortfolio::where('status','active')->where('id','!=',8)->where('cat_id',null)->orderByDesc('sort')->get();
-        return view('user.consultation.stock-portfolio.index', compact('items','cats','latest'));
+        $items      = StockPortfolio::where('status','active')->where('cat_id',8)->orderByDesc('created_at')->paginate($this->controller_paginate());
+        $latest     = StockPortfolio::where('status','active')->orderByDesc('id')->take(4)->get();
+        $cats       = StockPortfolio::where('status','active')->where('id','!=',8)->where('cat_id',null)->orderByDesc('sort')->get();
+        $old_user   = $this->old_special_user();
+        $data       = Data::where('page_name', 'سبد-سهام')->get();
+        $item       = StockPortfolio::find(8);
+        $item->seen = $item->seen + 1;
+        $item->update();
+        return view('user.consultation.stock-portfolio.index', compact('data','items','cats','latest','old_user'));
     }
 
     public function edit($id) {
         $item   = StockPortfolio::where('status','active')->where('cat_id',null)->where('slug',$id)->firstOrFail();
+        $item->seen = $item->seen + 1;
+        $item->update();
         $latest = StockPortfolio::where('status','active')->orderByDesc('id')->take(4)->get();
-        $items  = StockPortfolio::where('status','active')->where('cat_id',$item->id)->orderByDesc('id')->paginate($this->controller_paginate());
+        $items  = StockPortfolio::where('status','active')->where('cat_id',$item->id)->orderByDesc('created_at')->paginate($this->controller_paginate());
         $cats   = StockPortfolio::where('status','active')->where('id','!=',8)->where('cat_id',null)->orderByDesc('sort')->get();
-        return view('user.consultation.stock-portfolio.index', compact('items','cats','id','latest'));
+        $old_user   = $this->old_special_user();
+        $data       = Data::where('page_name', 'سبد-سهام')->get();
+        return view('user.consultation.stock-portfolio.index', compact('data','items','cats','id','latest','old_user'));
     }
 
     public function store(Request $request) {
-        $items  = StockPortfolio::where('status','active')->where('cat_id','!=',null)->where( 'title' ,  'like' , '%'. $request->search .'%' )->orderByDesc('id')->paginate($this->controller_paginate());
+        $items  = StockPortfolio::where('status','active')->where('cat_id','!=',null)->where( 'title' ,  'like' , '%'. $request->search .'%' )->orderByDesc('created_at')->paginate($this->controller_paginate());
         $cats   = StockPortfolio::where('status','active')->where('id','!=',8)->where('cat_id',null)->orderByDesc('sort')->get();
         $latest = StockPortfolio::where('status','active')->orderByDesc('id')->take(4)->get();
-        return view('user.consultation.stock-portfolio.index', compact('items','cats','latest') , ['title' => 'نتایج جستجوی']);
+        $old_user   = $this->old_special_user();
+        $data       = Data::where('page_name', 'سبد-سهام')->get();
+        return view('user.consultation.stock-portfolio.index', compact('data','items','cats','latest','old_user') , ['title' => 'نتایج جستجوی']);
     }
 
     public function show($id) {
         if (auth()->user()) {
-            $item   = StockPortfolio::where('status','active')->where('cat_id','!=',null)->where('slug',$id)->firstOrFail();
+            $item   = StockPortfolio::where('status','active')->where('cat_id','!=',null)->where('id',$id)->firstOrFail();
             $latest = StockPortfolio::where('status','active')->orderByDesc('id')->take(4)->get();
             $cats   = StockPortfolio::where('status','active')->where('id','!=',8)->where('cat_id',null)->orderByDesc('sort')->get();
             return view('user.consultation.stock-portfolio.show', compact('item','cats','id','latest'));
         }
-        return false;
+        return redirect()->route('user.home-goust')->with('flash_message', 'برای مشاهده این بخش ابتدا وارد شوید');
     }
 
 }

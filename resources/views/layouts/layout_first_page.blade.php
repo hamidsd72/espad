@@ -28,15 +28,15 @@
         {{-- animations --}}
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         @include('includes.css')
-        @livewireStyles
+        {{-- @livewireStyles --}}
     </head>
     <body>
-    @livewire('calling')
+    {{-- @livewire('calling') --}}
     @include('auth.login2')
     @include('user.ticket.web.create')
         <header>
             {{-- تقویم --}}
-            <div class="d-none d-lg-block"> 
+            {{-- <div class="d-none d-lg-block"> 
                 <div style="position: absolute;top: 0px;left: 0px;">
                     <img src="{{ asset('/assets/images/calendar.png') }}" alt="calendar" width="136px">
                     <div class="small text-start ms-4" style="position: relative;top: -106px;">
@@ -45,16 +45,11 @@
                         <p class="me-4">{{ \Carbon\Carbon::now()->format('Y M d') }}</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+            
             <div class="container-lg costum-container-lg" >
                 <div class="header_top_box d-none d-lg-block pt-3">
-                    <div class="float-start">
-                        <div class="d-flex">
-                            <p class="small ps-lg-5">
-                                {{$setting->slogan}}
-                            </p>
-                        </div>
-                    </div>
+                    <div class="float-start">{{$setting->slogan}}</div>
                     <ul class="d-flex ul_menu_top">
                         @unless (\Request::route()->getName()=='user.home-goust')
                             <li>
@@ -78,9 +73,6 @@
                                 </a>
                             </li>
                         @endif
-                        <li>
-                            <a href="{{ route('user.post.index.type','اطلاعیه') }}">اطلاعیه ها و بلاگ ها</a>
-                        </li>
                         <li>
                             <a href="{{ route('user.cooperation.index') }}">همکاری با ما</a>
                         </li>
@@ -112,7 +104,7 @@
                 <div class="header_top_2 row">
                     <div class="col-lg-8 position-992-absolute d-none d-lg-block ps-5 my-auto">
                         <div class="search-form">
-                            <form action="{{ route('user.services-search') }}" method="get" class="d-flex">
+                            <form action="{{ route('user.services-search') }}" method="get" class="d-flex form_x287_pd">
                                 <button type="submit"><i class="fas fa-search"></i></button>
                                 <input id="search_text" type="text" name="search" onkeypress="ajax_search()" placeholder="جستجوی سریع...">
                                 <input type="hidden" name="route" value="web">
@@ -139,9 +131,30 @@
                                 @endif
                             </div>
                         </div>
-                        <a href="/">
-                            <img class="logo" src="/{{ $setting->logo_site }}" alt="{{ $setting->title }}">
-                        </a>
+                        <div class="row" style="direction: ltr;">
+                            <div class="col-auto p-0">
+                                <a href="/">
+                                    <img class="logo" src="/{{ $setting->logo_site }}" alt="{{ $setting->title }}">
+                                </a>
+                            </div>
+                            <div class="col-auto d-none d-lg-block text-white px-3" style="background: #bcd0e6;clip-path: polygon(40% 0%, 100% 0%, 100% 0%, 60% 100%, 0% 100%, 0 100%);">
+                                <h6 class="pt-1 mb-0 fw-bold" id="runTimeHour" style="min-width: 22px;;margin-left: 14px;">{{ \Carbon\Carbon::now()->format('H') }}</h6>
+                                <h6 class="mb-0 fw-bold" id="runTimeMinutes" style="min-width: 22px;;margin-right: 6px;">{{ \Carbon\Carbon::now()->format('i') }}</h6>
+                                <p class="mb-0 text-dark fw-bold" id="runTimeSecend" style="min-width: 22px;;margin-right: 13px;">{{ \Carbon\Carbon::now()->format('s') }}</p>
+                            </div>
+                            <div class="col-auto d-none d-lg-block my-auto p-0">
+                                <div class="row">
+                                    <div class="col-auto my-auto">
+                                        <p class="my-1 my-lg-2">{{ my_jdate(\Carbon\Carbon::now(),'Y F d') }}</p>
+                                        <p class="my-1">{{ \Carbon\Carbon::now()->format('Y M d') }}</p>
+                                    </div>
+                                    <div class="col-auto p-0">
+                                        <img class="logo pt-1" src="{{ asset('/assets/images/ccl.png') }}" alt="{{ $setting->title }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -168,18 +181,30 @@
                     </button>
                     <div class="collapse navbar-collapse container-lg" id="main_nav">
                         <a href="javascript:void(0)" class="search_top"><i class="fas fa-search"></i> </a>
-                        <ul class="navbar-nav mx-auto">
+                        <ul class="navbar-nav mx-auto nav_x256">
+                            {{-- <li class="nav-item fs-20" id="show_nav_items">
+                                <a class="nav-link menu_in_a f-18 fw-bold" href="javascript:void(0)" onclick="showNavitems()">
+                                    نمایش مشاوران
+                                </a>
+                            </li> --}}
+                            
                             @foreach($ServiceCats as $cat)
-                                <li class="nav-item {{ $cat->id==$ServiceCats->last()->id?'me-lg-auto':'' }}" >
+                            
+                                {{-- @if ($cat->id==97 || $cat->id==526) --}}
+                                <li class="nav-item {{$cat->view_mod=='new'? 'd-lg-none' : ''}} {{ $cat->id==$ServiceCats->where('view_mod','sample')->last()->id?'me-lg-auto fs-20': '' }} {{ $cat->id==545?'new-mod': '' }}" >
+                                {{-- @else
+                                <li class="nav-item {{ $cat->id==$ServiceCats->last()->id?'me-lg-auto fs-20': 'd-none' }}" >
+                                @endif --}}
                                     {{-- فروشگاه 96 --}}
-                                    
                                     @if ($cat->id==96)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.store.index') }}" target="_blank">
                                     {{-- ثبت نام کارگزاری 97 --}}
                                     @elseif ($cat->id==97)
                                         <a class="nav-link menu_in_a f-18 fw-bold" href="{{ env('SIGNUP') }}" target="_blank">
+                                    @elseif ($cat->id==76)
+                                        <a class="nav-link menu_in_a f-18 fw-bold" href="{{route('user.stock-portfolio.index') }}" target="_blank">
                                     @else
-                                        <a class="nav-link menu_in_a f-18 fw-bold" @if ($cat->id==46) style="font-size: 20px;" @endif data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
+                                        <a class="nav-link menu_in_a f-18 fw-bold" data-key="{{$cat->id}}" href="#" data-bs-toggle="dropdown">
                                     @endif
                                         {{$cat->title}}
                                         @if(count($cat->child_cat))
@@ -187,37 +212,55 @@
                                         @endif
                                     </a>
                                     @if($cat->id != 96)
-                                        @if(count($cat->child_cat))
+                                        @if(count($cat->child_cat) || $cat->id==545)
                                             <div class="dropdown-menu dropdown-menu-big dropdown-menu-{{$cat->id}}">
                                                 <div class="container-lg">
                                                     {{-- @if ($cat->slug=='اوراق-بهادار') --}}
                                                         <div class="d-none d-lg-block">
-                                                            <div class="p-lg-4 py-1 overflow-auto" style="max-height: 746px;">
-                                                                <div class="row">
-                                                                    @foreach($cat->child_cat->chunk( $cat->slug=='اوراق-بهادار'?intval($cat->child_cat->count() / 5):1  ) as $lists)
-                                                                        <div class="col-2 p-0">
-                                                                            @foreach($lists as $child)
-                                                                            
-                                                                                <a class="text-light"
-                                                                                 href="{{route( $child->id==543 ? 'user.stock-portfolio.index' : 'user.consultation.show',$child->id ) }}">
-                                                                                    <div class="card_menu card_menu_2 mx-1 mb-2 p-2"
-                                                                                     @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
-                                                                                     style="background: #ffffff8c !important" @endif >
-                                                                                        <div class="text-start">
-                                                                                            <img src="{{ asset('assets/images/msg-icon.png') }}" style="width: 32px;opacity: 0.6;" alt="SPADSTOCK">
+                                                            @if($cat->id==545)
+                                                                <div class="col-lg-10 col-xl-9">
+                                                                    <div class="row">
+                                                                        @foreach($ServiceCats->where('view_mod','new') as $cat)
+                                                                            <div class="col-2 medad p-0 overflow-auto" style="{{ $cat->id==$ServiceCats->where('view_mod','new')->last()->id ? '' : 'border-left: 1px solid white;' }}">
+                                                                                <h6 class="my-1 my-3 pb-3 text-center">{{$cat->title}}</h6>
+                                                                                @foreach($cat->child_cat as $child)
+                                                                                    <a class="text-light" href="{{route( $child->id==543 ? 'user.stock-portfolio.index' : 'user.consultation.show',$child->id ) }}">
+                                                                                        <div class="card_menu card_menu_2 mx-2 p-1">
+                                                                                            <div class="my-1 small">{{$child->title}}</div>
                                                                                         </div>
-                                                                                        <div class="mt-4 pt-1 small"
-                                                                                         @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
-                                                                                         style="color: #003b5c" @endif >{{$child->title}}</div>
-                                                                                        <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
-                                                                                    </div>
-                                                                                </a>
-                                                                                    
-                                                                            @endforeach
-                                                                        </div>
-                                                                    @endforeach
+                                                                                    </a>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            @else
+                                                                <div class="p-lg-4 py-1 overflow-auto" style="max-height: 746px;">
+                                                                    <div class="row" style="{{ $cat->id==$ServiceCats->where('view_mod','sample')->last()->id?'direction: ltr;':'' }}">
+                                                                        @foreach($cat->child_cat->chunk( $cat->slug=='اوراق-بهادار'?intval($cat->child_cat->count() / 5):1  ) as $lists)
+                                                                            <div class="col-2 p-0">
+                                                                                @foreach($lists as $child)
+                                                                                    <a class="text-light"
+                                                                                    href="{{route( $child->id==543 ? 'user.stock-portfolio.index' : 'user.consultation.show',$child->id ) }}">
+                                                                                        <div class="card_menu card_menu_2 mx-1 mb-2 p-2"
+                                                                                        @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
+                                                                                        style="background: #ffffff8c !important" @endif >
+                                                                                            <div class="text-start">
+                                                                                                <img src="{{ asset('assets/images/msg-icon.png') }}" style="width: 32px;opacity: 0.6;" alt="SPADSTOCK">
+                                                                                            </div>
+                                                                                            <div class="mt-4 pt-1 small"
+                                                                                            @if (in_array( $child->title, ['تابلو خوانی','فیلترنویسی','استراتژی معاملاتی','مشاورین برتر']))
+                                                                                            style="color: #003b5c" @endif >{{$child->title}}</div>
+                                                                                            <p class="px-1 m-0 text-start text-start fixed-bottom">{{$child->text}}</p>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                        
+                                                                                @endforeach
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         
                                                         <div class="d-lg-none">
@@ -273,6 +316,11 @@
                                     @endif
                                 </li>
                             @endforeach
+
+                            <li class="nav-item " >
+                                <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.post.index.type','اطلاعیه') }}" target="_blank">تحلیل های آزاد</a>
+                            </li>
+
                         </ul>
                         <a href="{{url('/')}}" class="logo_menu_d">
                             <img src="{{ url($setting->icon_site) }}" alt="{{ $setting->title }}">
@@ -309,7 +357,16 @@
                 </div> <!-- container-fluid.// -->
             </nav>
         </header>
-
+        @if ($consultantCall??'')
+            <div class="consultantCall">
+                <div class="d-flex">
+                    <a href="{{route('user.call.user_call_report')}}" class="text-light">
+                        <span class="h6">در حال مکالمه</span>
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </a>
+                </div>
+            </div>
+        @endif
         @yield('content')
         <footer>
             <div class="container pb-lg-2 py-4">
@@ -455,9 +512,9 @@
                 </div>
             </div>
             <div class="container text-center pb-2">
-                <span class="text-secondary">تمامی حقوق این سایت متعلق به مانا بورس ( شعبه توحید کارگزاری دانایان ) می‌باشد</span>
+                <a class="text-secondary" href="https://adib-it.com" target="_blank">تمامی حقوق این سایت متعلق به مانا بورس ( شعبه توحید کارگزاری دانایان ) می‌باشد</a>
                 <br>
-                <span class="text-secondary">All rights reserved by AdibGroup 2022</span>
+                <a class="text-secondary" href="https://adib-it.com" target="_blank">All rights reserved by AdibGroup 2022</a>
             </div>
         </footer>
         
@@ -555,7 +612,48 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{asset('admin/plugins/select2/select2.full.min.js')}}"></script>
     <script>
-        $(document).keydown(function(e) {
+        function showNavitems() {
+            let nav = document.querySelector('.nav_x256');
+            Array.from(nav.children).forEach(li => {
+                li.classList.remove('d-none');
+            });
+            document.querySelector('#show_nav_items').classList.add('d-none');
+        }
+        function showIndexPageitems() {
+            let items   = document.querySelectorAll('.nav_x257');
+            items.forEach(item => {
+                item.classList.remove('d-none');
+            });
+            document.querySelector('#show_index_page_items').classList.add('d-none');
+        }
+    </script>
+    <script>
+        var sec = parseInt(@json(\Carbon\Carbon::now()->format('s')));
+        var min = parseInt(@json(\Carbon\Carbon::now()->format('i')));
+        var hor = parseInt(@json(\Carbon\Carbon::now()->format('H')));
+
+        function myStopFunction() {
+            if (sec < 60) {
+                sec += 1;
+            } else {
+                sec = 0;
+                if (min < 60) {
+                    min += 1;
+                } else {
+                    min = 0;
+                    hor +=1;
+                }
+            }
+            document.querySelector('#runTimeSecend').innerHTML  = sec;
+            document.querySelector('#runTimeMinutes').innerHTML = min;
+            document.querySelector('#runTimeHour').innerHTML    = hor;
+            setTimeout(() => { myStopFunction(); }, 1000);
+        }
+        
+        myStopFunction();
+    </script>
+    <script>
+        $('.form_x287_pd').keydown(function(e) {
             if (window.event.keyCode == 13) {
                 return false;
             }
@@ -683,6 +781,6 @@
             @endif
         @endif
     </script>
-        @livewireScripts
+        {{-- @livewireScripts --}}
     </body>
 </html>

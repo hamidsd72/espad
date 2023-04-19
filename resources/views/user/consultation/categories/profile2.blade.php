@@ -138,7 +138,9 @@
                                 <div class="py-3">
                                     سرفصل های دوره
                                 </div>
-                                {!! $item->description !!}
+                                <div class="item-description">
+                                    {!! $item->description !!}
+                                </div>
                             </div>
                         </div>
 

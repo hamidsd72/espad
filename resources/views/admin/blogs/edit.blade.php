@@ -27,7 +27,7 @@
                         <input type="text" class="form-control" id="slug" name="slug"  value="{{ $item->slug }}" />
                     </div>
                     <div class="col-lg form-group">
-                        <label for="name" class="form-label">* خلاصه فارسی :</label>
+                        <label for="name" class="form-label"> خلاصه فارسی :</label>
                         <input type="text" class="form-control" id="short_text" name="short_text"  value="{{ $item->short_text }}" />
                     </div>
                     @unless ($item->type=='سبد-سهام')

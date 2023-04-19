@@ -28,6 +28,7 @@ Route::resource('factor-buy', 'FactorBuyController');
 // آیتم های توصیه های بورسی
 Route::resource('stock-portfolio', 'StockPortfolioController');
 Route::get('stock-portfolio/force/delete/{id}', 'StockPortfolioController@destroy')->name('stock-portfolio.force.delete');
+Route::get('stock-portfolio/force/children/destroy/{id}', 'StockPortfolioController@children_destroy')->name('stock-portfolio.force.children.destroy');
 Route::get('stock-portfolio/custom/create/{id}', 'StockPortfolioController@create')->name('stock-portfolio.custom.create');
 // دسته بندی های توصیه های بورسی
 Route::resource('stock-portfolio-categories', 'StockPortfolioCategoryController');
@@ -120,6 +121,7 @@ Route::get('user-list/role/{role}', 'UserController@index')->name('user.list.rol
 Route::get('user-show/{id}', 'UserController@show')->name('user.show');
 Route::get('user-create', 'UserController@create')->name('user.create');
 Route::post('user-store', 'UserController@store')->name('user.store');
+Route::post('user/multi-filter/search', 'UserController@search')->name('user.search');
 Route::get('user-edit/{id}', 'UserController@edit')->name('user.edit');
 Route::post('user-update/{id}', 'UserController@update')->name('user.update');
 Route::get('user-destroy/{id}', 'UserController@destroy')->name('user.destroy');
@@ -222,6 +224,7 @@ Route::get('service-package-price-list', 'ServicePackagePriceController@index')-
 Route::post('service-package-price-store', 'ServicePackagePriceController@store')->name('service.package.price.store');
 Route::get('service-package-price-destroy/{id}', 'ServicePackagePriceController@destroy')->name('service.package.price.destroy');
 Route::get('service-package-price-active/{id}/{type}', 'ServicePackagePriceController@active')->name('service.package.price.active');
+Route::post('service-package-price-resort', 'ServicePackagePriceController@sort')->name('service.package.price.resort');
 
 // service buy
 Route::get('service-buy-list', 'ServiceBuyController@index')->name('service.buy.list');
@@ -274,6 +277,6 @@ Route::get('visit_log', 'VisitLogController@index')->name('visit.log');
 // call request
 Route::get('call/request', 'CallController@index')->name('call.request');
 
-
-
+Route::get('offline-payment/list/{type?}', 'OfflinePaymentController@index')->name('offline_payment.list');
+Route::get('offline-payment/request/action/{id}/{type}', 'OfflinePaymentController@action')->name('offline_payment.request.action');
 

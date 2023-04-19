@@ -112,6 +112,18 @@
         }
         .bg-violet {
         background: #2F2D51 !important
+        } 
+        .consultantCall {
+            padding: 6px 8px;
+            left: 2%;
+            bottom: 3%;
+            position: fixed;
+            border-radius: 8px;
+            z-index: 999;
+            background: darkgrey;
+        }
+        .cke_reset {
+            min-height: 480px !important;
         }
     </style>
     @yield('css')
@@ -127,10 +139,10 @@
             }
         </style>
     @endunless --}}
-    @livewireStyles
+    {{-- @livewireStyles --}}
 </head>
 <body class="hold-transition sidebar-mini">
-@livewire('calling')
+{{-- @livewire('calling') --}}
 <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-light border-bottom">
@@ -161,6 +173,17 @@
 
         </ul>
     </nav>
+
+    @if ($consultantCall)
+        <div class="consultantCall">
+            <div class="d-flex">
+                <a href="{{route('user.call.user_call_report')}}" class="text-light">
+                    <span class="h6">در حال مکالمه</span>
+                    <i class="fa fa-refresh fa-spin"></i>
+                </a>
+            </div>
+        </div>
+    @endif
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
@@ -430,6 +453,12 @@
                             <ul class="nav nav-treeview border-bottom">
                                 @role('مدیر')
                                     <li class="nav-item">
+                                        <a href="{{route('admin.data.show','سبد-سهام')}}" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon"></i>
+                                            <p>محتوا</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="{{route('admin.stock-portfolio-categories.index')}}" class="nav-link ">
                                             <i class="fa fa-circle-o nav-icon"></i>
                                             <p>دسته های سبد سهام</p>
@@ -540,6 +569,34 @@
                                         </a>
                                     </li>
                                 @endrole
+                                <li class="nav-item">
+                                    <a href="{{route('admin.offline_payment.list','pending')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای کارگاه ها در انتظار
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\OfflinePayment::where('status', 'pending')->count()}}
+                                                @else
+                                                    {{\App\Model\OfflinePayment::where('user_id',auth()->user()->id)->where('status', 'pending')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.offline_payment.list','not_pending')}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>رسیدهای کارگاه ها پاسخ داده
+                                            <span class="text-danger mx-1">
+                                                @if(auth()->user()->getRoleNames()->first() == 'مدیر')
+                                                    {{\App\Model\OfflinePayment::where('status', '!=', 'pending')->count()}}
+                                                @else
+                                                    {{\App\Model\OfflinePayment::where('user_id',auth()->user()->id)->where('status', '!=', 'pending')->count()}}
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{route('admin.contact.list.pay','unread-pay')}}" class="nav-link">
                                         <i class="fa fa-circle-o nav-icon"></i>
@@ -938,6 +995,7 @@
         <!-- /.content-header -->
 
         <!-- Content Header (Page header) -->
+
         @yield('content')
     </div>
 
@@ -1089,7 +1147,7 @@
 </script>
 @yield('js')
 
-@livewireScripts
+{{-- @livewireScripts --}}
 </body>
 </html>
                         

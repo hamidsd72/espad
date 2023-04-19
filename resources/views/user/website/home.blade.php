@@ -204,10 +204,10 @@
                             </a>
                         @endif
                     @endif
-                    <div class="bd-highlight col-12 col-lg mt-2">
+                    <div class="bd-highlight col-12 col-lg mt-2 @if ($item->id!=76) d-none @endif d-lg-block nav_x257">
                         {{-- <div class="items p-2 p-lg-3 my-2 my-lg-0" style="background: #1d2d442b !important"> --}}
                         <div class="items" style="border: none;">
-                            <a href="{{ route('user.consultation.show',$item->id) }}" >
+                            <a @if ($item->id==543 || $item->id==76) href="{{route('user.stock-portfolio.index') }}" @else href="{{route('user.consultation.show',$item->id) }}" @endif>
                                 {{-- <div class="items_header fs-5" style="color: #32C9DB !important">
                                     <span class="fs-1 me-2" style="color: #32C9DB">.</span> --}}
                                 <div class="items_header fs-6 text-center">
@@ -221,6 +221,34 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="bd-highlight col-12 col-lg mt-2 d-lg-none" id="show_index_page_items">
+                    {{-- <div class="items p-2 p-lg-3 my-2 my-lg-0" style="background: #1d2d442b !important"> --}}
+                    <div class="items" style="border: none;">
+                        <a href="javascript:void(0)" onclick="showIndexPageitems()">
+                            {{-- <div class="items_header fs-5" style="color: #32C9DB !important">
+                                <span class="fs-1 me-2" style="color: #32C9DB">.</span> --}}
+                            <div class="items_header fs-6 text-center">
+                                <span class="fs-1 me-2 text-light">.</span>
+                                مشاوران
+                            </div>
+                            {{-- <div class="items_description p-1 text-center">
+                                برای نمایش دسته بندی ها کلیک کنید
+                            </div> --}}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bd-highlight col-12 col-lg mt-2 d-lg-none" >
+                    <div class="items" style="border: none;">
+                        <a href="{{ env('SIGNUP') }}" target="_blank">
+                            <div class="items_header fs-6 text-center">
+                                <span class="fs-1 me-2 text-light">.</span>
+                                ثبت نام کارگزاری
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
             </div>
             {{-- </div> --}}
             {{-- <div class="pt-3 blue_link">

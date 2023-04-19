@@ -8,19 +8,15 @@
 <style>
     section.blogs .blog-show img {
         width: 94%;
-        height: 470px;
         border: 1px solid gray;
         margin: 17px 0px;
         margin-right: 3%;
     }
     section.blogs .items:hover img {
-        /* padding: 8px; */
         width: 96%;
-        height: 480px;
         margin: 12px 0px;
         margin-right: 2%;
         transition: 0.4s;
-        opacity: 0.6;
     }
     video {
         width: 100%;
@@ -63,7 +59,7 @@
                     @foreach ($latest as $new)
                         <div class="pt-4">
                             <div>
-                                <a href="{{ route('user.post.show',$new->slug) }}" class="link">{{$new->title}}</a>
+                                <a href="{{ route('user.post.show-by-slug',[$new->id ,$new->slug]) }}" class="link">{{$new->title}}</a>
                             </div>
                             <span class="text-secondary">{{my_jdate($new->updated_at,'d F Y')}}</span>
                         </div>

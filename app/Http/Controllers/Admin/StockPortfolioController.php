@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\StockPortfolio;
+use App\Model\StockPortfolioItem;
 use App\Model\Setting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -60,7 +61,6 @@ class StockPortfolioController extends Controller {
             $item->save();
             return redirect()->route('admin.stock-portfolio.show',$request->cat_id)->with('flash_message', 'با موفقیت ثبت شد.');
         } catch (\Exception $e) {
-            // dd($e);
             return redirect()->back()->with('err_message', 'یک خطا رخ داده است، لطفا بررسی بفرمایید.');
         }
     }
@@ -99,18 +99,38 @@ class StockPortfolioController extends Controller {
                 $item->file = file_store($request->file, 'source/asset/uploads/stock-portfolio/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/files/', 'attach-');
             }
             $item->save();
+
+            $items  = $item->children;
+            foreach ($items as $children) {
+                $txt            = 'text'.$children->id;
+                $children->text = $request->$txt;
+                $children->update();
+            }
+            
+            if ( $request->new_text != null ) {
+                StockPortfolioItem::create([
+                    'item_id'   => $item->id,
+                    'text'      => $request->new_text,
+                ]);
+            }
             return redirect()->route('admin.stock-portfolio.show',$item->cat_id)->with('flash_message', 'با موفقیت ویرایش شد.');
         } catch (\Exception $e) {
-            $dd($e);
             return redirect()->back()->with('err_message', 'یک خطا رخ داده است، لطفا بررسی بفرمایید.');
         }
     }
 
     public function destroy($id) {
         $item = StockPortfolio::findOrFail($id);
+        foreach ($item->children as $children) $children->delete();
         if ($item->photo) File::delete($item->photo->path);
         if ($item->video) File::delete($item->video);
         if ($item->file) File::delete($item->file);
+        $item->delete();
+        return redirect()->back()->withInput()->with('flash_message',' با موفقیت حذف شد.');
+    }
+
+    public function children_destroy($id) {
+        $item = StockPortfolioItem::findOrFail($id);
         $item->delete();
         return redirect()->back()->withInput()->with('flash_message',' با موفقیت حذف شد.');
     }

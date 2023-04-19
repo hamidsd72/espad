@@ -59,7 +59,7 @@
                         {{-- <div class="point card-point {{$status=='online'?'btn-success':'btn-danger'}}"></div> --}}
                         @if ($status=='online')
                             <a  
-                            @if (auth()->user()) href="{{auth()->user()->amount > ($item->price)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
+                            @if (auth()->user()) href="{{auth()->user()->amount > ($item->price)?route('user.new.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                             @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="btn px-0">
                             <video style="width: 48px !important;height: 48px !important;" loop autoplay muted>
                                 <source src="{{ asset('assets/images/ONLINE.mp4') }}" type="video/mp4">
@@ -249,7 +249,7 @@
                     <div class="col-lg-3 mt-2 mt-lg-3">
                         @if ($status=='online')
                             <a  
-                            @if (auth()->user()) href="{{auth()->user()->amount > ($item->price)?route('user.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
+                            @if (auth()->user()) href="{{auth()->user()->amount > ($item->price)?route('user.new.call.request',[$item->id,'service']):route('user.user-web-transaction.index')}}"
                             @else href="#" data-bs-toggle="modal" data-bs-target="#login" @endif class="btn p-0">
                             <h5 class="text-dark">
                                 <i class='fas fa-phone text-success'></i>

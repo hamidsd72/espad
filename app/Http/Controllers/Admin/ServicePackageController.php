@@ -57,15 +57,13 @@ class ServicePackageController extends Controller
         return view('admin.service.package.index', compact('items'), ['title1' => 'خدمات', 'title2' => $this->controller_title('sum')]);
     }
 
-    public function users($id=null)
-    {
+    public function users($id=null) {
         $ServiceCats = ServicePackage::all(['id','title']);
-        $item = $ServiceCats;
-
-        if (isset($id)) $item = $ServiceCats->where('id',$id);
-
-        $list  = Basket::where('status', 'active')->where('type', 'package')->whereIn('sale_id', $item)->get('user_id');
-        $items = User::whereIn('id', $list)->get();
+        $item = $ServiceCats->pluck('id');
+        if (isset($id)) $item = $ServiceCats->where('id',$id)->pluck('id');
+        
+        $items  = Basket::where('status', 'active')->where('type', 'package')->whereIn('sale_id', $item)->get();
+        // $items = User::whereIn('id', $list)->get();
         return view('admin.service.users_packages.index', compact('id','items','ServiceCats') , ['title1' => ' کاربران کارگاه', 'title2' => 'لیست کاربران کارگاه ها'] );
 
     }
@@ -131,7 +129,7 @@ class ServicePackageController extends Controller
         }
         try {
             $item = new ServicePackage();
-            $item->user_id = $request->user_id;
+            $item->user_id = implode(',',$request->user_id);
             $item->reagent_id = $request->reagent_id;
             $item->title = $request->title;
             $item->room_link = $request->room_link;
@@ -160,15 +158,15 @@ class ServicePackageController extends Controller
             //     // end optimaiz
             //     );
             // }
-            if ($request->service) {
-                foreach ($request->service as $key => $service) {
-                    $join = new ServiceJoinPackage();
-                    $join->service_id = $service;
-                    $join->package_id = $item[$key]->id;
-                    $join->sort_by = $key;
-                    $join->save();
-                }
-            }
+//            if ($request->service) {
+//                foreach ($request->service as $key => $service) {
+//                    $join = new ServiceJoinPackage();
+//                    $join->service_id = $service;
+//                    $join->package_id = $item[$key]->id;
+//                    $join->sort_by = $key;
+//                    $join->save();
+//                }
+//            }
             if ($request->hasFile('photo')) {
                 $photo = new Photo();
                 $photo->path = file_store($request->photo, 'source/asset/uploads/service_package/' . my_jdate(date('Y/m/d'), 'Y-m-d') . '/photos/', 'photo-');;
@@ -299,26 +297,26 @@ class ServicePackageController extends Controller
             // }
 
 
-            if ($request->service) {
-
-
-                foreach (ServiceJoinPackage::where('package_id',$item->id)->get() as $joins) {
-                    if(!in_array($joins->service_id,$request->service)){
-                        $joins->delete();
-                    }
-
-                }
-
-
-                foreach ($request->service as $key => $service) {
-                    if(!ServiceJoinPackage::where('service_id',$service)->where('package_id',$item->id)->first()){
-                        $join = new ServiceJoinPackage();
-                        $join->service_id = $service;
-                        $join->package_id = $item[$key]->id;
-                        $join->save();
-                    }
-                }
-            }
+//            if ($request->service) {
+//
+//
+//                foreach (ServiceJoinPackage::where('package_id',$item->id)->get() as $joins) {
+//                    if(!in_array($joins->service_id,$request->service)){
+//                        $joins->delete();
+//                    }
+//
+//                }
+//
+//
+//                foreach ($request->service as $key => $service) {
+//                    if(!ServiceJoinPackage::where('service_id',$service)->where('package_id',$item->id)->first()){
+//                        $join = new ServiceJoinPackage();
+//                        $join->service_id = $service;
+//                        $join->package_id = $item[$key]->id;
+//                        $join->save();
+//                    }
+//                }
+//            }
 
             if ($request->hasFile('photo')) {
                 if ($item->photo) {

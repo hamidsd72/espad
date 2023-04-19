@@ -79,7 +79,16 @@
 
 <div class="d-none">{{$page_name=$item->slug}}</div>
 <div class="row">
-    @foreach (\App\Model\ServicePackage::where('status','active')->where('type', 'meeting')->where('started_at','>',\Carbon\Carbon::now())->whereIn('reagent_id',$items1->pluck('id'))->get() as $item)
+    @php
+        if ($name=='paid') {
+            $packages = \App\Model\ServicePackage::where('status','active')->where('type', 'meeting')->where('price', '>', 0)->get();
+        } else {
+            $packages = \App\Model\ServicePackage::where('status','active')->where('type', 'meeting')->whereIn('price', [0,null])->get();
+        }
+    @endphp
+
+
+    @foreach ($packages->where('started_at','>',\Carbon\Carbon::now()) as $item)
         <a href="{{ route('user.consultation.edit', $item->slug ) }}" class="col-lg-4">
             <div class="top-consultation mb-4">
                 <div class="box">
@@ -117,7 +126,7 @@
         <h4 class="text-blue">{{$item->title}}</h4>
     @endforeach
     <div class="row">
-        @foreach (\App\Model\ServicePackage::where('status','active')->where('type', 'meeting')->where('started_at','<',\Carbon\Carbon::now())->whereIn('reagent_id',$items1->pluck('id'))->get() as $item)
+        @foreach ($packages->where('started_at','<',\Carbon\Carbon::now()) as $item)
             <div class="col-lg-6 text-center">
                 <div class="row list-item2 py-4">
                     <div class="col-lg-3 p-0">

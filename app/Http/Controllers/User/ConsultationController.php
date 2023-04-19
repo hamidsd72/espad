@@ -175,15 +175,15 @@ class ConsultationController extends Controller {
         //     dd( json_encode( $this->sky_req('getRoom' , $item->room_link ) ) );
         // }
 
-        $endItemSignUpDate  = Carbon::parse(j2g($this->toEnNumber($item->deleted_at)));
+        $endItemSignUpDate      = Carbon::parse(j2g($this->toEnNumber($item->deleted_at)));
         if ($endItemSignUpDate->diffInDays(Carbon::now(), false) > 0) {
-            $endItemSignUpDate = true;
-        } else {
-            $endItemSignUpDate = false;
-        }
+            $endItemSignUpDate  = true;
+        } else $endItemSignUpDate  = false;
+
+        $open_offline_payment   = \App\Model\OfflinePayment::where('user_id',auth()->id())->where('model_type','App\Model\ServicePackage')->where('status','pending')->where('item_id',$item->id)->count();
         $max  = Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count();
         $users = User::whereIn('id',explode(',',$item->user_id))->get(['id','first_name','last_name']);
-        return view('user.package.web.show', compact('item','max','endItemSignUpDate','users'));
+        return view('user.package.web.show', compact('item','max','endItemSignUpDate','users','open_offline_payment'));
     }
 
     public function profile($id) {
@@ -212,7 +212,14 @@ class ConsultationController extends Controller {
     }
 
     public function profile3($id, $package) {
-        $item       = Service::findOrFail($id);
+        $item       = Service::find($id);
+        // if(auth()->id()==1) {
+
+        //     dd($item);
+        // }
+        if ($item===null) {
+            return redirect()->back()->withInput()->with('flash_message', 'کارکاه یافت نشد');
+        }
         $services   = ServicePackage::where('status','active')->where('user_id',$item->user_id)->get();
         $comments   = Comment::where('type','consultation')->where('status','active')->where('item_id',$item->id)->orderByDesc('id')->get();
         $likes      = Like::where('type','consultation')->where('item_id',$item->id)->orderByDesc('id')->get();

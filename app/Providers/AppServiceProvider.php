@@ -16,6 +16,7 @@ use App\Model\Visit;
 use App\Model\Network;
 use App\Model\ServiceCat;
 use App\Model\CallRequest;
+use App\Model\NewCallRequest;
 use App\User;
 use Livewire;
 use Illuminate\Support\Facades\Cookie;
@@ -53,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('agent', User::role('نماینده')->where('user_status','pending')->count());
             $view->with('agent_request', Agent::where('seen',0)->count());
             $view->with('call_req', CallRequest::where('status','pending')->where('consultant_id',auth()->id())->first());
+            $view->with('consultantCall', NewCallRequest::where('status','pending')->where('consultant_id',auth()->id())->first());
         });
         view()->composer('layouts.user', function ($view) {
             //visit
@@ -176,6 +178,12 @@ class AppServiceProvider extends ServiceProvider
             }else {
                 $view->with('BasketCount', '');
             }
+
+            if (auth()->user()){
+                $view->with('consultantCall', NewCallRequest::where('status','pending')->where('consultant_id',auth()->id())->first());
+            }
+
+
             $view->with('call_req', CallRequest::where('status','pending')->where('consultant_id',auth()->id())->first());
 
         });

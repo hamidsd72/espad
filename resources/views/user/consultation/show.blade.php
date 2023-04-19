@@ -262,8 +262,16 @@
                 @endforeach
             </div>
             @include('user.consultation.categories.top')
-        {{-- میزگرد-عمومی 58  ,  57 میزگرد-تخصصی  --}}
-        @elseif ( $item->id==57 || $item->id==58 )
+        {{-- میزگرد-عمومی 58  --}}
+        @elseif ( $item->id==58 )
+            <div class="d-none">{{$name='paid'}}</div>
+            <div class="d-none">{{$title=$item->title}}</div>
+            <div class="container my-3">
+            @include('user.consultation.categories.mizgerd')
+        </div>
+        {{--  57 میزگرد-تخصصی  --}}
+        @elseif ( $item->id==57 )
+            <div class="d-none">{{$name='free'}}</div>
             <div class="d-none">{{$title=$item->title}}</div>
             <div class="container my-3">
                 @include('user.consultation.categories.mizgerd')
@@ -273,17 +281,16 @@
             <div class="d-none">{{$page_name=$item->slug}}</div>
             <div class="container">
                 <div class="row">
-                    @if ($items->count())
-                        @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items->pluck('user_id'))->whereIn('reagent_id',$items->pluck('id'))->get() as $item)
+                    @if ($items1->count())
+                        @foreach (\App\Model\ServicePackage::where('status','active')->where('type', '!=', 'meeting')->whereIn('user_id', $items1->pluck('user_id') )->get() as $item)
                             @include('user.consultation.categories.kargah-takhasosi')
                         @endforeach
                     @endif
-    
-                    @if ($items2->count())
+                    {{-- @if ($items2->count())
                         @foreach (\App\Model\ServicePackage::where('status','active')->whereIn('user_id',$items2->pluck('user_id'))->whereIn('reagent_id',$items2->pluck('id'))->get() as $item)
                             @include('user.consultation.categories.kargah-takhasosi')
                         @endforeach
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         @else

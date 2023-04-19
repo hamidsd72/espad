@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\CallRequest;
+use App\Model\NewCallRequest;
 use App\Model\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,11 +34,11 @@ class CallController extends Controller
     public function index()
     {
         if(auth()->user()->hasRole('مدرس')) {
-            $items = CallRequest::where('consultant_id',auth()->id())->orderByDesc('id');
+            $items = NewCallRequest::where('consultant_id',auth()->id())->orderBy('status');
         } elseif(auth()->user()->hasRole('کاربر')) {
-            $items = CallRequest::where('user_id',auth()->id())->orderByDesc('id');
+            $items = NewCallRequest::where('user_id',auth()->id())->orderBy('status');
         } elseif(auth()->user()->hasRole('مدیر')) {
-            $items = CallRequest::orderByDesc('id');
+            $items = NewCallRequest::orderBy('status');
         } else {
             return false;
         }

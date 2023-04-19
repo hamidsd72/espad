@@ -167,77 +167,74 @@ class BasketController extends Controller  {
            $item->delete();
         }
         try {
-            if ($type=='package') {
-                $item = ServicePackage::findOrFail($id);
+            $item = ServicePackage::findOrFail($id);
 
-                $endItemSignUpDate = Carbon::parse(j2g($this->toEnNumber($item->deleted_at)));
-                // برررسی ظرفیت کارگاه
-                if ( $item->limited && Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count() > $item->limited ) {
-                    return redirect()->back()->withInput()->with('err_message', 'ظرفیت این کارگاه تکمیل شده است');
-                // بررسی تاریخ اعتبار کارگاه
-                } elseif (Carbon::now()->diffInDays($endItemSignUpDate) > 0) {
-                    return redirect()->back()->withInput()->with('err_message', 'تاریخ ثبت نام کارگاه به پایان رسیده است');
-                }
+            $endItemSignUpDate = Carbon::parse(j2g($this->toEnNumber($item->deleted_at)));
+            // برررسی ظرفیت کارگاه
+            if ( $item->limited && Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count() > $item->limited ) {
+                return redirect()->back()->withInput()->with('err_message', 'ظرفیت این کارگاه تکمیل شده است');
+            // بررسی تاریخ اعتبار کارگاه
+            } elseif ($endItemSignUpDate->diffInDays(Carbon::now(), false) > 0) {
+                return redirect()->back()->withInput()->with('err_message', 'تاریخ ثبت نام کارگاه به پایان رسیده است');
+            }
 
-                $price = intval($item->price);
-                $user = User::findOrFail(auth()->user()->id);
-                // محاسبه کد تخفیف
-                if ($request->offcode) {
-                    foreach ($offcodes as $offcode) {
-                        if ($offcode->used_num < $offcode->inventory) {
-                            if ( Carbon::parse(j2g($this->toEnNumber($offcode->expiry_date)))->diffInDays(Carbon::now()) > 0 ) {
-                                $off    = intval(($price / 100) * $offcode->percent);
-                                $price  = intval($price - $off);
-                                $offcode->used_num += 1;
-                                $offcode->used = 'yes';
-                                if ($user->amount < $price) {
-                                    return redirect()->back()->withInput()->with('err_message', 'موجودی کافی نیست حساب را شارژ کنید و مجددا از کد تخفیف استفاده کنید');
-                                }
-                                $offcode->save();
-                                break;
+            $price = intval($item->price);
+            $user = User::findOrFail(auth()->user()->id);
+            // محاسبه کد تخفیف
+            if ($request->offcode) {
+                foreach ($offcodes as $offcode) {
+                    if ($offcode->used_num < $offcode->inventory) {
+                        if ( Carbon::parse(j2g($this->toEnNumber($offcode->expiry_date)))->diffInDays(Carbon::now()) > 0 ) {
+                            $off    = intval(($price / 100) * $offcode->percent);
+                            $price  = intval($price - $off);
+                            $offcode->used_num += 1;
+                            $offcode->used = 'yes';
+                            if ($user->amount < $price) {
+                                return redirect()->back()->withInput()->with('err_message', 'موجودی کافی نیست حساب را شارژ کنید و مجددا از کد تخفیف استفاده کنید');
                             }
+                            $offcode->save();
+                            break;
                         }
                     }
-
-                    if (intval($item->price) == $price) {
-                        return redirect()->back()->withInput()->with('err_message', 'کد اعمال نشد مجددا امتحان نکنید');
-                    }
-
-                } else {
-                    if ($user->amount < $price) {
-                        return redirect()->back()->withInput()->with('err_message', 'موجودی کافی نیست حساب را شارژ کنید و مجددا امتحان کنید');
-                    }
                 }
-                // کسر وجه از کاربر
-                $user->amount = $user->amount - $price;
-                $user->save();
 
-                $basket = new Basket();
-                $basket->user_id    = auth()->user()->id;
-                $basket->sale_id    = $id;
-                $basket->type       = $type;
-                $basket->type       = $type;
-                $basket->status     = 'active';
-                $basket->price      = 0;
-                if ($price && $price > 0 ) {
-                    // $basket->status     = 'pending';
-                    $basket->price      = $price;
-                    $basket->save();
-                    $t = new Transaction();
-                    $t->user_id       = auth()->user()->id;
-                    $t->type          = "package";
-                    $t->factor_id     = $basket->id;
-                    $t->total         = $price;
-                    $t->amount        = $price;
-                    $t->final_amount  = $price;
-                    $t->description   = ' خرید گارگاه '.$item->title.' به مبلغ '.$price.' تومان';
-                    $t->save();
-                    // return redirect()->route('user.user-transaction.show',$t->id);
+                if (intval($item->price) == $price) {
+                    return redirect()->back()->withInput()->with('err_message', 'کد اعمال نشد مجددا امتحان نکنید');
                 }
+
+            } else {
+                if ($user->amount < $price) {
+                    return redirect()->back()->withInput()->with('err_message', 'موجودی کافی نیست حساب را شارژ کنید و مجددا امتحان کنید');
+                }
+            }
+            // کسر وجه از کاربر
+            $user->amount = $user->amount - $price;
+            $user->save();
+
+            $basket = new Basket();
+            $basket->user_id    = auth()->user()->id;
+            $basket->sale_id    = $id;
+            $basket->type       = $type;
+            $basket->status     = 'active';
+            $basket->price      = 0;
+            if ($price && $price > 0 ) {
+                // $basket->status     = 'pending';
+                $basket->price      = $price;
                 $basket->save();
-                if ( $item->limited && Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count() == $item->limited ) {
-                    // Sms::SendSms( ' تکمیل شده است '.$item->title.' ظرفیت کارگاه ' , env('ADMIN_MOBILE'));
-                }
+                $t = new Transaction();
+                $t->user_id       = auth()->user()->id;
+                $t->type          = $type;
+                $t->factor_id     = $basket->id;
+                $t->total         = $price;
+                $t->amount        = $price;
+                $t->final_amount  = $price;
+                $t->description   = ' خرید گارگاه '.$item->title.' به مبلغ '.$price.' تومان';
+                $t->save();
+                // return redirect()->route('user.user-transaction.show',$t->id);
+            }
+            $basket->save();
+            if ( $item->limited && Basket::where('type','package')->where('status','active')->where('sale_id',$item->id)->count() == $item->limited ) {
+                // Sms::SendSms( ' تکمیل شده است '.$item->title.' ظرفیت کارگاه ' , env('ADMIN_MOBILE'));
             }
             // return redirect()->route('user.basket_index');
             return redirect()->back()->withInput()->with('flash_message', 'آیتم برای شما فعال شد. اطلاعات بیشتر را در پنل مشاهده کنید');

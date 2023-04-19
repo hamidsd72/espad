@@ -7,20 +7,16 @@
 </div> --}}
 <style>
     section.blogs .blog-show img {
-        width: 94%;
-        height: 470px;
+        width: 94% !important;
         border: 1px solid gray;
         margin: 17px 0px;
         margin-right: 3%;
     }
     section.blogs .items:hover img {
-        /* padding: 8px; */
-        width: 96%;
-        height: 480px;
+        width: 96% !important;
         margin: 12px 0px;
         margin-right: 2%;
         transition: 0.4s;
-        opacity: 0.6;
     }
     video {
         width: 100%;
@@ -31,14 +27,14 @@
 <section class="blogs"> 
     <div class="col-12">
         <div class="container">
-    
                 <div class="blog blog-show p-0">
                     <h1 class="text-center m-0">
-                        <img src="{{asset('/assets/stock/1.png')}}" class="pb-2" style="max-height: 62px;width: unset;border: none;" alt="مانا باشید"> 
+                        <img src="{{asset('/assets/stock/1.png')}}" class="pb-2" style="max-height: 62px;width: unset !important;border: none;" alt="مانا باشید"> 
                         مانا باشید
                     </h1>
                     @if ($item->count())
-                        <div class="items px-lg-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
+                        {{-- <div class="items px-lg-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')"> --}}
+                        <div class="items px-lg-4 border-bottom">
                             <h5 class="px-4">{{$item->title}}</h5>
 
                             @if ($item->photo)
@@ -50,6 +46,11 @@
                             <h5 class="px-4 mb-3 fs-6">{{$item->short_text}}</h5>
 
                             <div class="px-2 px-lg-4">
+                                @if ($item->children)
+                                    @foreach ($item->children as $children)
+                                        {!! $children->text !!}
+                                    @endforeach
+                                @endif
                                 {!! $item->text !!}
                             </div>
 

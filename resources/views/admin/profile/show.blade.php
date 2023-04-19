@@ -120,9 +120,10 @@
     <div class="user-profile-box-border">
         <img style="max-width: 70px;border-radius: 50px;" src="{{$item->photo? url($item->photo->path) :asset('admin/img/user.png')}}" alt="User profile picture">
         <div> @item($item->first_name) @item($item->last_name)</div>
+        @if($item->is_special) <div class="font-weight-bold"> عضویت ویژه : {{ my_jdate($item->is_special, 'd F Y') }}</div> @endif
+        <p class="text-muted text-center mb-2">@item($item->education)</p>
     </div>
 
-    <p class="text-muted text-center mb-2">@item($item->education)</p>
     <div class="container-fluid pb-3">
         {{-- <div class="row">
             <div class="col-sm-6">
@@ -203,14 +204,13 @@
             </div>
             <div class="col-6 col-lg-4">
                 @php
-                    $userCall       = \App\Model\CallRequest::where('user_id',auth()->user()->id)->where('status','doing')->count();
-                    $consultantCall = \App\Model\CallRequest::where('consultant_id',auth()->user()->id)->where('status','doing')->count();
+                    $consultantCall = \App\Model\NewCallRequest::where('consultant_id',auth()->user()->id)->where('status','pending')->first();
                 @endphp
                 <div class="small-box bg-warning">
                     <div class="inner">
                         <h3>
-                            @if ($userCall || $consultantCall)
-                                در حال مکالمه
+                            @if ($consultantCall)
+                                <span class="h6">در حال مکالمه </span>
                             @else
                                 بدون مکالمه
                             @endif
@@ -218,7 +218,7 @@
                         <p>وضعیت تماس</p>
                     </div>
                     <div class="icon">
-                        @if ($userCall || $consultantCall)
+                        @if ($consultantCall)
                             <i class="fa fa-refresh fa-spin"></i>
                         @else
                             <i class="fa fa-tty"></i>
@@ -242,7 +242,7 @@
             <div class="col-6 col-lg-4">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{App\Model\Basket::where('user_id',auth()->user()->id)->where('type','package')->where('status','active')->count()}} مورد</h3>
+                        <h3>{{App\Model\Basket::where('user_id',auth()->user()->id)->where('status','active')->count()}} مورد</h3>
                         <p>لیست وبینارهای من</p>
                     </div>
                     <div class="icon">

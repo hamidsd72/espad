@@ -28,31 +28,41 @@
                                     </thead>
                                     <tbody>
                                     @if(count($items))
-                                    @foreach($items as $item)
-                                    <tr>
-                                        <td>{{$item->user?$item->user->first_name.' '.$item->user->last_name:$item->user_id}}</td>
-                                        <td>{{$item->consultant?$item->consultant->first_name.' '.$item->consultant->last_name:$item->consultant_id}}</td>
-                                        <td>
-                                            {{$item->status_set($item->status,$item->end_call_id)}}
-                                        </td>
-                                        <td>
-                                            {{-- {{$item->service && $item->service->category?$item->service->category->title:''}} --}}
-                                            {{$item->service? $item->service->category()? $item->service->category()->title :'':''}}
-                                             - {{$item->service?$item->service->title:$item->service_id}}
-                                        </td>
-                                        <td>
-                                            {{$item->time_call($item->start_call,$item->end_call,$item->time_service,$item->status)}}
-                                        </td>
-                                        <td>
-                                            @if($item->status=='end' || $item->status=='end_time')
-                                                {{number_format((int)$item->price_call)}} از {{number_format($item->price_service)}}
-                                            @else
-                                                __
-                                            @endif
-                                        </td>
-                                        <td>{{my_jdate($item->created_at,'Y/m/d H:i:s')}}</td>
-                                    </tr>
-                                    @endforeach
+                                        @foreach($items as $item)
+                                            <tr>
+                                                <td>{{$item->user?$item->user->first_name.' '.$item->user->last_name:$item->user_id}}</td>
+                                                <td>{{$item->consultant?$item->consultant->first_name.' '.$item->consultant->last_name:$item->consultant_id}}</td>
+                                                <td>
+                                                    {!! $item->status_set($item->status,$item->end_call_id) !!}
+                                                    {{-- اگر ادمین بود یا مشاور تماس بود و تماس پایان نیافته بود --}}
+                                                    @if( (auth()->user()->hasRole('مدیر') || auth()->user()->id==$item->consultant_id) && $item->status=='pending')
+                                                        <a href="{{route('user.new.force-end-call',$item->id)}}" class="btn btn-info mx-2"><i class="fa fa-close ml-1"></i>بستن تماس</a>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{-- {{$item->service && $item->service->category?$item->service->category->title:''}} --}}
+                                                    {{$item->service? $item->service->category()? $item->service->category()->title :'':''}}
+                                                    - {{$item->service?$item->service->title:$item->service_id}}
+                                                </td>
+                                                <td>
+                                                    {{-- {{$item->time_call($item->start_call,$item->end_call,$item->time_service,$item->status)}} --}}
+                                                    {{$item->status=='end'?num_to_fa($item->min_call).' دقیقه ':''}}
+                                                    {!! $item->status!='end'?$item->status_set($item->status,$item->user_id):'' !!}
+                                                </td>
+                                                <td>
+                                                    @if($item->status=='end' || $item->status=='end_time')
+                                                        {{-- {{number_format((int)$item->price_call)}} از {{number_format($item->price_service)}} --}}
+                                                        {{num_to_fa(number_format(intVal($item->price_call)))}}
+                                                    @elseif($item->status=='pending')
+                                                        {!! $item->status!='end'?$item->status_set($item->status,$item->user_id):'' !!}
+                                                        <i class="fa fa-refresh fa-spin"></i>
+                                                    @else
+                                                        {!! $item->status!='end'?$item->status_set($item->status,$item->user_id):'' !!}
+                                                    @endif
+                                                </td>
+                                                <td>{{num_to_fa(my_jdate($item->created_at,'Y/m/d H:i:s'))}}</td>
+                                            </tr>
+                                        @endforeach
                                     @else
                                         <tr>
                                             <td colspan="7" class="text-center">موردی یافت نشد</td>

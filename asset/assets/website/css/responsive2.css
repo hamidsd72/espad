@@ -1334,7 +1334,7 @@ section.about .card .kala img {
         margin: auto 15%;
     }
     section.blogs .cats {
-        padding: 6%;
+        padding: 6% !important;
     }
 }
 video {

@@ -11,7 +11,8 @@ class TicketController extends Controller {
        $this->middleware('auth');
     }
     
-    public function form_post(Request $request) {   
+    public function form_post(Request $request) {
+        $this->validate($request, [ 'attach' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', ], [ 'attach' => 'حداکثر حجم تصویر ۵ مگابایت باشد', ]);
         try {
             $name = 'بدون نام';
             $belongs_to_item = 0;

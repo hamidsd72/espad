@@ -25,7 +25,7 @@
                         <div class="container-fluid">
                             <hr>
                             <div class="row">
-                                <div class="col-sm-6">
+                                {{-- <div class="col-sm-6">
                                     <strong><i class="fa fa-at ml-1"></i> ایمیل </strong>
                                     <p class="text-muted">
                                         @if($item->email!=null) @item($item->email)
@@ -38,7 +38,7 @@
                                             ثبت نشده
                                         @endif
                                     </p>
-                                </div>
+                                </div> --}}
                                 <div class="col-sm-6">
                                     <strong><i class="fa fa-mobile ml-1"></i> موبایل</strong>
                                     <p class="text-muted">
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-sm-6">
                                     <strong><i class="fa fa-whatsapp ml-1"></i> شماره واتساپ فعال</strong>
                                     <p class="text-muted">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="row">
+                            {<div class="row">
                                 <div class="col-sm-12">
                                     <strong><i class="fa fa-map-marker ml-1"></i> موقعیت</strong>
                                     <p class="text-muted">
@@ -78,14 +78,14 @@
                                     </p>
                                 </div>
                             </div>
-                            <hr>
+                            <hr> --}}
                             <div class="row">
-                                <div class="col-sm-6">
+                                {{-- <div class="col-sm-6">
                                     <strong><i class="fa fa-calendar ml-1"></i> تاریخ تولد</strong>
                                     <p class="text-muted">
                                         @if($item->date_birth!=null) @item($item->date_birth) @else ثبت نشده @endif
                                     </p>
-                                </div>
+                                </div> --}}
                                 <div class="col-sm-6">
                                     {{-- <strong><i class="fa fa-registered ml-1"></i> معرف</strong>
                                     <p class="text-muted">

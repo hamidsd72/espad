@@ -19,10 +19,10 @@
                         <label for="text" class="form-label">* توضیحات فارسی :</label>
                         <textarea class="form-control textarea " id="text" name="text">{{ old('text') }}</textarea>
                     </div> --}}
-                    {{-- <div class="col-lg form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+                    <div class="col-lg form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
                         <label for="photo" class="form-label"> تصویر  :</label>
                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*" value="{{ old('photo') }}"/>
-                    </div> --}}
+                    </div>
                 </div>
     
                 <div class="form-group">

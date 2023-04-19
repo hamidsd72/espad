@@ -16,16 +16,20 @@
                                 <hr>
                                 {{ Form::open(array('route' => array('admin.service.package.price.store'), 'method' => 'post')) }}
                                     <div class="row">
-                                        <div class="col-lg-6 mb-2">
+                                        <div class="col-lg-12 mb-2">
                                             {{ Form::text('title',null, array('class' => 'form-control','placeholder'=>'عنوان پکیج را وارد کنید')) }}
                                         </div>
-                                        <div class="col-lg-2 mb-2">
+                                        <div class="col-lg-4 mb-2">
                                             {{ Form::number('day',null, array('class' => 'form-control','onkeyup'=>'number_month(this.value)','placeholder'=>'مدت رو به ماه وارد کنید')) }}
                                             <span id="price_span" class="span_p"><span id="pp_month"></span> ماه </span>
                                         </div>
                                         <div class="col-lg-4 mb-2">
                                             {{ Form::number('price',null, array('class' => 'form-control','onkeyup'=>'number_price(this.value)','placeholder'=>'هزینه رو به ریال وارد کنید')) }}
                                             <span id="price_span" class="span_p"><span id="pp_price"></span> ریال </span>
+                                        </div>
+                                        <div class="col-lg-4 mb-2">
+                                            {{ Form::number('off_price',null, array('class' => 'form-control','onkeyup'=>'number_off_price(this.value)','placeholder'=>'هزینه رو به ریال وارد کنید')) }}
+                                            <span id="price_span" class="span_p"><span id="pp_off_price"></span> ریال </span>
                                         </div>
                                         <button type="submit" class="btn btn-success ">ثبت شود</button>
                                     </div>
@@ -39,6 +43,8 @@
                                     <th>عنوان</th>
                                     <th>ماه</th>
                                     <th>هزینه</th>
+                                    <th>تخفیف</th>
+                                    <th>ترتیب</th>
                                     <th>عملیات</th>
                                 </tr>
                                 </thead>
@@ -50,6 +56,16 @@
                                             <td>@item($item->title)</td>
                                             <td>@item($item->day)</td>
                                             <td>@item(number_format($item->price)) ریال</td>
+                                            <td>@item($item->off_price ? number_format($item->off_price).' ریال ' : 'بدون تخفیف')</td>
+                                            <td>
+                                                {{ Form::open(array('route' => array('admin.service.package.price.resort'), 'method' => 'post')) }}
+                                                    <div class="d-flex">
+                                                        {{ Form::hidden('id',$item->id, array()) }}
+                                                        {{ Form::number('sort',$item->sort, array()) }}
+                                                        <button type="submit" class="btn btn-success p-0 px-1 mx-3">تغییر ترتیب</button>
+                                                    </div>
+                                                {{ Form::close() }}
+                                            </td>
                                             {{-- <td>@item($item->type($item->status))</td> --}}
                                             <td class="text-center">
                                                 <a href="javascript:void(0);" onclick="del_row('{{$item->id}}')" class="badge bg-danger ml-1"
@@ -78,9 +94,6 @@
                                 @endif
                             </table>
                         </div>
-                    </div>
-                    <div class="pag_ul">
-                        {{ $items->links() }}
                     </div>
                 </div>
             </div>
@@ -135,14 +148,28 @@
             })
         }
 
+        function number_off_price(a) {
+            $('#pp_off_price').text(a);
+            $('#pp_off_price').text(function (e, n) {
+                var lir1 = n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+        }
+
         function number_month(a) {
             $('#pp_month').text(a);
         }
 
         $(document).ready(function () {
             var a = $('#price').val();
+            var b = $('#off_price').val();
             $('#pp_price').text(a);
             $('#pp_price').text(function (e, n) {
+                var lir1 = n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return lir1;
+            })
+            $('#pp_off_price').text(b);
+            $('#pp_off_price').text(function (e, n) {
                 var lir1 = n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 return lir1;
             })

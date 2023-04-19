@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $item  = User::find(Auth::user()->id);
         $forms = UserForm::where('user_id', auth()->user()->id)->get();
         $tours = TourForm::where('user_id', auth()->user()->id)->get();
-        ClosePendingCall::dispatch();
+        // ClosePendingCall::dispatch();
         return view('admin.profile.show',compact('item','forms','tours'),['title1' => $this->controller_title('sum'), 'title2' => $this->controller_title('single')]);
     }
     public function edit()

@@ -22,21 +22,27 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
+                                        <th>نام پکیج</th>
                                         <th>نام و نام خانوادگی</th>
                                         <th>موبایل</th>
                                         <th>ایمیل</th>
                                         <th>واتساپ</th>
+                                        <th>عملیات</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @if(count($items)>0)
                                     @foreach($items as $item)
-                                    <tr>
-                                        <td>@item($item->first_name) @item($item->last_name)</td>
-                                        <td>@item($item->mobile)</td>
-                                        <td>@item($item->email)</td>
-                                        <td>@item($item->whatsapp)</td>
-                                    </tr>
+                                        @php $user = $item->user @endphp
+                                        @php $package = $item->package @endphp
+                                        <tr>
+                                            <td><a href="{{ route('user.consultation.edit', $package->slug) }}" class="text-primary">{{$package->title}}</a></td>
+                                            <td>{{$user?$user->first_name.' '.$user->last_name:'__________'}}</td>
+                                            <td>{{$user?$user->mobile:'__________'}}</td>
+                                            <td>{{$user?$user->email:'__________'}}</td>
+                                            <td>{{$user?$user->whatsapp:'__________'}}</td>
+                                            <td><a href="{{ route('admin.service.package.edit', $package->id) }}" class="text-primary">بررسی پکیج</a></td>
+                                        </tr>
                                     @endforeach
                                     @else
                                         <tr>

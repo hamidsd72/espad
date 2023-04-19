@@ -40,23 +40,11 @@
                     @foreach ($latest as $item)
                         <div class="pt-4">
                             <div>
-                                <a href="{{ route('user.post.show',$item->slug) }}" class="link">{{$item->title}}</a>
+                                <a href="{{ route('user.post.show-by-slug',[$item->id ,$item->slug]) }}" class="link">{{$item->title}}</a>
                             </div>
                             <span class="text-secondary">{{my_jdate($item->updated_at,'d F Y')}}</span>
                         </div>
                     @endforeach
-                    
-                    {{-- <h6 class="pt-5">آخرین دید‌گاه‌ها</h6>
-                    
-                    
-                    <h6 class="pt-5">بایگانی</h6>
-                    
-                    <div class="pt-2"></div>
-                    @for ($i = 0; $i < 3; $i++)
-                        <div class="pt-2">
-                            <a href="#" class="link">آگوست 2020</a>
-                        </div>
-                    @endfor --}}
                     
                     <h6 class="pt-5">دسته‌ها</h6>
                        
@@ -89,7 +77,7 @@
                                 <a class="p-2 px-3" href="#">{{$type??' همه پست ها '}}</a>
                             </div>
                             
-                            <a href="{{ route('user.post.show',$item->slug) }}">
+                            <a href="{{ route('user.post.show-by-slug',[$item->id ,$item->slug]) }}">
                                 <h5>{{$item->title}}</h5>
                                 <p class="py-2 mb-0">{{$item->short_text}}</p>
                             </a>
@@ -98,12 +86,13 @@
                                 {{' نویسنده : '.$item->writer}}
                                 <span class="text-secondary mx-1">{{my_jdate($item->updated_at,'d F Y')}}</span>
                             </small>
-                            <div id="old{{$item->id}}" class="col-12 pt-2 old">
+                            <div class="pt-3"><button class="btn btn-outline-info redu20" onclick="window.location.href='{{ route('user.post.show-by-slug',[$item->id ,$item->slug]) }}'">مشاهده</button></div>
+                            {{-- <div id="old{{$item->id}}" class="col-12 pt-2 old">
                                 <i class="fa fa-plus"></i>
                             </div>
                             <div id="new{{$item->id}}" class="col-12 pt-2 d-none">
                                 <i class="fa fa-close text-secondary"></i>
-                            </div>
+                            </div> --}}
                         </div>
                     @endforeach
                     @if ($items->count())

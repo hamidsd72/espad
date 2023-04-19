@@ -18,7 +18,7 @@ class ServicePackagePriceController extends Controller {
     }
 
     public function index() {
-        $items = ServicePackagePrice::orderByDesc('id')->paginate($this->controller_paginate());
+        $items = ServicePackagePrice::orderByDesc('id')->get();
         return view('admin.service.package.price.index', compact('items'), ['title1' => 'افزودن پکیج سبد سهام', 'title2' => 'لیست قیمت : ']);
     }
 
@@ -35,9 +35,10 @@ class ServicePackagePriceController extends Controller {
             ]);
         try {
             $item = new ServicePackagePrice();
-            $item->title = $request->title;
-            $item->day   = $request->day;
-            $item->price = $request->price;
+            $item->title        = $request->title;
+            $item->day          = $request->day;
+            $item->price        = $request->price;
+            $item->off_price    = $request->off_price;
             $item->save();
             return redirect()->back()->with('flash_message', '  با موفقیت ایجاد شد.');
         } catch (\Exception $e) {
@@ -52,6 +53,18 @@ class ServicePackagePriceController extends Controller {
             return redirect()->back()->with('flash_message', ' با موفقیت حذف شد.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('err_message', 'مشکلی در حذف قیمت پکیج بوجود آمده،مجددا تلاش کنید');
+        }
+    }
+
+    public function sort(Request $request) {
+
+        $item = ServicePackagePrice::findOrFail($request->id);
+        try {
+            $item->sort = $request->sort;
+            $item->update();
+            return redirect()->back()->with('flash_message', 'ترتیب با موفقیت تغییر کرد.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('err_message', 'مشکلی در تغییر ترتیب بوجود آمده،مجددا تلاش کنید');
         }
     }
 

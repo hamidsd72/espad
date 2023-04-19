@@ -85,7 +85,9 @@
                         <div class="line"></div>
                         سرفصل های دوره
                     </h4>
-                    {!! $item->description !!}
+                    <div class="item-description">
+                        {!! $item->description !!}
+                    </div>
 
                 </div>
                 <div class="col-lg-2"></div>
