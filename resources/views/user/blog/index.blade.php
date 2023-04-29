@@ -49,13 +49,13 @@
                     <h6 class="pt-5">دسته‌ها</h6>
                        
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','بلاگ') }}" class="link">بلاگ ها</a>
+                        <a href="{{ route('user.post.index.type','بلاگ') }}" class="link">اخبار بنیادی و تحلیل ها</a>
                     </div>
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','آموزش') }}" class="link">آموزش ها</a>
+                        <a href="{{ route('user.post.index.type','آموزش') }}" class="link">اموزش های بورسی</a>
                     </div>
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','اطلاعیه') }}" class="link">اطلاعیه ها</a>
+                        <a href="{{ route('user.post.index.type','اطلاعیه') }}" class="link"> کدال و مجامع</a>
                     </div>
 
                 </div>
@@ -74,7 +74,17 @@
                     @foreach ($items as $item)
                         <div class="items p-4 border-bottom aos-init aos-animate " data-aos="flip-up" onmouseover="newIco(this, '{{$item->id}}')" onmouseout="oldIco(this, '{{$item->id}}')">
                             <div class="hashtaq mb-4 py-2">
-                                <a class="p-2 px-3" href="#">{{$type??' همه پست ها '}}</a>
+                                <a class="p-2 px-3" href="#">
+                                    @if (isset($type))
+                                        @if ($type=='بلاگ') اخبار بنیادی و تحلیل ها
+                                        @elseif($type=='آموزش') اموزش های بورسی
+                                        @elseif($type=='اطلاعیه') کدال و مجامع
+                                        @else {{$type}}
+                                        @endif
+                                    @else
+                                        همه پست ها
+                                    @endif
+                                </a>
                             </div>
                             
                             <a href="{{ route('user.post.show-by-slug',[$item->id ,$item->slug]) }}">

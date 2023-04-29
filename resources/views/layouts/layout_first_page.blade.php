@@ -318,7 +318,7 @@
                             @endforeach
 
                             <li class="nav-item " >
-                                <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.post.index.type','اطلاعیه') }}" target="_blank">تحلیل های آزاد</a>
+                                <a class="nav-link menu_in_a f-18 fw-bold" href="{{ route('user.post.index.type','بلاگ') }}" target="_blank">تحلیل های آزاد</a>
                             </li>
 
                         </ul>
@@ -327,7 +327,7 @@
                         </a>
                         <div class="footer_mobile_nav d-lg-none p-3">
                             <a href="{{ route('user.post.index.type','اطلاعیه') }}">
-                                اطلاعیه | بلاگ
+                                اطلاعیه ها
                                 <i class="fas fa-angle-left"></i>
                             </a>
                             

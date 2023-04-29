@@ -80,13 +80,13 @@
                     <h6 class="pt-5">دسته‌ها</h6>
                        
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','بلاگ') }}" class="link">بلاگ ها</a>
+                        <a href="{{ route('user.post.index.type','بلاگ') }}" class="link">اخبار بنیادی و تحلیل ها</a>
                     </div>
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','آموزش') }}" class="link">آموزش ها</a>
+                        <a href="{{ route('user.post.index.type','آموزش') }}" class="link">اموزش های بورسی</a>
                     </div>
                     <div class="pt-3">
-                        <a href="{{ route('user.post.index.type','اطلاعیه') }}" class="link">اطلاعیه ها</a>
+                        <a href="{{ route('user.post.index.type','اطلاعیه') }}" class="link"> کدال و مجامع</a>
                     </div>
 
                 </div>
